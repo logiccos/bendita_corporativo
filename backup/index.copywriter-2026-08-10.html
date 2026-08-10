@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bendita Tour | Gestão de Viagens Corporativas</title>
+    <meta name="description" content="Pare de perder tempo e dinheiro com viagens corporativas. A Bendita Tour cuida de tudo: passagens, hotéis, imprevistos. Atendimento humano 24h.">
+
+    <!-- Fonte Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: '#4a9b9f',
+                        'brand-dark': '#3a7d80',
+                        'brand-light': '#e8f4f5',
+                        whatsapp: '#25D366',
+                        'whatsapp-hover': '#20bd5a',
+                        dark1: '#111827',
+                        dark2: '#1F2937',
+                        dark3: '#374151',
+                        danger: '#DC2626',
+                        'danger-light': '#FEF2F2'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .gradient-text {
+            background: linear-gradient(135deg, #4a9b9f 0%, #3a7d80 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .pulse-green {
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="fixed top-0 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-extrabold tracking-tight text-dark1">
+                    Bendita<span class="text-brand">Tour</span>
+                </span>
+                <span class="hidden md:inline-block text-xs text-gray-500 border-l border-gray-300 pl-3 ml-2">Gestão de Viagens Corporativas</span>
+            </div>
+            <a href="https://wa.me/5511999999999?text=Olá! Quero um diagnóstico gratuito de viagens corporativas." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-whatsapp hover:bg-whatsapp-hover rounded-full transition-all shadow-sm hover:shadow-md pulse-green">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" class="shrink-0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                <span class="hidden sm:inline">Diagnóstico Gratuito</span>
+                <span class="sm:hidden">Contato</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-20">
+
+        <!-- ============================================== -->
+        <!-- HERO SECTION - PROBLEMA + IDENTIFICAÇÃO       -->
+        <!-- ============================================== -->
+        <section class="relative bg-gradient-to-b from-brand-light via-white to-gray-50 pt-12 pb-20 px-4 overflow-hidden">
+            <!-- Elementos decorativos -->
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-brand/5 blur-3xl rounded-full -translate-y-1/4 translate-x-1/4"></div>
+            <div class="absolute bottom-0 left-0 w-1/3 h-1/2 bg-brand/3 blur-3xl rounded-full translate-y-1/4 -translate-x-1/4"></div>
+
+            <div class="relative max-w-4xl mx-auto text-center z-10">
+
+                <!-- Badge de Prova Social -->
+                <div class="inline-flex items-center gap-2 bg-white border border-brand/20 rounded-full px-4 py-2 mb-8 shadow-sm">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    <span class="text-sm font-semibold text-dark2">+20 empresas já economizam tempo e dinheiro conosco</span>
+                </div>
+
+                <!-- Headline Principal - DOR -->
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-dark1 leading-tight tracking-tight mb-6">
+                    Sua equipe ainda perde
+                    <span class="text-brand block mt-2">horas toda semana</span>
+                    <span class="block mt-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-dark2">organizando viagens corporativas?</span>
+                </h1>
+
+                <!-- Subheadline - AGITAÇÃO -->
+                <p class="text-lg md:text-xl text-dark3 font-medium mb-10 leading-relaxed max-w-3xl mx-auto">
+                    Enquanto seu time financeiro confere notas fiscais, seu RH agenda táxis e seus gestores aprovam reembolsos por e-mail... <span class="text-danger font-bold">seus concorrentes estão fechando negócios.</span>
+                </p>
+
+                <!-- Bullets de DOR - SOBRECARGA -->
+                <div class="bg-danger-light border border-danger/20 rounded-2xl p-6 md:p-8 mb-10 text-left max-w-3xl mx-auto">
+                    <p class="text-danger font-bold text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        Isso está acontecendo na sua empresa agora:
+                    </p>
+                    <ul class="space-y-3 text-dark2">
+                        <li class="flex items-start gap-3">
+                            <span class="text-danger mt-1">✗</span>
+                            <span>Funcionários usando <strong>cartão pessoal</strong> e esperando semanas pelo reembolso</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-danger mt-1">✗</span>
+                            <span>Passagens compradas de última hora custando <strong>40% a mais</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-danger mt-1">✗</span>
+                            <span>Reservas espalhadas em 5 sites diferentes, <strong>sem controle nenhum</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-danger mt-1">✗</span>
+                            <span>Ligações de madrugada quando algo dá errado — <strong>e ninguém para resolver</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-danger mt-1">✗</span>
+                            <span>Horas e mais horas que <strong>ninguém contabiliza</strong> como custo</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pergunta Retórica -->
+                <p class="text-xl md:text-2xl font-bold text-dark1 mb-12 max-w-3xl mx-auto">
+                    Você sabe o preço da passagem.<br>
+                    <span class="text-brand">Mas sabe o preço do tempo que sua equipe perde organizando tudo isso?</span>
+                </p>
+
+                <!-- CTA Principal -->
+                <a href="https://wa.me/5511999999999?text=Olá! Quero um diagnóstico gratuito de viagens corporativas." target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-whatsapp rounded-full hover:bg-whatsapp-hover hover:shadow-xl hover:-translate-y-1 shadow-lg shadow-whatsapp/30">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" class="shrink-0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    Quero Parar de Perder Tempo
+                </a>
+                <p class="text-sm text-gray-500 mt-4">Diagnóstico gratuito em 15 minutos</p>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SEÇÃO 2 - AGITAÇÃO: CUSTOS OCULTOS            -->
+        <!-- ============================================== -->
+        <section class="py-20 px-4 bg-white relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-danger font-bold tracking-wider uppercase text-sm">O problema é maior do que parece</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-dark1 mt-3 mb-4">O Custo Invisível Que Está<br><span class="text-danger">Sangrando Sua Empresa</span></h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-lg">Empresas brasileiras investem <strong>R$ 106 bilhões por ano</strong> em viagens corporativas. Quanto disso é desperdício por falta de gestão?</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+
+                    <!-- Card DOR 1 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 border-l-4 border-danger hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-14 h-14 bg-danger/10 text-danger rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark1">O Tempo Que Ninguém Conta</h3>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Gestores gastam em média <strong class="text-dark1">10 a 15 horas por mês</strong> só gerenciando viagens. São decisões adiadas, reuniões perdidas e oportunidades que escapam.
+                        </p>
+                        <p class="text-danger font-semibold text-sm">
+                            Esse tempo tem um preço. E você está pagando sem perceber.
+                        </p>
+                    </div>
+
+                    <!-- Card DOR 2 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 border-l-4 border-danger hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-14 h-14 bg-danger/10 text-danger rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark1">O Dinheiro Que Escorre</h3>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Passagens de última hora: <strong class="text-dark1">+40% no preço</strong>. Sem acordos corporativos: <strong class="text-dark1">+22% em hospedagem</strong>. Reembolsos manuais: <strong class="text-dark1">+3 horas do financeiro por semana</strong>.
+                        </p>
+                        <p class="text-danger font-semibold text-sm">
+                            PMEs pagam até 25% a mais por não ter gestão profissional.
+                        </p>
+                    </div>
+
+                    <!-- Card DOR 3 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 border-l-4 border-danger hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-14 h-14 bg-danger/10 text-danger rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark1">A Experiência Que Espanta Talentos</h3>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Seu colaborador viaja a trabalho e precisa: pagar do próprio bolso, resolver problemas sozinho às 23h, enfrentar burocracia quando deveria estar focado no cliente.
+                        </p>
+                        <p class="text-danger font-semibold text-sm">
+                            O custo de perder um talento é maior que qualquer passagem aérea.
+                        </p>
+                    </div>
+
+                    <!-- Card DOR 4 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 border-l-4 border-danger hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-14 h-14 bg-danger/10 text-danger rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark1">Os Imprevistos Que Viram Crises</h3>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Voo cancelado. Hotel com overbooking. Mala extraviada. <strong class="text-dark1">E agora? Quem resolve?</strong> Seu RH às 3h da manhã? Seu colaborador sozinho em outro país?
+                        </p>
+                        <p class="text-danger font-semibold text-sm">
+                            Imprevistos acontecem. A pergunta é: você tem quem resolva?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SEÇÃO 3 - VIRADA: NÃO PRECISA SER ASSIM       -->
+        <!-- ============================================== -->
+        <section class="py-20 px-4 bg-gradient-to-b from-dark1 to-dark2 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand to-transparent"></div>
+
+            <div class="relative max-w-4xl mx-auto text-center z-10">
+                <span class="inline-block text-brand font-bold tracking-wider uppercase text-sm mb-4 bg-brand/10 px-4 py-2 rounded-full">A virada começa aqui</span>
+
+                <h2 class="text-3xl md:text-5xl font-black text-white mb-8">
+                    Mas não precisa<br><span class="gradient-text">ser assim.</span>
+                </h2>
+
+                <p class="text-xl md:text-2xl text-gray-300 leading-relaxed font-light mb-10 max-w-3xl mx-auto">
+                    E se existisse uma forma de <span class="text-white font-semibold">eliminar completamente</span> essa carga operacional da sua empresa?
+                </p>
+
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 md:p-10 text-left max-w-3xl mx-auto mb-10">
+                    <p class="text-gray-300 text-lg leading-relaxed mb-6">
+                        Uma forma onde sua equipe manda <strong class="text-white">uma mensagem no WhatsApp</strong>, e <span class="text-brand font-bold">tudo se resolve</span>.
+                    </p>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Voos, hotéis e transfers organizados em minutos</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Imprevistos resolvidos 24 horas por dia, 7 dias por semana</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Alguém de verdade do outro lado — não um robô</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Controle total de gastos sem planilhas infinitas</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <p class="text-2xl md:text-3xl font-bold text-white mb-2">
+                    Essa forma existe.
+                </p>
+                <p class="text-2xl md:text-3xl font-bold text-brand">
+                    E se chama Bendita Tour.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SEÇÃO 4 - TRANSFORMAÇÃO: IMAGINE              -->
+        <!-- ============================================== -->
+        <section class="py-20 px-4 bg-brand-light relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-brand font-bold tracking-wider uppercase text-sm">O futuro que você merece</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-dark1 mt-3 mb-4">Imagine Uma Realidade Diferente</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-lg">É assim que funciona quando você tem a Bendita Tour ao seu lado:</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+
+                    <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-brand/10">
+                        <div class="w-12 h-12 bg-brand/10 text-brand rounded-xl flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-dark1 mb-3">Precisa viajar?</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <strong class="text-brand">Uma mensagem no WhatsApp.</strong> Em minutos, voo + hotel + transfer organizados, dentro da política da empresa. Sem pesquisa, sem comparação, sem dor de cabeça.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-brand/10">
+                        <div class="w-12 h-12 bg-brand/10 text-brand rounded-xl flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-dark1 mb-3">Cancelaram o voo às 2h da manhã?</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <strong class="text-brand">Problema nosso.</strong> Já estamos realocando seu colaborador antes mesmo dele ligar. Ele acorda com a solução pronta no celular.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-brand/10">
+                        <div class="w-12 h-12 bg-brand/10 text-brand rounded-xl flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-dark1 mb-3">Diretoria viajando?</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <strong class="text-brand">Tratamento exclusivo.</strong> Primeira classe, sala VIP, preferências memorizadas. Sem burocracias. A experiência que executivos merecem.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-brand/10">
+                        <div class="w-12 h-12 bg-brand/10 text-brand rounded-xl flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-dark1 mb-3">Fim do mês?</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            <strong class="text-brand">Relatório completo na sua mesa.</strong> Gastos consolidados, fornecedores utilizados, economias realizadas. Visibilidade total sem esforço.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <p class="text-2xl md:text-3xl font-bold text-dark1">
+                        Zero preocupação. Zero tempo perdido.<br>
+                        <span class="text-brand">Zero surpresas desagradáveis.</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SEÇÃO 5 - SERVIÇOS                            -->
+        <!-- ============================================== -->
+        <section class="py-20 px-4 bg-white relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-brand font-bold tracking-wider uppercase text-sm">Soluções completas</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-dark1 mt-3 mb-4">Gestão Total de Viagens Corporativas</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-lg">Tudo que sua empresa precisa. Em um único parceiro.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    <!-- Card Serviço 1 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-brand/20 group">
+                        <div class="w-14 h-14 bg-brand/10 text-brand rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark1 mb-3">Gestão de Equipes</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">Passagens, hospedagem e logística para toda a operação. Cotações em minutos, aprovações automatizadas, controle de custos em tempo real.</p>
+                        <p class="text-brand font-semibold text-sm">Sua equipe viaja, sua empresa cresce.</p>
+                    </div>
+
+                    <!-- Card Serviço 2 -->
+                    <div class="bg-dark1 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 group">
+                        <div class="w-14 h-14 bg-white/10 text-white rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Atendimento C-Level</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">Exclusividade absoluta para diretores. Primeira classe, executiva, salas VIP. Preferências memorizadas. Concierge pessoal.</p>
+                        <p class="text-brand font-semibold text-sm">O tratamento que executivos merecem.</p>
+                    </div>
+
+                    <!-- Card Serviço 3 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-brand/20 group">
+                        <div class="w-14 h-14 bg-brand/10 text-brand rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark1 mb-3">Logística Integrada</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">Não apenas voos. Hotéis corporativos com acordos especiais, transfer, locação de veículos e seguro viagem completo.</p>
+                        <p class="text-brand font-semibold text-sm">Uma mensagem, tudo resolvido.</p>
+                    </div>
+
+                    <!-- Card Serviço 4 -->
+                    <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-brand/20 group">
+                        <div class="w-14 h-14 bg-brand/10 text-brand rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark1 mb-3">Suporte 24h (Humano)</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">Imprevistos não esperam horário comercial. Atendimento humano 24/7/365. Resposta em minutos, resolução proativa.</p>
+                        <p class="text-brand font-semibold text-sm">Seu colaborador nunca está sozinho.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SEÇÃO 6 - JEITO BENDITA                       -->
+        <!-- ============================================== -->
+        <section class="py-24 px-4 bg-dark1 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand to-transparent"></div>
+
+            <div class="relative max-w-4xl mx-auto text-center z-10">
+                <span class="text-brand font-bold tracking-wider uppercase text-sm">Nosso diferencial</span>
+                <h2 class="text-3xl md:text-4xl font-black text-white mt-3 mb-8">O "Jeito Bendita" de Cuidar</h2>
+
+                <p class="text-xl text-gray-300 leading-relaxed font-light mb-8">
+                    Existem plataformas de autoatendimento. Existem call centers genéricos. Existem robôs de chat que pedem para você "aguardar na linha".
+                </p>
+
+                <p class="text-2xl text-white font-bold mb-10">
+                    Nós não somos nada disso.
+                </p>
+
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 md:p-10 text-left max-w-3xl mx-auto mb-10">
+                    <p class="text-white font-semibold text-lg mb-6">Aqui você tem um time dedicado que:</p>
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Conhece as <strong class="text-white">preferências de cada diretor</strong> da sua empresa</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Sabe de cor a <strong class="text-white">política de viagens</strong> do seu negócio</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Atende <strong class="text-white">pelo nome</strong>, não pelo número de protocolo</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Resolve <strong class="text-white">antes de você precisar cobrar</strong></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <p class="text-xl text-gray-300 mb-6">
+                    <span class="text-brand font-semibold">Tecnologia agiliza.</span> Mas é o toque humano que resolve.
+                </p>
+
+                <div class="inline-flex items-center gap-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-8 py-4">
+                    <span class="w-3 h-3 bg-brand rounded-full"></span>
+                    <span class="text-white font-bold text-lg">Humanizado. Consultivo. Impecável.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SEÇÃO 7 - PROVA SOCIAL                        -->
+        <!-- ============================================== -->
+        <section class="py-20 px-4 bg-gray-50 relative">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-brand font-bold tracking-wider uppercase text-sm">Quem já transformou suas viagens</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-dark1 mt-3 mb-4">Empresas Que Confiam na Bendita</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-lg">Veja o que nossos clientes dizem sobre a experiência:</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+
+                    <!-- Depoimento 1 -->
+                    <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+                        <div class="flex items-center gap-1 mb-4">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6 italic">
+                            "Antes perdíamos 2 dias organizando viagens da diretoria. Com a Bendita, são 2 mensagens no WhatsApp. <strong class="text-dark1 not-italic">Não voltamos mais.</strong>"
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-brand/10 rounded-full flex items-center justify-center text-brand font-bold">M</div>
+                            <div>
+                                <p class="font-bold text-dark1 text-sm">Maria Silva</p>
+                                <p class="text-gray-500 text-xs">Head de Operações</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Depoimento 2 -->
+                    <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+                        <div class="flex items-center gap-1 mb-4">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6 italic">
+                            "Na primeira viagem internacional, tivemos um cancelamento às 4h da manhã. A Bendita já tinha resolvido antes de eu acordar. <strong class="text-dark1 not-italic">Isso não tem preço.</strong>"
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-brand/10 rounded-full flex items-center justify-center text-brand font-bold">J</div>
+                            <div>
+                                <p class="font-bold text-dark1 text-sm">João Santos</p>
+                                <p class="text-gray-500 text-xs">CEO</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Depoimento 3 -->
+                    <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
+                        <div class="flex items-center gap-1 mb-4">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6 italic">
+                            "Economizamos 28% nos primeiros 6 meses. Mas o maior ganho foi o tempo que a equipe recuperou para fazer <strong class="text-dark1 not-italic">o que realmente importa.</strong>"
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-brand/10 rounded-full flex items-center justify-center text-brand font-bold">A</div>
+                            <div>
+                                <p class="font-bold text-dark1 text-sm">Ana Costa</p>
+                                <p class="text-gray-500 text-xs">CFO</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logos de empresas (placeholder) -->
+                <div class="mt-16 text-center">
+                    <p class="text-gray-500 text-sm mb-6 uppercase tracking-wider font-medium">Empresas que confiam na Bendita Tour</p>
+                    <div class="flex flex-wrap items-center justify-center gap-8 opacity-50">
+                        <div class="w-24 h-12 bg-gray-300 rounded flex items-center justify-center text-gray-500 text-xs">Logo 1</div>
+                        <div class="w-24 h-12 bg-gray-300 rounded flex items-center justify-center text-gray-500 text-xs">Logo 2</div>
+                        <div class="w-24 h-12 bg-gray-300 rounded flex items-center justify-center text-gray-500 text-xs">Logo 3</div>
+                        <div class="w-24 h-12 bg-gray-300 rounded flex items-center justify-center text-gray-500 text-xs">Logo 4</div>
+                        <div class="w-24 h-12 bg-gray-300 rounded flex items-center justify-center text-gray-500 text-xs">Logo 5</div>
+                    </div>
+                    <p class="text-gray-400 text-xs mt-4">(Adicione os logos reais dos seus clientes aqui)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SEÇÃO 8 - CTA FINAL COM URGÊNCIA              -->
+        <!-- ============================================== -->
+        <section class="py-20 px-4 bg-gradient-to-b from-white to-danger-light relative">
+            <div class="max-w-4xl mx-auto text-center">
+                <span class="text-danger font-bold tracking-wider uppercase text-sm">A decisão é sua</span>
+                <h2 class="text-3xl md:text-4xl font-black text-dark1 mt-3 mb-6">
+                    Cada Dia Que Passa, Sua Empresa<br>
+                    <span class="text-danger">Perde Tempo e Dinheiro</span>
+                </h2>
+
+                <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                    Enquanto você lê isso:
+                </p>
+
+                <div class="bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-danger/10 max-w-2xl mx-auto mb-10">
+                    <ul class="space-y-4 text-left text-dark2">
+                        <li class="flex items-start gap-3">
+                            <span class="text-danger mt-1 text-xl">→</span>
+                            <span>Alguém da sua equipe está <strong>pesquisando passagens</strong> ao invés de trabalhar</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-danger mt-1 text-xl">→</span>
+                            <span>Uma reserva está sendo feita <strong>sem o melhor preço</strong> disponível</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-danger mt-1 text-xl">→</span>
+                            <span>Um imprevisto pode acontecer e <strong>não ter quem resolva</strong></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <p class="text-xl font-bold text-dark1 mb-10">
+                    Você pode continuar assim.<br>
+                    <span class="text-brand">Ou pode mudar agora.</span>
+                </p>
+
+                <!-- CTA Box -->
+                <div class="bg-dark1 rounded-3xl p-8 md:p-12 text-left max-w-3xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mb-3">Diagnóstico Gratuito de Viagens Corporativas</h3>
+                        <p class="text-gray-400">Em 15 minutos, nossa equipe analisa:</p>
+                    </div>
+
+                    <ul class="space-y-4 mb-8 max-w-md mx-auto">
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Quanto sua empresa <strong class="text-white">gasta</strong> (e quanto pode economizar)</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Quantas <strong class="text-white">horas sua equipe perde</strong> com gestão de viagens</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <span class="text-brand text-xl">✓</span>
+                            <span>Quais processos podem ser <strong class="text-white">eliminados imediatamente</strong></span>
+                        </li>
+                    </ul>
+
+                    <div class="text-center">
+                        <p class="text-gray-500 text-sm mb-6">Sem compromisso. Sem custo. Só clareza.</p>
+
+                        <a href="https://wa.me/5511999999999?text=Olá! Quero um diagnóstico gratuito de viagens corporativas para minha empresa." target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center gap-3 px-10 py-5 text-xl font-bold text-white transition-all duration-300 bg-whatsapp rounded-full hover:bg-whatsapp-hover shadow-lg shadow-whatsapp/30 hover:shadow-xl hover:-translate-y-1 w-full sm:w-auto pulse-green">
+                            <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24" class="shrink-0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                            QUERO MEU DIAGNÓSTICO GRATUITO
+                        </a>
+
+                        <p class="text-gray-500 text-sm mt-4">Resposta em até 2 horas úteis</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark2 pt-16 pb-8 px-4 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto">
+
+            <div class="text-center mb-12">
+                <span class="text-3xl font-extrabold text-white">Bendita<span class="text-brand">Tour</span></span>
+                <p class="text-gray-400 mt-2">Gestão de Viagens Corporativas</p>
+                <p class="text-brand font-medium mt-1">Liberando empresas do caos operacional.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-gray-500 text-sm border-t border-gray-700 pt-8">
+                <p>© 2025 Bendita Tour Assessoria & Viagens. Todos os direitos reservados.</p>
+                <p>CNPJ: 54.179.099/0001-60</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button (Mobile) -->
+    <a href="https://wa.me/5511999999999?text=Olá! Quero um diagnóstico gratuito de viagens corporativas." target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 w-14 h-14 bg-whatsapp hover:bg-whatsapp-hover rounded-full flex items-center justify-center shadow-lg shadow-whatsapp/30 z-50 transition-all hover:scale-110 md:hidden pulse-green">
+        <svg width="28" height="28" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+
+</body>
+</html>

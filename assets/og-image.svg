@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Bendita Tour — Gestão de Viagens Corporativas">
+  <!-- Fonte do card de compartilhamento (WhatsApp / LinkedIn).
+       Exporte para JPG 1200x630 em assets/og-image.jpg e descomente
+       as tags og:image no index.html. Redes sociais não renderizam SVG. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="1" stop-color="#204A4E"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.15" r="0.6">
+      <stop offset="0" stop-color="#4A9B9F" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#4A9B9F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Logotipo -->
+  <text x="88" y="132" font-family="Montserrat, Arial, sans-serif" font-size="40" font-weight="800" letter-spacing="-0.8" fill="#FFFFFF">Bendita<tspan fill="#A1D0D3">Tour</tspan></text>
+
+  <!-- Chamada -->
+  <text font-family="Montserrat, Arial, sans-serif" font-size="72" font-weight="800" letter-spacing="-2" fill="#FFFFFF">
+    <tspan x="88" y="300">Sua equipe ainda perde</tspan>
+    <tspan x="88" y="384" fill="#A1D0D3">horas toda semana</tspan>
+    <tspan x="88" y="462" font-size="44" font-weight="700" fill="#C5CBD3">organizando viagens corporativas?</tspan>
+  </text>
+
+  <!-- Selo -->
+  <rect x="88" y="516" width="330" height="56" rx="28" fill="#25D366"/>
+  <circle cx="122" cy="544" r="7" fill="#111827"/>
+  <text x="144" y="552" font-family="Montserrat, Arial, sans-serif" font-size="21" font-weight="700" fill="#111827">Diagnóstico gratuito em 15 min</text>
+</svg>

@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestão de Viagens Corporativas para Empresas | Bendita Tour</title>
+
+<!-- Preload ANTES do <style>: o preload scanner dispara a fonte no mesmo tick
+     em que começa a parsear o CSS. Ganha ~1 RTT no LCP.
+     `crossorigin` é obrigatório mesmo same-origin — fontes usam modo CORS e,
+     sem ele, o browser baixa o arquivo duas vezes. -->
+<link rel="preload" href="assets/fonts/montserrat-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+
+<style>
+/* ==========================================================================
+   BENDITA TOUR — CSS crítico, 100% inlinado, zero JavaScript
+   --------------------------------------------------------------------------
+   Por que inline e não arquivo externo, nesta página específica:
+   um <link rel=stylesheet> custa 1 RTT completo (≈150 ms no throttle mobile
+   do Lighthouse, ≈40 ms no desktop). Como o LCP aqui é texto, ele só pinta
+   depois do CSSOM completo — então esse RTT é cobrado DUAS vezes, em FCP
+   (peso 10) e em LCP (peso 25). O ganho de cache é zero: o PageSpeed mede
+   sempre cold load, e esta é uma landing de página única alimentada por
+   link direto — não há segunda página para amortizar o cache.
+   ========================================================================== */
+
+/* --- Fonte: Montserrat VARIÁVEL. 1 arquivo (37 KB) cobre 400–900. --- */
+@font-face{
+  font-family:'Montserrat';
+  font-style:normal;
+  font-weight:400 900;
+  font-display:swap;
+  src:url('assets/fonts/montserrat-latin-var.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* Fallback com métricas casadas às da Montserrat (unitsPerEm 1000, asc 968,
+   desc 251). O `size-adjust` iguala a largura média de avanço ponderada pela
+   frequência de caracteres do português — é ele que garante o MESMO número
+   de linhas antes e depois do swap. Sem isso, o titulo re-flui e o CLS estoura. */
+@font-face{
+  font-family:'Montserrat Fallback';
+  src:local('Arial'),local('Roboto'),local('Helvetica Neue'),local('Segoe UI');
+  size-adjust:112.8%;
+  ascent-override:85.8%;
+  descent-override:22.3%;
+  line-gap-override:0%;
+}
+
+/* --- Reset --- */
+*,*::before,*::after{box-sizing:border-box;min-inline-size:0}
+*{margin:0}
+html{-webkit-text-size-adjust:100%}
+img,svg,video{display:block;max-width:100%}
+:where(ul){list-style:none;padding:0}
+
+:root{
+  /* ---- Teal: #4A9B9F é o 500, #3A7D80 o 600 (mesmo matiz 183°) ---- */
+  --teal-50:#F4FAFB;  --teal-100:#E6F4F4; --teal-light:#E8F4F5;
+  --teal-200:#CAE6E7; --teal-300:#A1D0D3; --teal-400:#6AB5B9;
+  --teal-500:#4A9B9F; --teal-600:#3A7D80; --teal-700:#2C6266;
+  --teal-800:#204A4E; --teal-900:#153437;
+
+  /* ---- Neutros: o 800 é o dark2 e o 900 é o dark1 originais ---- */
+  --n-0:#FFFFFF;   --n-50:#F9FAFB;  --n-100:#F0F2F5; --n-200:#DEE2E7;
+  --n-300:#C5CBD3; --n-400:#9AA4B1; --n-500:#6E7D91; --n-600:#4F5E72;
+  --n-700:#384557; --n-800:#1F2937; --n-900:#111827; --n-950:#0A0F1A;
+
+  --wa:#25D366; --wa-hover:#2EE06E; --wa-active:#1FBF5B;
+
+  /* Vermelho: #DC2626 dá 4,83 no branco mas cai abaixo de 4,5 sobre
+     fundos tingidos. #B42318 mantém ≥6:1 em todas as superfícies claras. */
+  --danger:#B42318; --danger-50:#FEF3F2; --danger-200:#FCCFCB;
+  --star:#B45309;   /* 5,02:1 — o yellow-400 original dava 2,15:1 */
+
+  /* ---- Tipografia fluida: trava em 375px e em 1440px.
+          A parte "preferida" é sempre rem + vw, nunca vw puro: com vw puro
+          o texto para de responder ao zoom e reprova WCAG 1.4.4. ---- */
+  --fs-display: clamp(1.875rem, 1.25rem + 2.67vw, 3.75rem);
+  --fs-h1-sub:  clamp(1.375rem, 1.06rem + 1.34vw, 2.25rem);
+  --fs-h2:      clamp(1.625rem, 1.317rem + 1.315vw, 2.5rem);
+  --fs-h3:      clamp(1.125rem, 1.04rem + 0.36vw, 1.375rem);
+  --fs-lead:    clamp(1.125rem, 1.059rem + 0.282vw, 1.3125rem);
+  --fs-body:    clamp(1rem, 0.967rem + 0.141vw, 1.0938rem);
+  --fs-small:   clamp(0.9063rem, 0.884rem + 0.094vw, 0.9688rem);
+  --fs-caption: clamp(0.8125rem, 0.802rem + 0.047vw, 0.8438rem);
+  --fs-eyebrow: clamp(0.75rem, 0.728rem + 0.094vw, 0.8125rem);
+  --fs-quote:   clamp(1.5rem, 1.2rem + 1.28vw, 2.125rem);
+
+  /* ---- Espaçamento: base 4, ritmo estrutural em 8 ---- */
+  --s-1:4px;  --s-2:8px;  --s-3:12px; --s-4:16px; --s-5:20px;
+  --s-6:24px; --s-8:32px; --s-10:40px;--s-12:48px;--s-16:64px;
+
+  --gutter:   clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --sec-y:    clamp(3.5rem, 2.4rem + 4.7vw, 7rem);
+  --stack-lg: clamp(2rem, 1.472rem + 2.254vw, 3.5rem);
+  --card-pad: clamp(1.5rem, 1.148rem + 1.502vw, 2.5rem);
+
+  --container:75rem;   /* 1200px */
+  --measure:65ch;
+  --header-h:clamp(3.5rem, 3.1rem + 1.6vw, 4.75rem);
+  --bar-h:4.5rem;
+
+  --r-sm:10px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-2xl:24px; --r-pill:999px;
+
+  /* Sombras tingidas com o carvão da página (16,24,40), em duas camadas:
+     uma de contato curta + uma difusa ampla. Sombra preta pura sobre
+     fundo tingido vira cinza sujo — é o que separa "premium" de template. */
+  --shadow-xs:0 1px 2px rgba(16,24,40,.05);
+  --shadow-sm:0 1px 2px -1px rgba(16,24,40,.06),0 2px 6px -1px rgba(16,24,40,.05);
+  --shadow-md:0 2px 4px -2px rgba(16,24,40,.06),0 8px 16px -4px rgba(16,24,40,.07);
+  --shadow-lg:0 4px 8px -4px rgba(16,24,40,.06),0 16px 32px -8px rgba(16,24,40,.10);
+  --shadow-bar:0 -2px 8px -4px rgba(16,24,40,.08),0 -12px 32px -12px rgba(16,24,40,.14);
+  --shadow-press:inset 0 1px 2px rgba(16,24,40,.18);
+  --hl-top:inset 0 1px 0 rgba(255,255,255,.5);
+
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --dur:180ms;
+  --ring:var(--teal-700);      /* anel de foco em superfície clara */
+  --surface:var(--n-0);
+}
+
+/* --- Base --- */
+html{scroll-padding-top:calc(var(--header-h) + 1rem)}
+body{
+  font-family:'Montserrat','Montserrat Fallback',system-ui,-apple-system,sans-serif;
+  font-size:var(--fs-body);
+  line-height:1.65;
+  color:var(--n-700);
+  background:var(--n-0);
+  overflow-x:clip;             /* clip, não hidden: não cria contexto de scroll */
+}
+h1,h2,h3{color:var(--n-900);text-wrap:balance;overflow-wrap:break-word}
+p{text-wrap:pretty}
+a{color:inherit}
+strong{font-weight:700}
+
+/* Anel de foco: `outline` (não `border`) porque não participa do layout,
+   então não desloca nada — CLS zero. Acompanha o border-radius. */
+:focus-visible{outline:3px solid var(--ring);outline-offset:3px;border-radius:var(--r-sm)}
+
+/* Movimento é opt-in: só existe se o usuário NÃO pediu redução. */
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+}
+/* Rede de segurança para qualquer coisa que escape do opt-in. */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important;
+  }
+}
+/* Alto Contraste do Windows: o sistema substitui background-color por Canvas.
+   Sem borda declarada, o botão verde DESAPARECE da tela. */
+@media (forced-colors:active){
+  .btn{border:2px solid ButtonText}
+  .card,.panel,.bar{border:1px solid CanvasText}
+  :focus-visible{outline:3px solid Highlight;outline-offset:3px}
+}
+
+/* --- Layout --- */
+/* min() em vez de max-width + padding: matematicamente impossível estourar,
+   independe de box-sizing e nunca gera scroll horizontal. */
+.container{width:min(100% - var(--gutter) * 2, var(--container));margin-inline:auto}
+.container--narrow{--container:56rem}
+.section{padding-block:var(--sec-y)}
+.center{text-align:center}
+.measure{max-inline-size:var(--measure)}
+.measure-center{max-inline-size:var(--measure);margin-inline:auto}
+
+.skip{
+  position:absolute;inset-block-start:0;inset-inline-start:var(--s-4);z-index:200;
+  translate:0 -140%;
+  background:var(--n-900);color:var(--n-0);
+  padding:var(--s-3) var(--s-5);border-radius:0 0 var(--r-sm) var(--r-sm);
+  font-weight:700;font-size:var(--fs-small);text-decoration:none;
+}
+.skip:focus-visible{translate:0 0}
+@media (prefers-reduced-motion:no-preference){.skip{transition:translate 150ms var(--ease)}}
+
+/* Texto só para leitores de tela. Um <span> oculto CONCATENA ao nome
+   acessível; um aria-label SUBSTITUI — e substituir quebra o WCAG 2.5.3
+   (Label in Name), impedindo comando de voz de acionar o botão. */
+.sr-only{
+  position:absolute;inline-size:1px;block-size:1px;padding:0;margin:-1px;
+  overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;
+}
+
+/* --- Tipografia --- */
+.eyebrow{
+  display:block;margin-bottom:var(--s-3);
+  font-size:var(--fs-eyebrow);font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.12em;          /* caixa alta em geométrica EXIGE abrir */
+  color:var(--teal-700);         /* 6,60:1. O #4A9B9F daria 3,24:1 e reprovaria */
+}
+.eyebrow--danger{color:var(--danger)}
+.eyebrow--on-dark{color:var(--teal-300)}
+.h1{font-size:var(--fs-display);font-weight:800;line-height:1.06;letter-spacing:-.025em}
+.h1 .line{display:block;margin-top:var(--s-2)}
+.h1 .sub{display:block;margin-top:var(--s-3);font-size:var(--fs-h1-sub);font-weight:700;color:var(--n-700);letter-spacing:-.015em;line-height:1.2}
+.h2{font-size:var(--fs-h2);font-weight:800;line-height:1.14;letter-spacing:-.02em}
+.h3{font-size:var(--fs-h3);font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.lead{font-size:var(--fs-lead);line-height:1.55;color:var(--n-600)}
+.small{font-size:var(--fs-small)}
+.caption{font-size:var(--fs-caption);color:var(--n-600)}
+.accent{color:var(--teal-700)}
+.accent-danger{color:var(--danger);font-weight:700}
+.quote{font-size:var(--fs-quote);font-weight:800;line-height:1.2;letter-spacing:-.02em}
+
+.section__head{margin-bottom:var(--stack-lg)}
+.section__head .h2{margin-bottom:var(--s-4)}
+.section__head .lead{max-inline-size:52ch}
+.section__head.center .lead{margin-inline:auto}
+
+/* --- Botões --- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);
+  min-block-size:2.75rem;                 /* 44px — WCAG 2.5.5 */
+  padding:var(--s-3) var(--s-6);
+  font-size:var(--fs-body);font-weight:700;line-height:1.25;
+  text-decoration:none;text-align:center;
+  border-radius:var(--r-sm);border:1px solid transparent;
+  cursor:pointer;
+}
+.btn--lg{min-block-size:3.5rem;padding:var(--s-4) var(--s-8);font-size:var(--fs-lead)}
+.btn--sm{min-block-size:2.75rem;padding:var(--s-2) var(--s-5);font-size:var(--fs-small)}
+@media (pointer:coarse){ .btn{min-block-size:3rem} }
+
+/* CTA primário: verde WhatsApp #25D366 com texto quase-preto = 8,94:1.
+   Branco sobre este mesmo verde daria 1,98:1 — reprova WCAG 1.4.3 até
+   pelo limiar mais permissivo (3:1). O verde da marca é preservado. */
+.btn--wa{background:var(--wa);color:var(--n-900);box-shadow:var(--shadow-sm),var(--hl-top)}
+.btn--ghost{background:transparent;border-color:var(--n-500);color:var(--n-700)}  /* borda 4,20:1 ≥ 3:1 (WCAG 1.4.11) */
+
+/* Hover só onde existe ponteiro fino: sem esta guarda, no iOS o estado
+   hover "gruda" após o toque e o botão fica deslocado até o próximo tap. */
+@media (hover:hover) and (pointer:fine){
+  .btn{transition:background-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease),translate var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+  .btn--wa:hover{background:var(--wa-hover);translate:0 -1px;box-shadow:var(--shadow-md),var(--hl-top)}
+  .btn--ghost:hover{background:var(--n-50);border-color:var(--n-600);color:var(--n-900)}
+  .card--hover{transition:box-shadow var(--dur) var(--ease),border-color var(--dur) var(--ease),translate var(--dur) var(--ease)}
+  .card--hover:hover{box-shadow:var(--shadow-md);border-color:var(--teal-200);translate:0 -2px}
+}
+.btn--wa:active{background:var(--wa-active);translate:0 1px;box-shadow:var(--shadow-press)}
+.btn--ghost:active{background:var(--n-100);box-shadow:var(--shadow-press)}
+.btn__icon{inline-size:1.25rem;block-size:1.25rem;flex:none;fill:currentColor}
+.btn--lg .btn__icon{inline-size:1.5rem;block-size:1.5rem}
+.btn--full{inline-size:100%}
+@media (max-width:29.99em){ .btn{inline-size:100%} }
+
+/* --- Header --- */
+/* `sticky` em vez de `fixed`: dispensa o padding-top compensatório no <main>
+   e elimina a classe de bugs de âncora sob o header. */
+.header{
+  position:sticky;inset-block-start:0;z-index:100;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(12px) saturate(1.2);
+  -webkit-backdrop-filter:blur(12px) saturate(1.2);
+  border-bottom:1px solid var(--n-200);   /* 1,30:1 — visível. O gray-100 dava 1,06:1 */
+}
+.header__inner{
+  min-block-size:var(--header-h);          /* min-block-size, NUNCA height:
+                                              com `height` o logo corta a 200% de zoom de texto */
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);
+  padding-block:var(--s-2);
+}
+.brand{display:flex;align-items:center;gap:var(--s-3);min-inline-size:0}
+.logo{font-size:clamp(1.125rem,1.03rem + .45vw,1.5rem);font-weight:800;letter-spacing:-.02em;color:var(--n-900);text-decoration:none;white-space:nowrap}
+.logo span{color:var(--teal-600)}
+.brand__tag{display:none;font-size:var(--fs-caption);color:var(--n-600);border-left:1px solid var(--n-300);padding-left:var(--s-3)}
+@media (min-width:56em){ .brand__tag{display:block} }
+
+/* Celular em paisagem (altura 360px) E zoom 400% (altura efetiva 256px):
+   header fixo + barra fixa somariam 59% da altura útil. Solta o header. */
+@media (max-height:30rem){
+  .header{position:static}
+}
+
+/* --- Hero --- */
+.hero{
+  position:relative;overflow:hidden;
+  padding-block:clamp(2.5rem,1.8rem + 3vw,4rem) var(--sec-y);
+  background:linear-gradient(180deg,var(--teal-light) 0%,var(--n-0) 42%,var(--n-50) 100%);
+}
+/* Malha decorativa em gradiente estático. A versão anterior usava
+   blur(64px) sobre meia viewport — isso força uma camada de composição
+   repintada a cada scroll em GPU móvel (Adreno do Moto G é o gargalo
+   típico no Brasil), atrasando LCP e INP. Gradiente custa zero. */
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(50% 45% at 88% 4%, rgba(74,155,159,.16), transparent 70%),
+    radial-gradient(42% 38% at 4% 96%, rgba(74,155,159,.10), transparent 70%);
+}
+.hero__inner{position:relative;z-index:1;text-align:center}
+.hero .h1{margin-bottom:var(--s-6);max-inline-size:22ch;margin-inline:auto}
+.hero__lead{margin:0 auto var(--stack-lg);max-inline-size:58ch}
+.hero__question{margin:var(--stack-lg) auto;max-inline-size:34ch;font-size:var(--fs-lead);font-weight:700;color:var(--n-900);line-height:1.4}
+.hero__actions{display:flex;flex-direction:column;align-items:center;gap:var(--s-3)}
+
+/* Selo de prova social */
+.trust{
+  display:inline-flex;align-items:center;gap:var(--s-2);
+  margin-bottom:var(--s-6);
+  padding:var(--s-2) var(--s-4);
+  background:var(--n-0);border:1px solid var(--teal-200);
+  border-radius:var(--r-pill);box-shadow:var(--shadow-xs);
+  font-size:var(--fs-caption);font-weight:600;color:var(--n-700);
+  text-align:left;
+}
+.dot{
+  inline-size:.5rem;block-size:.5rem;flex:none;border-radius:50%;
+  background:var(--wa);box-shadow:0 0 0 3px rgba(37,211,102,.22);
+}
+
+/* --- Painel (caixa de destaque) --- */
+.panel{
+  text-align:left;
+  padding:var(--card-pad);
+  border-radius:var(--r-xl);
+  background:var(--n-0);
+  border:1px solid var(--n-200);
+  box-shadow:var(--shadow-xs);
+}
+.panel--danger{background:var(--danger-50);border-color:var(--danger-200)}
+.panel--glass{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);box-shadow:var(--hl-top)}
+.panel__title{
+  display:flex;align-items:center;gap:var(--s-2);
+  margin-bottom:var(--s-5);
+  font-size:var(--fs-eyebrow);font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--danger);
+}
+.panel__title svg{inline-size:1.25rem;block-size:1.25rem;flex:none}
+
+/* --- Listas com marcador --- */
+.ticks{display:grid;gap:var(--s-4)}
+.ticks li{display:flex;align-items:flex-start;gap:var(--s-3);line-height:1.6}
+.ticks svg{inline-size:1.25rem;block-size:1.25rem;flex:none;margin-block-start:.2em}
+.ticks--x svg{color:var(--danger)}
+.ticks--check svg{color:var(--teal-600)}
+.ticks--arrow svg{color:var(--danger)}
+.on-dark .ticks--check svg{color:var(--teal-300)}
+
+/* --- Cards --- */
+.grid{display:grid;gap:var(--s-6)}
+@media (min-width:46em){ .grid{gap:var(--s-8)} }
+/* auto-fit + minmax(min(100%,X)) cobre 1→2→3→4 colunas continuamente,
+   sem uma única media query. O `min(100%, …)` impede overflow quando o
+   container é menor que o mínimo. */
+.grid--2{grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
+.grid--3{grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
+/* Serviços em 2×2 e não 1×4: em 1×4 dentro de 1200px cada card fica com
+   ~218px úteis de texto — cerca de 27 caracteres por linha. Ilegível. */
+.grid--services{grid-template-columns:1fr}
+@media (min-width:44em){ .grid--services{grid-template-columns:1fr 1fr} }
+
+.card{
+  padding:var(--card-pad);
+  border-radius:var(--r-xl);
+  background:var(--n-0);
+  border:1px solid var(--n-200);
+  box-shadow:var(--shadow-xs);
+}
+.card--pain{border-left:4px solid var(--danger)}
+.card--dark{background:var(--n-900);border-color:var(--n-900)}
+.card--dark .card__title{color:var(--n-0)}
+.card--dark .card__text{color:var(--n-300)}
+.card--dark .card__kicker{color:var(--teal-300)}
+.card--dark .chip{background:rgba(255,255,255,.10);color:var(--n-0);box-shadow:var(--hl-top)}
+.card__head{display:flex;align-items:center;gap:var(--s-4);margin-bottom:var(--s-4)}
+.card__title{font-size:var(--fs-h3);font-weight:700;color:var(--n-900);line-height:1.3}
+.card__text{color:var(--n-600);max-inline-size:48ch}
+.card__text + .card__kicker{margin-top:var(--s-4)}
+.card__kicker{font-size:var(--fs-small);font-weight:600;color:var(--danger)}
+.card__kicker--brand{color:var(--teal-700)}
+
+.chip{
+  inline-size:3rem;block-size:3rem;flex:none;
+  display:grid;place-items:center;
+  border-radius:var(--r-md);
+  box-shadow:var(--hl-top);
+}
+.chip svg{inline-size:1.5rem;block-size:1.5rem}
+.chip--danger{background:var(--danger-50);color:var(--danger)}
+.chip--brand{background:var(--teal-50);color:var(--teal-700)}
+.card--service .chip{margin-bottom:var(--s-5)}
+
+/* --- Seções escuras --- */
+.on-dark{
+  background:var(--n-900);color:var(--n-300);
+  --ring:var(--teal-300);           /* anel de foco invertido */
+  --surface:var(--n-900);
+}
+.on-dark--grad{background:linear-gradient(180deg,var(--n-900) 0%,var(--n-800) 100%)}
+.on-dark h2,.on-dark h3{color:var(--n-0)}
+.on-dark .lead{color:var(--n-300)}
+.on-dark strong{color:var(--n-0)}
+.on-dark .accent{color:var(--teal-300)}   /* 10,54:1 */
+/* Gradiente de texto usando SÓ tons que passam AA sobre fundo escuro:
+   o stop mais escuro (--teal-400) dá 7,54:1. Um gradiente com o
+   --teal-600 cairia para 3,74:1 e viraria "incomplete" no axe. */
+.grad-text{
+  color:var(--teal-300);
+  background:linear-gradient(135deg,var(--teal-300) 0%,var(--teal-400) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.pill{
+  display:inline-flex;align-items:center;gap:var(--s-3);
+  padding:var(--s-3) var(--s-6);
+  border-radius:var(--r-pill);
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.20);
+  box-shadow:var(--hl-top);
+  font-weight:700;color:var(--n-0);
+}
+.pill--eyebrow{
+  padding:var(--s-2) var(--s-4);
+  background:rgba(74,155,159,.16);border-color:rgba(161,208,211,.28);
+  font-size:var(--fs-eyebrow);text-transform:uppercase;letter-spacing:.12em;
+  color:var(--teal-300);
+}
+
+/* --- Seção "Imagine" (fundo teal claro) --- */
+.tinted{background:var(--teal-light)}
+.tinted .eyebrow{color:var(--teal-700)}   /* 6,14:1 sobre #E8F4F5.
+                                             O --teal-600 daria 4,22:1 e reprovaria */
+.tinted .lead{color:var(--n-600)}         /* 5,88:1 */
+
+/* --- Depoimentos --- */
+.stars{display:flex;gap:.125rem;margin-bottom:var(--s-4)}
+.stars svg{inline-size:1.125rem;block-size:1.125rem;fill:var(--star)}  /* 5,02:1 */
+.testimonial__text{color:var(--n-700);font-style:italic;margin-bottom:var(--s-6)}
+.testimonial__text strong{font-style:normal;color:var(--n-900)}
+.author{display:flex;align-items:center;gap:var(--s-3)}
+.avatar{
+  inline-size:2.5rem;block-size:2.5rem;flex:none;
+  display:grid;place-items:center;border-radius:50%;
+  background:var(--teal-100);color:var(--teal-800);   /* 9,76:1 */
+  font-weight:800;
+}
+.author__name{font-weight:700;color:var(--n-900);font-size:var(--fs-small)}
+.author__role{font-size:var(--fs-caption);color:var(--n-600)}  /* 6,61:1 — o gray-500 dava 4,20:1 */
+
+.logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:var(--s-8)}
+.logo-slot{
+  inline-size:6.5rem;block-size:3rem;
+  display:grid;place-items:center;
+  border:1px dashed var(--n-400);border-radius:var(--r-sm);
+  font-size:var(--fs-caption);color:var(--n-600);
+}
+
+/* --- CTA final --- */
+.cta-final{background:linear-gradient(180deg,var(--n-0) 0%,var(--danger-50) 100%)}
+.cta-box{
+  background:var(--n-900);color:var(--n-300);
+  --ring:var(--teal-300);--surface:var(--n-900);
+  border-radius:var(--r-2xl);
+  padding:var(--card-pad);
+  text-align:left;
+}
+.cta-box h3{color:var(--n-0)}
+.cta-box strong{color:var(--n-0)}
+.cta-box .ticks svg{color:var(--teal-300)}
+.cta-box__note{color:var(--n-400);font-size:var(--fs-caption)}  /* 7,03:1 */
+
+/* --- Rodapé --- */
+.footer{background:var(--n-950);color:var(--n-400);padding-block:var(--sec-y) var(--s-10);--ring:var(--teal-300)}
+.footer .logo{color:var(--n-0);font-size:clamp(1.5rem,1.2rem + 1.2vw,2rem)}
+.footer p{color:var(--n-400)}   /* 7,59:1 sobre --n-950 */
+.footer__legal{
+  margin-top:var(--stack-lg);padding-top:var(--s-8);
+  border-top:1px solid rgba(255,255,255,.12);
+  display:flex;flex-direction:column;align-items:center;gap:var(--s-3);
+  font-size:var(--fs-caption);text-align:center;
+}
+@media (min-width:48em){ .footer__legal{flex-direction:row;justify-content:space-between;text-align:left} }
+.footer abbr{text-decoration:none}
+
+/* --- Barra CTA fixa no mobile ---
+   Barra com rótulo, e não botão flutuante: a 320px a barra oferece
+   288×48 = 13.824px² de alvo contra 3.136px² do FAB de 56px — 4,4× maior —
+   e cabe rótulo textual, o que satisfaz o WCAG 2.5.3 trivialmente.
+   `fixed` não entra no fluxo, então não gera CLS; o espaço é reservado
+   por padding no <body>. --- */
+.bar{
+  position:fixed;inset-inline:0;inset-block-end:0;z-index:90;
+  display:flex;
+  padding:var(--s-3) var(--gutter);
+  padding-block-end:max(var(--s-3),env(safe-area-inset-bottom,0px));
+  background:var(--n-0);
+  border-top:1px solid var(--n-200);
+  box-shadow:var(--shadow-bar);
+}
+.bar .btn{inline-size:100%}
+@media (min-width:48em){ .bar{display:none} }
+@media (max-width:47.99em){ body{padding-block-end:calc(var(--bar-h) + env(safe-area-inset-bottom,0px))} }
+
+/* Usuários que pediram mais contraste no sistema */
+@media (prefers-contrast:more){
+  :root{--teal-700:#1F4E51;--n-600:#3B4A5E;--danger:#8C1B12}
+}
+</style>
+
+<meta name="description" content="Pare de perder tempo e dinheiro com viagens corporativas. A Bendita Tour cuida de tudo: passagens, hotéis, imprevistos. Atendimento humano 24h.">
+<link rel="canonical" href="https://corporativo.benditatour.com/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#111827">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="favicon.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Bendita Tour Corporativo">
+<meta property="og:url" content="https://corporativo.benditatour.com/">
+<meta property="og:title" content="Gestão de Viagens Corporativas para Empresas | Bendita Tour">
+<meta property="og:description" content="Enquanto sua equipe organiza viagens, seus concorrentes fecham negócios. Diagnóstico gratuito em 15 minutos.">
+<!-- TODO(og:image): exportar assets/og-image.svg para JPG 1200x630 em
+     assets/og-image.jpg e descomentar as 3 linhas abaixo.
+     Estão comentadas de propósito: apontar para um arquivo inexistente
+     quebraria o preview no WhatsApp, que é o canal de conversão da página.
+<meta property="og:image" content="https://corporativo.benditatour.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+-->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gestão de Viagens Corporativas para Empresas | Bendita Tour">
+<meta name="twitter:description" content="Menos custos, menos preocupações e mais resultados na gestão de viagens da sua empresa.">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"TravelAgency",
+      "@id":"https://corporativo.benditatour.com/#organization",
+      "name":"Bendita Tour",
+      "legalName":"Bendita Tour Assessoria & Viagens",
+      "alternateName":"Bendita Tour Corporativo",
+      "url":"https://corporativo.benditatour.com/",
+      "logo":"https://corporativo.benditatour.com/favicon.svg",
+      "description":"Gestão completa de viagens corporativas para empresas: emissão de passagens, hospedagem, locação de veículos, seguro viagem e suporte humano 24h.",
+      "taxID":"54.179.099/0001-60",
+      "telephone":"+5544999273477",
+      "areaServed":{"@type":"Country","name":"Brasil"},
+      "knowsLanguage":"pt-BR",
+      "contactPoint":{
+        "@type":"ContactPoint",
+        "contactType":"sales",
+        "telephone":"+5544999273477",
+        "availableLanguage":"Portuguese",
+        "areaServed":"BR"
+      }
+    },
+    {
+      "@type":"WebSite",
+      "@id":"https://corporativo.benditatour.com/#website",
+      "url":"https://corporativo.benditatour.com/",
+      "name":"Bendita Tour Corporativo",
+      "inLanguage":"pt-BR",
+      "publisher":{"@id":"https://corporativo.benditatour.com/#organization"}
+    },
+    {
+      "@type":"Service",
+      "@id":"https://corporativo.benditatour.com/#service",
+      "serviceType":"Gestão de Viagens Corporativas",
+      "name":"Gestão Total de Viagens Corporativas",
+      "provider":{"@id":"https://corporativo.benditatour.com/#organization"},
+      "areaServed":{"@type":"Country","name":"Brasil"},
+      "audience":{"@type":"BusinessAudience","name":"Empresas e departamentos corporativos"},
+      "availableChannel":{
+        "@type":"ServiceChannel",
+        "serviceUrl":"https://wa.me/5544999273477",
+        "availableLanguage":{"@type":"Language","name":"Portuguese","alternateName":"pt-BR"}
+      },
+      "hasOfferCatalog":{
+        "@type":"OfferCatalog",
+        "name":"Soluções completas",
+        "itemListElement":[
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Gestão de Equipes","description":"Passagens, hospedagem e logística para toda a operação, com aprovações automatizadas e controle de custos em tempo real."}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Atendimento C-Level","description":"Primeira classe, executiva e salas VIP para diretoria, com concierge pessoal."}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Logística Integrada","description":"Hotéis corporativos com acordos especiais, transfer, locação de veículos e seguro viagem."}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Suporte 24h Humano","description":"Atendimento humano 24/7/365 com resposta em minutos e resolução proativa."}}
+        ]
+      }
+    }
+  ]
+}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#conteudo">Ir para o conteúdo principal</a>
+
+<!-- Sprite de ícones. O ícone do WhatsApp aparece 4x e a estrela 15x;
+     definir cada path uma única vez enxuga ~8KB de HTML bruto e reduz a
+     contagem de nós do DOM. Em bytes na rede o ganho é marginal (o
+     compressor já deduplica dentro da janela de 32KB) — o motivo real
+     é manutenção: trocar um ícone é editar um lugar. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
+<symbol id="i-star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.2 5.2L20 6.9"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15m0 0l-6-6m6 6l-6 6"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v2.5m0 3.5h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></symbol>
+<symbol id="i-money" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8c-1.66 0-3 .9-3 2s1.34 2 3 2 3 .9 3 2-1.34 2-3 2m0-8c1.11 0 2.08.4 2.6 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.4-2.6-1"/><circle cx="12" cy="12" r="9"/></symbol>
+<symbol id="i-team" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></symbol>
+<symbol id="i-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.66 18.66A8 8 0 016.34 7.34S7 9 9 10c0-2 .5-5 2.99-7C14 5 16.09 5.78 17.66 7.34A7.98 7.98 0 0120 13a7.98 7.98 0 01-2.34 5.66z"/><path d="M9.88 16.12A3 3 0 1012.02 11L11 14H9c0 .77.29 1.54.88 2.12z"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.42-4.03 8-9 8a9.86 9.86 0 01-4.26-.95L3 20l1.4-3.72A7.94 7.94 0 013 12c0-4.42 4.03-8 9-8s9 3.58 9 8z"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4m0 4h.01"/><circle cx="12" cy="12" r="9"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.59a1 1 0 01.7.29l5.42 5.42a1 1 0 01.29.7V19a2 2 0 01-2 2z"/></symbol>
+<symbol id="i-cube" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></symbol>
+<symbol id="i-support" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></symbol>
+</defs>
+</svg>
+
+<header class="header">
+  <div class="container header__inner">
+    <div class="brand">
+      <a class="logo" href="#topo">Bendita<span>Tour</span></a>
+      <span class="brand__tag">Gestão de Viagens Corporativas</span>
+    </div>
+    <a class="btn btn--wa btn--sm"
+       href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20gratuito%20de%20viagens%20corporativas.%20(topo)"
+       target="_blank" rel="noopener external">
+      <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
+      Diagnóstico Gratuito
+      <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
+    </a>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <!-- ================= HERO — dor e identificação ================= -->
+  <section class="hero" id="topo">
+    <div class="container hero__inner">
+
+      <!-- TODO(prova social): confirmar que "+20 empresas" é o número real e
+           verificável. Alegação de resultado não comprovada é exposição sob
+           o CDC art. 37 (publicidade enganosa). -->
+      <p class="trust">
+        <span class="dot" aria-hidden="true"></span>
+        +20 empresas já economizam tempo e dinheiro conosco
+      </p>
+
+      <h1 class="h1">
+        Sua equipe ainda perde
+        <span class="line accent">horas toda semana</span>
+        <span class="sub">organizando viagens corporativas?</span>
+      </h1>
+
+      <p class="lead hero__lead">
+        Enquanto seu time financeiro confere notas fiscais, seu RH agenda táxis e seus
+        gestores aprovam reembolsos por e-mail…
+        <span class="accent-danger">seus concorrentes estão fechando negócios.</span>
+      </p>
+
+      <div class="panel panel--danger measure-center">
+        <p class="panel__title">
+          <svg aria-hidden="true" focusable="false"><use href="#i-warn"/></svg>
+          Isso está acontecendo na sua empresa agora:
+        </p>
+        <ul class="ticks ticks--x" role="list">
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Funcionários usando <strong>cartão pessoal</strong> e esperando semanas pelo reembolso</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Passagens compradas de última hora custando <strong>40% a mais</strong></span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Reservas espalhadas em 5 sites diferentes, <strong>sem controle nenhum</strong></span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Ligações de madrugada quando algo dá errado — <strong>e ninguém para resolver</strong></span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Horas e mais horas que <strong>ninguém contabiliza</strong> como custo</span></li>
+        </ul>
+      </div>
+
+      <p class="hero__question">
+        Você sabe o preço da passagem.
+        <span class="accent">Mas sabe o preço do tempo que sua equipe perde organizando tudo isso?</span>
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn btn--wa btn--lg"
+           href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20gratuito%20de%20viagens%20corporativas.%20(hero)"
+           target="_blank" rel="noopener external">
+          <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
+          Quero Parar de Perder Tempo
+          <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
+        </a>
+        <p class="caption">Diagnóstico gratuito em 15 minutos</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Custo invisível ================= -->
+  <section class="section" aria-labelledby="t-custo">
+    <div class="container">
+      <div class="section__head center">
+        <span class="eyebrow eyebrow--danger">O problema é maior do que parece</span>
+        <h2 class="h2" id="t-custo">O Custo Invisível Que Está <span style="color:var(--danger)">Sangrando Sua Empresa</span></h2>
+        <!-- TODO(dado): confirmar a fonte dos "R$ 106 bilhões por ano" e citá-la
+             visivelmente. Número de mercado sem fonte enfraquece o argumento
+             justamente com o leitor mais analítico (CFO). -->
+        <p class="lead">Empresas brasileiras investem <strong>R$ 106 bilhões por ano</strong> em viagens corporativas. Quanto disso é desperdício por falta de gestão?</p>
+      </div>
+
+      <div class="grid grid--2">
+        <article class="card card--pain card--hover">
+          <div class="card__head">
+            <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span>
+            <h3 class="card__title">O Tempo Que Ninguém Conta</h3>
+          </div>
+          <p class="card__text">Gestores gastam em média <strong>10 a 15 horas por mês</strong> só gerenciando viagens. São decisões adiadas, reuniões perdidas e oportunidades que escapam.</p>
+          <p class="card__kicker">Esse tempo tem um preço. E você está pagando sem perceber.</p>
+        </article>
+
+        <article class="card card--pain card--hover">
+          <div class="card__head">
+            <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-money"/></svg></span>
+            <h3 class="card__title">O Dinheiro Que Escorre</h3>
+          </div>
+          <p class="card__text">Passagens de última hora: <strong>+40% no preço</strong>. Sem acordos corporativos: <strong>+22% em hospedagem</strong>. Reembolsos manuais: <strong>+3 horas do financeiro por semana</strong>.</p>
+          <p class="card__kicker">PMEs pagam até 25% a mais por não ter gestão profissional.</p>
+        </article>
+
+        <article class="card card--pain card--hover">
+          <div class="card__head">
+            <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-team"/></svg></span>
+            <h3 class="card__title">A Experiência Que Espanta Talentos</h3>
+          </div>
+          <p class="card__text">Seu colaborador viaja a trabalho e precisa: pagar do próprio bolso, resolver problemas sozinho às 23h, enfrentar burocracia quando deveria estar focado no cliente.</p>
+          <p class="card__kicker">O custo de perder um talento é maior que qualquer passagem aérea.</p>
+        </article>
+
+        <article class="card card--pain card--hover">
+          <div class="card__head">
+            <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-fire"/></svg></span>
+            <h3 class="card__title">Os Imprevistos Que Viram Crises</h3>
+          </div>
+          <p class="card__text">Voo cancelado. Hotel com overbooking. Mala extraviada. <strong>E agora? Quem resolve?</strong> Seu RH às 3h da manhã? Seu colaborador sozinho em outro país?</p>
+          <p class="card__kicker">Imprevistos acontecem. A pergunta é: você tem quem resolva?</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= A virada ================= -->
+  <section class="section on-dark on-dark--grad" aria-labelledby="t-virada">
+    <div class="container container--narrow center">
+      <p class="pill pill--eyebrow">A virada começa aqui</p>
+
+      <h2 class="h2" id="t-virada" style="margin:var(--s-6) 0 var(--s-8)">
+        Mas não precisa <span class="grad-text">ser assim.</span>
+      </h2>
+
+      <p class="lead measure-center" style="margin-bottom:var(--stack-lg)">
+        E se existisse uma forma de <strong>eliminar completamente</strong> essa carga
+        operacional da sua empresa?
+      </p>
+
+      <div class="panel panel--glass measure-center">
+        <p style="margin-bottom:var(--s-6);font-size:var(--fs-lead);line-height:1.55">
+          Uma forma onde sua equipe manda <strong>uma mensagem no WhatsApp</strong>,
+          e <span class="accent" style="font-weight:700">tudo se resolve</span>.
+        </p>
+        <ul class="ticks ticks--check" role="list">
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Voos, hotéis e transfers organizados em minutos</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Imprevistos resolvidos 24 horas por dia, 7 dias por semana</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Alguém de verdade do outro lado — não um robô</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Controle total de gastos sem planilhas infinitas</span></li>
+        </ul>
+      </div>
+
+      <p class="quote" style="margin-top:var(--stack-lg);color:var(--n-0)">Essa forma existe.</p>
+      <p class="quote accent">E se chama Bendita Tour.</p>
+    </div>
+  </section>
+
+  <!-- ================= Imagine ================= -->
+  <section class="section tinted" aria-labelledby="t-imagine">
+    <div class="container">
+      <div class="section__head center">
+        <span class="eyebrow">O futuro que você merece</span>
+        <h2 class="h2" id="t-imagine">Imagine Uma Realidade Diferente</h2>
+        <p class="lead">É assim que funciona quando você tem a Bendita Tour ao seu lado:</p>
+      </div>
+
+      <div class="grid grid--2">
+        <article class="card card--hover">
+          <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-chat"/></svg></span>
+          <h3 class="card__title" style="margin-bottom:var(--s-3)">Precisa viajar?</h3>
+          <p class="card__text"><strong class="accent">Uma mensagem no WhatsApp.</strong> Em minutos, voo + hotel + transfer organizados, dentro da política da empresa. Sem pesquisa, sem comparação, sem dor de cabeça.</p>
+        </article>
+
+        <article class="card card--hover">
+          <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-alert"/></svg></span>
+          <h3 class="card__title" style="margin-bottom:var(--s-3)">Cancelaram o voo às 2h da manhã?</h3>
+          <p class="card__text"><strong class="accent">Problema nosso.</strong> Já estamos realocando seu colaborador antes mesmo dele ligar. Ele acorda com a solução pronta no celular.</p>
+        </article>
+
+        <article class="card card--hover">
+          <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>
+          <h3 class="card__title" style="margin-bottom:var(--s-3)">Diretoria viajando?</h3>
+          <p class="card__text"><strong class="accent">Tratamento exclusivo.</strong> Primeira classe, sala VIP, preferências memorizadas. Sem burocracias. A experiência que executivos merecem.</p>
+        </article>
+
+        <article class="card card--hover">
+          <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-doc"/></svg></span>
+          <h3 class="card__title" style="margin-bottom:var(--s-3)">Fim do mês?</h3>
+          <p class="card__text"><strong class="accent">Relatório completo na sua mesa.</strong> Gastos consolidados, fornecedores utilizados, economias realizadas. Visibilidade total sem esforço.</p>
+        </article>
+      </div>
+
+      <p class="quote center" style="margin-top:var(--stack-lg)">
+        Zero preocupação. Zero tempo perdido.
+        <span style="display:block;color:var(--teal-700)">Zero surpresas desagradáveis.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= Serviços ================= -->
+  <section class="section" id="servicos" aria-labelledby="t-servicos">
+    <div class="container">
+      <div class="section__head center">
+        <span class="eyebrow">Soluções completas</span>
+        <h2 class="h2" id="t-servicos">Gestão Total de Viagens Corporativas</h2>
+        <p class="lead">Tudo que sua empresa precisa. Em um único parceiro.</p>
+      </div>
+
+      <div class="grid grid--services">
+        <article class="card card--service card--hover">
+          <span class="chip chip--brand"><svg aria-hidden="true" focusable="false"><use href="#i-team"/></svg></span>
+          <h3 class="card__title" style="margin-bottom:var(--s-3)">Gestão de Equipes</h3>
+          <p class="card__text">Passagens, hospedagem e logística para toda a operação. Cotações em minutos, aprovações automatizadas, controle de custos em tempo real.</p>
+          <p class="card__kicker card__kicker--brand">Sua equipe viaja, sua empresa cresce.</p>
+        </article>
+
+        <article class="card card--service card--dark">
+          <span class="chip"><svg aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>
+          <h3 class="card__title" style="margin-bottom:var(--s-3)">Atendimento C-Level</h3>
+          <p class="card__text">Exclusividade absoluta para diretores. Primeira classe, executiva, salas VIP. Preferências memorizadas. Concierge pessoal.</p>
+          <p class="card__kicker">O tratamento que executivos merecem.</p>
+        </article>
+
+        <article class="card card--service card--hover">
+          <span class="chip chip--brand"><svg aria-hidden="true" focusable="false"><use href="#i-cube"/></svg></span>
+          <h3 class="card__title" style="margin-bottom:var(--s-3)">Logística Integrada</h3>
+          <p class="card__text">Não apenas voos. Hotéis corporativos com acordos especiais, transfer, locação de veículos e seguro viagem completo.</p>
+          <p class="card__kicker card__kicker--brand">Uma mensagem, tudo resolvido.</p>
+        </article>
+
+        <article class="card card--service card--hover">
+          <span class="chip chip--brand"><svg aria-hidden="true" focusable="false"><use href="#i-support"/></svg></span>
+          <h3 class="card__title" style="margin-bottom:var(--s-3)">Suporte 24h (Humano)</h3>
+          <p class="card__text">Imprevistos não esperam horário comercial. Atendimento humano 24/7/365. Resposta em minutos, resolução proativa.</p>
+          <p class="card__kicker card__kicker--brand">Seu colaborador nunca está sozinho.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Jeito Bendita ================= -->
+  <section class="section on-dark" id="jeito-bendita" aria-labelledby="t-jeito">
+    <div class="container container--narrow center">
+      <span class="eyebrow eyebrow--on-dark">Nosso diferencial</span>
+      <h2 class="h2" id="t-jeito" style="margin-bottom:var(--s-8)">O “Jeito Bendita” de Cuidar</h2>
+
+      <p class="lead measure-center" style="margin-bottom:var(--s-8)">
+        Existem plataformas de autoatendimento. Existem call centers genéricos.
+        Existem robôs de chat que pedem para você “aguardar na linha”.
+      </p>
+
+      <p class="quote" style="color:var(--n-0);margin-bottom:var(--stack-lg)">Nós não somos nada disso.</p>
+
+      <div class="panel panel--glass measure-center">
+        <p style="margin-bottom:var(--s-6);font-weight:700;font-size:var(--fs-lead);color:var(--n-0)">Aqui você tem um time dedicado que:</p>
+        <ul class="ticks ticks--check" role="list">
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Conhece as <strong>preferências de cada diretor</strong> da sua empresa</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Sabe de cor a <strong>política de viagens</strong> do seu negócio</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Atende <strong>pelo nome</strong>, não pelo número de protocolo</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Resolve <strong>antes de você precisar cobrar</strong></span></li>
+        </ul>
+      </div>
+
+      <p class="lead measure-center" style="margin:var(--stack-lg) auto var(--s-8)">
+        <span class="accent" style="font-weight:700">Tecnologia agiliza.</span> Mas é o toque humano que resolve.
+      </p>
+
+      <p class="pill">
+        <span class="dot" aria-hidden="true"></span>
+        Humanizado. Consultivo. Impecável.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= Prova social ================= -->
+  <!-- TODO(crítico, antes de publicar): os três depoimentos abaixo e os
+       cinco slots de logo são MODELOS, não clientes reais. Publicar
+       depoimento fabricado como verdadeiro viola o CDC art. 37 e o
+       Código do CONAR. Substitua por depoimentos reais com autorização
+       por escrito, ou remova a seção inteira. -->
+  <section class="section" style="background:var(--n-50)" aria-labelledby="t-prova">
+    <div class="container">
+      <div class="section__head center">
+        <span class="eyebrow">Quem já transformou suas viagens</span>
+        <h2 class="h2" id="t-prova">Empresas Que Confiam na Bendita</h2>
+        <p class="lead">Veja o que nossos clientes dizem sobre a experiência:</p>
+      </div>
+
+      <div class="grid grid--3">
+        <article class="card card--hover">
+          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+          </p>
+          <blockquote class="testimonial__text">“Antes perdíamos 2 dias organizando viagens da diretoria. Com a Bendita, são 2 mensagens no WhatsApp. <strong>Não voltamos mais.</strong>”</blockquote>
+          <div class="author">
+            <span class="avatar" aria-hidden="true">M</span>
+            <span>
+              <span class="author__name">Maria Silva</span>
+              <span class="author__role" style="display:block">Head de Operações</span>
+            </span>
+          </div>
+        </article>
+
+        <article class="card card--hover">
+          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+          </p>
+          <blockquote class="testimonial__text">“Na primeira viagem internacional, tivemos um cancelamento às 4h da manhã. A Bendita já tinha resolvido antes de eu acordar. <strong>Isso não tem preço.</strong>”</blockquote>
+          <div class="author">
+            <span class="avatar" aria-hidden="true">J</span>
+            <span>
+              <span class="author__name">João Santos</span>
+              <span class="author__role" style="display:block">CEO</span>
+            </span>
+          </div>
+        </article>
+
+        <article class="card card--hover">
+          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+          </p>
+          <blockquote class="testimonial__text">“Economizamos 28% nos primeiros 6 meses. Mas o maior ganho foi o tempo que a equipe recuperou para fazer <strong>o que realmente importa.</strong>”</blockquote>
+          <div class="author">
+            <span class="avatar" aria-hidden="true">A</span>
+            <span>
+              <span class="author__name">Ana Costa</span>
+              <span class="author__role" style="display:block">CFO</span>
+            </span>
+          </div>
+        </article>
+      </div>
+
+      <div class="center" style="margin-top:var(--stack-lg)">
+        <p class="eyebrow" style="color:var(--n-600)">Empresas que confiam na Bendita Tour</p>
+        <div class="logos">
+          <span class="logo-slot">Logo 1</span>
+          <span class="logo-slot">Logo 2</span>
+          <span class="logo-slot">Logo 3</span>
+          <span class="logo-slot">Logo 4</span>
+          <span class="logo-slot">Logo 5</span>
+        </div>
+        <p class="caption" style="margin-top:var(--s-4)">(Adicione os logos reais dos seus clientes aqui)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA final ================= -->
+  <section class="section cta-final" aria-labelledby="t-cta">
+    <div class="container container--narrow">
+      <div class="section__head center">
+        <span class="eyebrow eyebrow--danger">A decisão é sua</span>
+        <h2 class="h2" id="t-cta">Cada Dia Que Passa, Sua Empresa <span style="color:var(--danger)">Perde Tempo e Dinheiro</span></h2>
+        <p class="lead">Enquanto você lê isso:</p>
+      </div>
+
+      <div class="panel measure-center" style="box-shadow:var(--shadow-lg)">
+        <ul class="ticks ticks--arrow" role="list">
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg><span>Alguém da sua equipe está <strong>pesquisando passagens</strong> ao invés de trabalhar</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg><span>Uma reserva está sendo feita <strong>sem o melhor preço</strong> disponível</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg><span>Um imprevisto pode acontecer e <strong>não ter quem resolva</strong></span></li>
+        </ul>
+      </div>
+
+      <p class="quote center" style="margin-block:var(--stack-lg)">
+        Você pode continuar assim.
+        <span style="display:block;color:var(--teal-700)">Ou pode mudar agora.</span>
+      </p>
+
+      <div class="cta-box">
+        <div class="center" style="margin-bottom:var(--s-8)">
+          <h3 class="h3" style="font-size:var(--fs-h2);margin-bottom:var(--s-3)">Diagnóstico Gratuito de Viagens Corporativas</h3>
+          <p class="cta-box__note" style="font-size:var(--fs-body)">Em 15 minutos, nossa equipe analisa:</p>
+        </div>
+
+        <ul class="ticks ticks--check" role="list" style="max-inline-size:32rem;margin-inline:auto">
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Quanto sua empresa <strong>gasta</strong> (e quanto pode economizar)</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Quantas <strong>horas sua equipe perde</strong> com gestão de viagens</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Quais processos podem ser <strong>eliminados imediatamente</strong></span></li>
+        </ul>
+
+        <div class="center" style="margin-top:var(--stack-lg)">
+          <p class="cta-box__note" style="margin-bottom:var(--s-6)">Sem compromisso. Sem custo. Só clareza.</p>
+          <a class="btn btn--wa btn--lg"
+             href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20gratuito%20de%20viagens%20corporativas%20para%20minha%20empresa.%20(cta-final)"
+             target="_blank" rel="noopener external">
+            <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
+            Quero Meu Diagnóstico Gratuito
+            <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
+          </a>
+          <p class="cta-box__note" style="margin-top:var(--s-4)">Resposta em até 2 horas úteis</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container center">
+    <a class="logo" href="#topo">Bendita<span style="color:var(--teal-300)">Tour</span></a>
+    <p style="margin-top:var(--s-2)">Gestão de Viagens Corporativas</p>
+    <p style="color:var(--teal-300);font-weight:600;margin-top:var(--s-1)">Liberando empresas do caos operacional.</p>
+
+    <div class="footer__legal">
+      <p>© 2026 Bendita Tour Assessoria &amp; Viagens. Todos os direitos reservados.</p>
+      <p><abbr title="Cadastro Nacional da Pessoa Jurídica">CNPJ</abbr>: 54.179.099/0001-60</p>
+    </div>
+  </div>
+</footer>
+
+<div class="bar">
+  <a class="btn btn--wa"
+     href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20gratuito%20de%20viagens%20corporativas.%20(barra)"
+     target="_blank" rel="noopener external">
+    <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
+    Quero Meu Diagnóstico Gratuito
+    <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
+  </a>
+</div>
+
+</body>
+</html>

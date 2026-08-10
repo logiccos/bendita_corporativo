@@ -1,0 +1,9 @@
+# Ignorar todos os arquivos de imagem nesta pasta
+# A pasta é para uso local de prints/screenshots
+# Os arquivos não serão versionados
+
+# Ignorar tudo
+*
+
+# Exceto este arquivo
+!.gitignore
