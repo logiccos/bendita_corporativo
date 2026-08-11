@@ -13,7 +13,7 @@
 
 <style>
 /* ==========================================================================
-   BENDITA TOUR — CSS crítico, 100% inlinado, zero JavaScript
+   BENDITA TOUR CORPORATIVO — CSS crítico, 100% inlinado, zero JavaScript
    --------------------------------------------------------------------------
    Por que inline e não arquivo externo, nesta página específica:
    um <link rel=stylesheet> custa 1 RTT completo (≈150 ms no throttle mobile
@@ -22,6 +22,17 @@
    (peso 10) e em LCP (peso 25). O ganho de cache é zero: o PageSpeed mede
    sempre cold load, e esta é uma landing de página única alimentada por
    link direto — não há segunda página para amortizar o cache.
+
+   LINGUAGEM VISUAL (corporativa · sofisticada · minimalista)
+   1. Três valores de cor, não mais: papel, carvão e um único acento teal.
+      Nenhum vermelho de alerta, nenhum gradiente decorativo, nenhum chip
+      colorido. O acento existe para conduzir o olho, não para gritar.
+   2. Peso 600 no lugar de 800. Sofisticação em tipografia é contenção:
+      o extrabold é o que separa "landing de infoproduto" de "documento
+      de diretoria".
+   3. Cantos de 4px e filetes de 1px no lugar de raios de 24px e sombras
+      difusas. A hierarquia vem do espaço em branco e da régua tipográfica,
+      não de caixas empilhadas.
    ========================================================================== */
 
 /* --- Fonte: Montserrat VARIÁVEL. 1 arquivo (37 KB) cobre 400–900. --- */
@@ -36,12 +47,12 @@
 /* Fallback com métricas casadas às da Montserrat (unitsPerEm 1000, asc 968,
    desc 251). O `size-adjust` iguala a largura média de avanço ponderada pela
    frequência de caracteres do português — é ele que garante o MESMO número
-   de linhas antes e depois do swap. Sem isso, o titulo re-flui e o CLS estoura. */
+   de linhas antes e depois do swap. Sem isso, o título re-flui e o CLS estoura. */
 @font-face{
   font-family:'Montserrat Fallback';
   src:local('Arial'),local('Roboto'),local('Helvetica Neue'),local('Segoe UI');
   size-adjust:112.8%;
-  ascent-override:85.8%; 
+  ascent-override:85.8%;
   descent-override:22.3%;
   line-gap-override:0%;
 }
@@ -54,89 +65,99 @@ img,svg,video{display:block;max-width:100%}
 :where(ul){list-style:none;padding:0}
 
 :root{
-  /* ---- Teal: #4A9B9F é o 500, #3A7D80 o 600 (mesmo matiz 183°) ---- */
-  --teal-50:#F4FAFB;  --teal-100:#E6F4F4; --teal-light:#E8F4F5;
-  --teal-200:#CAE6E7; --teal-300:#A1D0D3; --teal-400:#6AB5B9;
-  --teal-500:#4A9B9F; --teal-600:#3A7D80; --teal-700:#2C6266;
-  --teal-800:#204A4E; --teal-900:#153437;
+  /* ---- Tinta: escala neutra levemente fria, casada com o teal da marca.
+          Todos os pares em uso passam WCAG AA; os valores medidos estão
+          anotados onde a escolha não é óbvia. ---- */
+  --ink-900:#0F1720;  /* 18,0:1 no papel — títulos, CTA, superfícies escuras */
+  --ink-800:#18222D;
+  --ink-700:#33414F;  /* 10,4:1 — corpo de texto */
+  --ink-600:#5A6875;  /*  5,7:1 — lead e texto secundário */
+  --ink-500:#66737F;  /*  4,9:1 — legendas; o piso do que pode ser texto */
+  --ink-300:#C9D0D6;  /* bordas de contraste (11,6:1 sobre o carvão) */
+  --ink-200:#E4E8EB;  /* filete padrão */
+  --ink-100:#EEF1F3;
+  --ink-50:#F7F9FA;
+  --paper:#FFFFFF;
 
-  /* ---- Neutros: o 800 é o dark2 e o 900 é o dark1 originais ---- */
-  --n-0:#FFFFFF;   --n-50:#F9FAFB;  --n-100:#F0F2F5; --n-200:#DEE2E7;
-  --n-300:#C5CBD3; --n-400:#9AA4B1; --n-500:#6E7D91; --n-600:#4F5E72;
-  --n-700:#384557; --n-800:#1F2937; --n-900:#111827; --n-950:#0A0F1A;
+  /* ---- Acento único. O #4A9B9F da marca vive nas superfícies escuras
+          (onde tem contraste de sobra); no papel entra o 700, que é o
+          mesmo matiz um degrau mais fundo e mede 6,9:1. ---- */
+  --teal-800:#204A4E;
+  --teal-700:#2C6266;  /* 6,9:1 no papel */
+  --teal-600:#3A7D80;
+  --teal-500:#4A9B9F;  /* cor de marca */
+  --teal-400:#6AB5B9;  /* 7,5:1 sobre o carvão — continentes do globo */
+  --teal-300:#A1D0D3;  /* 10,7:1 sobre o carvão */
+  --teal-100:#E6F4F4;
+  --teal-50:#F4FAFB;
 
-  --wa:#25D366; --wa-hover:#2EE06E; --wa-active:#1FBF5B;
-
-  /* Vermelho: #DC2626 dá 4,83 no branco mas cai abaixo de 4,5 sobre
-     fundos tingidos. #B42318 mantém ≥6:1 em todas as superfícies claras. */
-  --danger:#B42318; --danger-50:#FEF3F2; --danger-200:#FCCFCB;
-  --star:#B45309;   /* 5,02:1 — o yellow-400 original dava 2,15:1 */
+  --wa:#25D366;        /* só no ponto verde de disponibilidade */
 
   /* ---- Tipografia fluida: trava em 375px e em 1440px.
           A parte "preferida" é sempre rem + vw, nunca vw puro: com vw puro
-          o texto para de responder ao zoom e reprova WCAG 1.4.4. ---- */
-  --fs-display: clamp(1.875rem, 1.25rem + 2.67vw, 3.75rem);
-  --fs-h1-sub:  clamp(1.375rem, 1.06rem + 1.34vw, 2.25rem);
-  --fs-h2:      clamp(1.625rem, 1.317rem + 1.315vw, 2.5rem);
-  --fs-h3:      clamp(1.125rem, 1.04rem + 0.36vw, 1.375rem);
-  --fs-lead:    clamp(1.125rem, 1.059rem + 0.282vw, 1.3125rem);
-  --fs-body:    clamp(1rem, 0.967rem + 0.141vw, 1.0938rem);
-  --fs-small:   clamp(0.9063rem, 0.884rem + 0.094vw, 0.9688rem);
+          o texto para de responder ao zoom e reprova WCAG 1.4.4.
+          Os topos são deliberadamente mais baixos que os da v1 — a escala
+          curta é o que dá o tom de documento executivo. ---- */
+  --fs-display: clamp(2rem, 1.55rem + 1.92vw, 3.375rem);
+  --fs-h2:      clamp(1.5rem, 1.29rem + 0.9vw, 2.125rem);
+  --fs-h3:      clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
+  --fs-lead:    clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
+  --fs-body:    clamp(0.9688rem, 0.947rem + 0.094vw, 1.03rem);
+  --fs-small:   clamp(0.9063rem, 0.895rem + 0.047vw, 0.9375rem);
   --fs-caption: clamp(0.8125rem, 0.802rem + 0.047vw, 0.8438rem);
-  --fs-eyebrow: clamp(0.75rem, 0.728rem + 0.094vw, 0.8125rem);
-  --fs-quote:   clamp(1.5rem, 1.2rem + 1.28vw, 2.125rem);
+  --fs-eyebrow: clamp(0.6875rem, 0.677rem + 0.047vw, 0.7188rem);
+  --fs-quote:   clamp(1.25rem, 1.07rem + 0.77vw, 1.75rem);
+  --fs-num:     clamp(0.8125rem, 0.802rem + 0.047vw, 0.8438rem);
 
   /* ---- Espaçamento: base 4, ritmo estrutural em 8 ---- */
   --s-1:4px;  --s-2:8px;  --s-3:12px; --s-4:16px; --s-5:20px;
   --s-6:24px; --s-8:32px; --s-10:40px;--s-12:48px;--s-16:64px;
 
-  --gutter:   clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
-  --sec-y:    clamp(3.5rem, 2.4rem + 4.7vw, 7rem);
-  --stack-lg: clamp(2rem, 1.472rem + 2.254vw, 3.5rem);
-  --card-pad: clamp(1.5rem, 1.148rem + 1.502vw, 2.5rem);
+  --gutter:   clamp(1.25rem, 0.7rem + 2.75vw, 2.75rem);
+  /* Respiro vertical generoso: é o espaço em branco que faz o trabalho
+     que a v1 pedia a caixas, cores e sombras. */
+  --sec-y:    clamp(4rem, 2.6rem + 6vw, 8.5rem);
+  --stack-lg: clamp(2.25rem, 1.72rem + 2.25vw, 3.75rem);
+  --card-pad: clamp(1.5rem, 1.24rem + 1.13vw, 2.25rem);
 
-  --container:75rem;   /* 1200px */
-  --measure:65ch;
-  --header-h:clamp(3.5rem, 3.1rem + 1.6vw, 4.75rem);
+  --container:71.25rem;   /* 1140px — mais estreito que a v1: coluna curta lê como editorial */
+  --measure:62ch;
+  --header-h:clamp(3.75rem, 3.4rem + 1.5vw, 4.75rem);
   --bar-h:4.5rem;
 
-  --r-sm:10px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-2xl:24px; --r-pill:999px;
+  /* Raios discretos. O pill sobrevive só no ponto de status. */
+  --r-xs:3px; --r-sm:4px; --r-md:6px; --r-lg:8px; --r-pill:999px;
 
-  /* Sombras tingidas com o carvão da página (16,24,40), em duas camadas:
-     uma de contato curta + uma difusa ampla. Sombra preta pura sobre
-     fundo tingido vira cinza sujo — é o que separa "premium" de template. */
-  --shadow-xs:0 1px 2px rgba(16,24,40,.05);
-  --shadow-sm:0 1px 2px -1px rgba(16,24,40,.06),0 2px 6px -1px rgba(16,24,40,.05);
-  --shadow-md:0 2px 4px -2px rgba(16,24,40,.06),0 8px 16px -4px rgba(16,24,40,.07);
-  --shadow-lg:0 4px 8px -4px rgba(16,24,40,.06),0 16px 32px -8px rgba(16,24,40,.10);
-  --shadow-bar:0 -2px 8px -4px rgba(16,24,40,.08),0 -12px 32px -12px rgba(16,24,40,.14);
-  --shadow-press:inset 0 1px 2px rgba(16,24,40,.18);
-  --hl-top:inset 0 1px 0 rgba(255,255,255,.5);
+  /* Duas sombras no arquivo inteiro, ambas quase imperceptíveis: elevação
+     aqui é sinal de interação, não decoração. */
+  --shadow-xs:0 1px 2px rgba(15,23,32,.04);
+  --shadow-sm:0 1px 2px rgba(15,23,32,.05),0 8px 24px -12px rgba(15,23,32,.14);
+  --shadow-bar:0 -1px 0 var(--ink-200),0 -12px 32px -16px rgba(15,23,32,.18);
 
   --ease:cubic-bezier(.2,.8,.2,1);
   --dur:180ms;
-  --ring:var(--teal-700);      /* anel de foco em superfície clara */
-  --surface:var(--n-0);
+  --ring:var(--teal-700);
 }
 
 /* --- Base --- */
-html{scroll-padding-top:calc(var(--header-h) + 1rem)}
+html{scroll-padding-top:calc(var(--header-h) + 1.5rem)}
 body{
   font-family:'Montserrat','Montserrat Fallback',system-ui,-apple-system,sans-serif;
   font-size:var(--fs-body);
-  line-height:1.65;
-  color:var(--n-700);
-  background:var(--n-0);
+  line-height:1.7;
+  color:var(--ink-700);
+  background:var(--paper);
   overflow-x:clip;             /* clip, não hidden: não cria contexto de scroll */
+  font-variant-numeric:lining-nums tabular-nums;
 }
-h1,h2,h3{color:var(--n-900);text-wrap:balance;overflow-wrap:break-word}
+h1,h2,h3{color:var(--ink-900);text-wrap:balance;overflow-wrap:break-word;font-weight:600;letter-spacing:-.02em}
 p{text-wrap:pretty}
 a{color:inherit}
-strong{font-weight:700}
+strong{font-weight:600;color:var(--ink-900)}
 
 /* Anel de foco: `outline` (não `border`) porque não participa do layout,
-   então não desloca nada — CLS zero. Acompanha o border-radius. */
-:focus-visible{outline:3px solid var(--ring);outline-offset:3px;border-radius:var(--r-sm)}
+   então não desloca nada — CLS zero. */
+:focus-visible{outline:2px solid var(--ring);outline-offset:3px;border-radius:var(--r-xs)}
 
 /* Movimento é opt-in: só existe se o usuário NÃO pediu redução. */
 @media (prefers-reduced-motion:no-preference){
@@ -150,10 +171,10 @@ strong{font-weight:700}
   }
 }
 /* Alto Contraste do Windows: o sistema substitui background-color por Canvas.
-   Sem borda declarada, o botão verde DESAPARECE da tela. */
+   Sem borda declarada, o CTA sólido DESAPARECE da tela. */
 @media (forced-colors:active){
   .btn{border:2px solid ButtonText}
-  .card,.panel,.bar{border:1px solid CanvasText}
+  .card,.panel,.bar,.quote-card{border:1px solid CanvasText}
   :focus-visible{outline:3px solid Highlight;outline-offset:3px}
 }
 
@@ -161,18 +182,25 @@ strong{font-weight:700}
 /* min() em vez de max-width + padding: matematicamente impossível estourar,
    independe de box-sizing e nunca gera scroll horizontal. */
 .container{width:min(100% - var(--gutter) * 2, var(--container));margin-inline:auto}
-.container--narrow{--container:56rem}
+/* .container--narrow foi removido: três seções (a virada, o FAQ e o CTA)
+   usavam um container de 50rem enquanto o resto usava 71,25rem, e a 1440px
+   isso punha umas seções começando em x=150 e outras em x=320. O olho lê
+   esse degrau como página torta, mesmo sem saber nomeá-lo.
+   A medida de leitura confortável agora vem de .measure no próprio texto,
+   que encurta a LINHA sem mexer na margem da seção. */
 .section{padding-block:var(--sec-y)}
+.section--tight{padding-block:calc(var(--sec-y) * .72)}
 .center{text-align:center}
 .measure{max-inline-size:var(--measure)}
 .measure-center{max-inline-size:var(--measure);margin-inline:auto}
+.divider{block-size:1px;background:var(--ink-200);border:0}
 
 .skip{
   position:absolute;inset-block-start:0;inset-inline-start:var(--s-4);z-index:200;
   translate:0 -140%;
-  background:var(--n-900);color:var(--n-0);
+  background:var(--ink-900);color:var(--paper);
   padding:var(--s-3) var(--s-5);border-radius:0 0 var(--r-sm) var(--r-sm);
-  font-weight:700;font-size:var(--fs-small);text-decoration:none;
+  font-weight:600;font-size:var(--fs-small);text-decoration:none;
 }
 .skip:focus-visible{translate:0 0}
 @media (prefers-reduced-motion:no-preference){.skip{transition:translate 150ms var(--ease)}}
@@ -186,66 +214,71 @@ strong{font-weight:700}
 }
 
 /* --- Tipografia --- */
+/* Eyebrow com filete: a régua de 1,5rem antes do texto é o único ornamento
+   da página. Substitui o "chip" colorido da v1 com um terço do peso visual. */
 .eyebrow{
-  display:block;margin-bottom:var(--s-3);
-  font-size:var(--fs-eyebrow);font-weight:700;
+  display:flex;align-items:center;gap:var(--s-3);
+  margin-bottom:var(--s-5);
+  font-size:var(--fs-eyebrow);font-weight:600;
   text-transform:uppercase;
-  letter-spacing:.12em;          /* caixa alta em geométrica EXIGE abrir */
-  color:var(--teal-700);         /* 6,60:1. O #4A9B9F daria 3,24:1 e reprovaria */
+  letter-spacing:.16em;          /* caixa alta em geométrica EXIGE abrir */
+  color:var(--teal-700);         /* 6,9:1 */
 }
-.eyebrow--danger{color:var(--danger)}
+.eyebrow::before{content:"";inline-size:1.5rem;block-size:1px;background:currentColor;flex:none}
+.center .eyebrow{justify-content:center}
 .eyebrow--on-dark{color:var(--teal-300)}
-.h1{font-size:var(--fs-display);font-weight:800;line-height:1.06;letter-spacing:-.025em}
-.h1 .line{display:block;margin-top:var(--s-2)}
-.h1 .sub{display:block;margin-top:var(--s-3);font-size:var(--fs-h1-sub);font-weight:700;color:var(--n-700);letter-spacing:-.015em;line-height:1.2}
-.h2{font-size:var(--fs-h2);font-weight:800;line-height:1.14;letter-spacing:-.02em}
-.h3{font-size:var(--fs-h3);font-weight:700;line-height:1.3;letter-spacing:-.01em}
-.lead{font-size:var(--fs-lead);line-height:1.55;color:var(--n-600)}
+
+.h1{font-size:var(--fs-display);font-weight:600;line-height:1.1;letter-spacing:-.03em}
+.h1 .line{display:block;color:var(--ink-500);font-weight:400}
+.h2{font-size:var(--fs-h2);line-height:1.2;letter-spacing:-.025em}
+.h3{font-size:var(--fs-h3);font-weight:600;line-height:1.4;letter-spacing:-.01em}
+.lead{font-size:var(--fs-lead);line-height:1.65;color:var(--ink-600);font-weight:400}
 .small{font-size:var(--fs-small)}
-.caption{font-size:var(--fs-caption);color:var(--n-600)}
+.caption{font-size:var(--fs-caption);color:var(--ink-500);line-height:1.6}
 .accent{color:var(--teal-700)}
-.accent-danger{color:var(--danger);font-weight:700}
-.quote{font-size:var(--fs-quote);font-weight:800;line-height:1.2;letter-spacing:-.02em}
+.quote{font-size:var(--fs-quote);font-weight:600;line-height:1.35;letter-spacing:-.025em;color:var(--ink-900)}
+.quote .soft{display:block;color:var(--ink-500);font-weight:400}
 
 .section__head{margin-bottom:var(--stack-lg)}
-.section__head .h2{margin-bottom:var(--s-4)}
-.section__head .lead{max-inline-size:52ch}
+.section__head .h2{margin-bottom:var(--s-5)}
+.section__head .lead{max-inline-size:54ch}
 .section__head.center .lead{margin-inline:auto}
 
 /* --- Botões --- */
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--s-3);
   min-block-size:2.75rem;                 /* 44px — WCAG 2.5.5 */
   padding:var(--s-3) var(--s-6);
-  font-size:var(--fs-body);font-weight:700;line-height:1.25;
+  font-size:var(--fs-small);font-weight:600;line-height:1.25;
+  letter-spacing:.01em;
   text-decoration:none;text-align:center;
   border-radius:var(--r-sm);border:1px solid transparent;
   cursor:pointer;
 }
-.btn--lg{min-block-size:3.5rem;padding:var(--s-4) var(--s-8);font-size:var(--fs-lead)}
-.btn--sm{min-block-size:2.75rem;padding:var(--s-2) var(--s-5);font-size:var(--fs-small)}
+.btn--lg{min-block-size:3.25rem;padding:var(--s-4) var(--s-8);font-size:var(--fs-body)}
 @media (pointer:coarse){ .btn{min-block-size:3rem} }
 
-/* CTA primário: verde WhatsApp #25D366 com texto quase-preto = 8,94:1.
-   Branco sobre este mesmo verde daria 1,98:1 — reprova WCAG 1.4.3 até
-   pelo limiar mais permissivo (3:1). O verde da marca é preservado. */
-.btn--wa{background:var(--wa);color:var(--n-900);box-shadow:var(--shadow-sm),var(--hl-top)}
-.btn--ghost{background:transparent;border-color:var(--n-500);color:var(--n-700)}  /* borda 4,20:1 ≥ 3:1 (WCAG 1.4.11) */
+/* CTA primário em carvão sólido: branco sobre #0F1720 mede 18,0:1.
+   O verde WhatsApp saturado era o objeto mais barulhento da página e
+   competia com o próprio conteúdo; o canal continua sinalizado pelo
+   ícone, que é o que o usuário de fato reconhece. */
+.btn--primary{background:var(--ink-900);color:var(--paper);box-shadow:var(--shadow-xs)}
+.btn--ghost{background:transparent;border-color:var(--ink-300);color:var(--ink-900)}
+.btn--light{background:var(--paper);color:var(--ink-900)}
 
 /* Hover só onde existe ponteiro fino: sem esta guarda, no iOS o estado
    hover "gruda" após o toque e o botão fica deslocado até o próximo tap. */
 @media (hover:hover) and (pointer:fine){
-  .btn{transition:background-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease),translate var(--dur) var(--ease),border-color var(--dur) var(--ease)}
-  .btn--wa:hover{background:var(--wa-hover);translate:0 -1px;box-shadow:var(--shadow-md),var(--hl-top)}
-  .btn--ghost:hover{background:var(--n-50);border-color:var(--n-600);color:var(--n-900)}
-  .card--hover{transition:box-shadow var(--dur) var(--ease),border-color var(--dur) var(--ease),translate var(--dur) var(--ease)}
-  .card--hover:hover{box-shadow:var(--shadow-md);border-color:var(--teal-200);translate:0 -2px}
+  .btn{transition:background-color var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+  .btn--primary:hover{background:var(--teal-800)}
+  .btn--ghost:hover{border-color:var(--ink-900);background:var(--ink-50)}
+  .btn--light:hover{background:var(--teal-100)}
+  .card--hover{transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+  .card--hover:hover{border-color:var(--ink-300);box-shadow:var(--shadow-sm)}
+  .link-arrow:hover{color:var(--teal-800)}
 }
-.btn--wa:active{background:var(--wa-active);translate:0 1px;box-shadow:var(--shadow-press)}
-.btn--ghost:active{background:var(--n-100);box-shadow:var(--shadow-press)}
-.btn__icon{inline-size:1.25rem;block-size:1.25rem;flex:none;fill:currentColor}
-.btn--lg .btn__icon{inline-size:1.5rem;block-size:1.5rem}
-.btn--full{inline-size:100%}
+.btn--primary:active{background:var(--ink-800)}
+.btn__icon{inline-size:1.125rem;block-size:1.125rem;flex:none;fill:currentColor}
 @media (max-width:29.99em){ .btn{inline-size:100%} }
 
 /* --- Header --- */
@@ -253,29 +286,37 @@ strong{font-weight:700}
    e elimina a classe de bugs de âncora sob o header. */
 .header{
   position:sticky;inset-block-start:0;z-index:100;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(12px) saturate(1.2);
-  -webkit-backdrop-filter:blur(12px) saturate(1.2);
-  border-bottom:1px solid var(--n-200);   /* 1,30:1 — visível. O gray-100 dava 1,06:1 */
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(14px) saturate(1.1);
+  -webkit-backdrop-filter:blur(14px) saturate(1.1);
+  border-bottom:1px solid var(--ink-200);
 }
 .header__inner{
   min-block-size:var(--header-h);          /* min-block-size, NUNCA height:
-                                              com `height` o logo corta a 200% de zoom de texto */
+                                              com `height` a marca corta a 200% de zoom de texto */
   display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);
   padding-block:var(--s-2);
 }
-.brand{display:flex;align-items:center;gap:var(--s-3);min-inline-size:0}
-.logo{font-size:clamp(1.125rem,1.03rem + .45vw,1.5rem);font-weight:800;letter-spacing:-.02em;color:var(--n-900);text-decoration:none;white-space:nowrap}
-.logo span{color:var(--teal-600)}
-.brand__tag{display:none;font-size:var(--fs-caption);color:var(--n-600);border-left:1px solid var(--n-300);padding-left:var(--s-3)}
-@media (min-width:56em){ .brand__tag{display:block} }
+.brand{display:flex;align-items:center;gap:var(--s-3);min-inline-size:0;text-decoration:none}
+.brand__mark{
+  inline-size:2.25rem;block-size:2.25rem;flex:none;border-radius:50%;
+  object-fit:cover;background:var(--teal-500);
+}
+.brand__text{display:flex;flex-direction:column;line-height:1.15;min-inline-size:0}
+.brand__name{
+  font-size:clamp(.9375rem,.89rem + .2vw,1.0625rem);font-weight:700;
+  letter-spacing:.02em;color:var(--ink-900);white-space:nowrap;
+}
+.brand__tag{
+  font-size:var(--fs-eyebrow);font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--teal-700);white-space:nowrap;
+}
 
-/* O rótulo "Quero Parar de Perder Tempo" não cabe no header abaixo de 768px:
-   a 320px o logo (~121px) mais o botão (~279px) somam ~416px para 288px
-   disponíveis, e o botão quebraria em duas linhas.
-   Abaixo de 48em quem carrega o CTA é a barra fixa inferior, com EXATAMENTE
-   o mesmo rótulo — não existe buraco de cobertura, e o rótulo continua
-   idêntico nos quatro pontos de conversão. */
+/* O rótulo do CTA não cabe no header abaixo de 768px: a 320px a marca
+   (~150px) mais o botão somam bem mais que os 288px disponíveis.
+   Abaixo de 48em quem carrega o CTA é a barra fixa inferior, com
+   EXATAMENTE o mesmo rótulo — não existe buraco de cobertura, e o rótulo
+   continua idêntico nos quatro pontos de conversão. */
 .header__cta{display:none}
 @media (min-width:48em){ .header__cta{display:inline-flex} }
 
@@ -286,273 +327,576 @@ strong{font-weight:700}
 }
 
 /* --- Hero --- */
-.hero{
-  position:relative;overflow:hidden;
-  padding-block:clamp(2.5rem,1.8rem + 3vw,4rem) var(--sec-y);
-  background:linear-gradient(180deg,var(--teal-light) 0%,var(--n-0) 42%,var(--n-50) 100%);
+/* Sem gradiente de malha, sem blur: fundo liso de papel. O contraste do
+   hero vem do tamanho do título contra o vazio ao redor. */
+.hero{padding-block:clamp(3rem,2rem + 4.3vw,6rem) var(--sec-y)}
+.hero__inner{max-inline-size:52rem}
+.hero .h1{margin-bottom:var(--s-8);max-inline-size:20ch}
+.hero__lead{margin-bottom:var(--s-8);max-inline-size:56ch}
+/* A pergunta é o gancho do hero: sai do corpo do parágrafo e ganha um degrau
+   de hierarquia própria, entre o lead e o h2. Sem caixa, sem cor de fundo —
+   o contraste vem do peso e do espaço em volta.
+   Fica em --ink-900 (18:1) e não no acento, porque um período inteiro em teal
+   perderia a força justamente por excesso de ênfase; só o fecho leva a cor. */
+.hero__ask{
+  margin-bottom:var(--s-6);max-inline-size:34ch;
+  font-size:clamp(1.1875rem,1.07rem + .5vw,1.5rem);
+  font-weight:600;line-height:1.35;letter-spacing:-.02em;
+  color:var(--ink-900);text-wrap:balance;
 }
-/* Malha decorativa em gradiente estático. A versão anterior usava
-   blur(64px) sobre meia viewport — isso força uma camada de composição
-   repintada a cada scroll em GPU móvel (Adreno do Moto G é o gargalo
-   típico no Brasil), atrasando LCP e INP. Gradiente custa zero. */
-.hero::before{
-  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(50% 45% at 88% 4%, rgba(74,155,159,.16), transparent 70%),
-    radial-gradient(42% 38% at 4% 96%, rgba(74,155,159,.10), transparent 70%);
-}
-.hero__inner{position:relative;z-index:1;text-align:center}
-.hero .h1{margin-bottom:var(--s-6);max-inline-size:32ch;margin-inline:auto}
-.hero__lead{margin:0 auto var(--stack-lg);max-inline-size:58ch}
-.hero__question{margin:var(--stack-lg) auto;max-inline-size:34ch;font-size:var(--fs-lead);font-weight:700;color:var(--n-900);line-height:1.4}
-.hero__actions{display:flex;flex-direction:column;align-items:center;gap:var(--s-3)}
+.hero__actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4);margin-top:var(--s-6)}
+.hero__note{color:var(--ink-500);font-size:var(--fs-caption)}
 
-/* Selo de prova social */
-.trust{
+/* Lista de benefícios do hero.
+   Sem filetes entre os itens, ao contrário das outras listas da página: aqui
+   são rótulos de duas ou três palavras, e uma régua por linha criaria seis
+   divisões horizontais num bloco de três linhas — mais estrutura do que o
+   conteúdo comporta. */
+.perks{display:grid;gap:var(--s-3);margin-block:var(--s-5) var(--s-4)}
+.perks li{display:flex;gap:var(--s-3);align-items:baseline;line-height:1.45}
+.perks svg{inline-size:1rem;block-size:1rem;flex:none;translate:0 .16em;color:var(--teal-700)}
+@media (min-width:34em){
+  /* Duas colunas a partir de 544px: cinco itens curtos numa coluna só
+     ocupariam cinco linhas e devolveriam o problema de altura que a lista
+     antiga criava.
+     O quinto item — o único longo — atravessa as duas colunas em vez de
+     ficar órfão na esquerda, e assim a lista fecha em três linhas cheias.
+     A ordem escrita pelo cliente é preservada: o grid preenche por linha. */
+  .perks{grid-template-columns:1fr 1fr;column-gap:var(--s-6)}
+  .perks li:last-child{grid-column:1 / -1}
+}
+@media (min-width:64em){
+  /* A lista ultrapassa em 4rem a medida do texto corrido. Rótulo não é
+     parágrafo: não precisa da medida de leitura, precisa caber numa linha.
+     Com a largura do texto, "Resolução rápida de imprevistos" quebrava em
+     duas e desalinhava a fileira inteira. O limite de 42rem para antes dos
+     ~690px onde a malha do mapa começa a aparecer. */
+  .perks{max-inline-size:42rem}
+}
+
+/* O remate do hero. Ponto final no lugar do ponto e vírgula do original:
+   três frases nominais curtas ganham força justamente por serem lidas como
+   sentenças fechadas, e só a última leva o acento. */
+.tagline{
+  margin-block-end:var(--s-2);max-inline-size:48ch;
+  font-size:var(--fs-lead);font-weight:600;letter-spacing:-.01em;
+  color:var(--ink-900);text-wrap:balance;
+}
+
+/* --- Mapa dot-matrix do hero ---
+   Substituiu o globo: em vez de um objeto pousado ao lado do texto, o mundo
+   vira o AMBIENTE do hero — sangra pela direita, passa por trás do conteúdo
+   e desvanece antes de encostar na coluna de leitura.
+
+   A grade é regular de verdade: uma célula do mapa equivale a um quadradinho
+   inteiro, nunca recortado pelo contorno do continente. Foi por isso que a
+   versão anterior (contorno preenchido com <pattern>) foi descartada — ali os
+   quadrados apareciam cortados nas bordas e a leitura era de textura, não de
+   matriz. São 1.252 quadradinhos: 16 KB de path que o brotli entrega em 501
+   bytes, porque o padrão se repete quase inteiro. */
+.hero{position:relative;isolation:isolate}
+/* No celular o mapa NÃO fica atrás do texto. Numa tela de 390px não existe
+   coluna livre para ele ocupar: o planisfério acaba sob as linhas do lead e
+   disputa a atenção com a leitura, que é o oposto do que um elemento de
+   apoio deve fazer. Abaixo de 64em ele entra no fluxo, depois do botão,
+   como fecho do hero — visível, sem competir. */
+/* Sem margem negativa: este bloco é filho da <section>, que já ocupa a
+   largura toda. A margem negativa somava --gutter de cada lado e criava
+   434px de conteúdo numa viewport de 390 — scroll horizontal. */
+.hero__map{
+  position:relative;
+  margin-block-start:var(--stack-lg);
+  pointer-events:none;
+}
+/* Um só gradiente radial concentra o mapa à direita e o apaga em todas as
+   direções — mais previsível que compor duas máscaras lineares, que exigem
+   mask-composite e divergem entre navegadores. */
+/* A máscara faz duas coisas ao mesmo tempo: concentra a malha à direita e a
+   apaga antes da coluna de leitura. O primeiro ajuste (centro em 76%, cauda
+   até 74%) deixava quadradinhos sob as linhas do lead — texto sobre padrão
+   perde legibilidade mesmo quando o contraste passa no medidor, porque a
+   borda de cada letra briga com a borda de cada quadrado.
+   Agora o gradiente é elíptico e mais curto: opaco só no núcleo à direita,
+   zerado antes de 60% da largura. */
+.worldmap{inline-size:100%;block-size:auto;display:block}
+/* A máscara vai no PATH estático, não no <svg>.
+   Com ela no elemento inteiro, arcos e aviões animavam DENTRO da área
+   mascarada e cada quadro obrigava o compositor a re-rasterizar a máscara
+   toda — foi o que levou Style & Layout a 2s no throttle do Lighthouse e
+   derrubou a nota de 100 para 93. Aplicada só nos quadradinhos, que nunca
+   mudam, ela é rasterizada uma vez e as animações passam por fora.
+   No fluxo (celular) a máscara só suaviza as bordas; como fundo (desktop)
+   ela também precisa apagar a metade esquerda, onde corre o texto. */
+.worldmap .cells{
+  -webkit-mask-image:radial-gradient(76% 96% at 50% 50%,#000 32%,transparent 80%);
+  mask-image:radial-gradient(76% 96% at 50% 50%,#000 32%,transparent 80%);
+}
+/* Como fundo (desktop) a máscara muda de papel: além de suavizar a borda,
+   precisa APAGAR a metade esquerda, onde corre a coluna de leitura. */
+@media (min-width:64em){
+  .worldmap .cells{
+    -webkit-mask-image:radial-gradient(100% 104% at 68% 48%,#000 10%,rgba(0,0,0,.6) 34%,transparent 50%);
+    mask-image:radial-gradient(100% 104% at 68% 48%,#000 10%,rgba(0,0,0,.6) 34%,transparent 50%);
+  }
+}
+.worldmap .cells{fill:var(--teal-300)}
+/* O traço teal que corria sobre o arco foi removido: `stroke-dashoffset`
+   não é uma propriedade compositável, então cada quadro repintava a área
+   inteira da rota — 60ms de TBT por conta de um efeito que o avião já
+   comunica sozinho. O arco pontilhado assumiu o papel, com um pouco mais
+   de presença. */
+.worldmap .arc{fill:none;stroke:var(--teal-400);stroke-width:1.6;stroke-dasharray:4 5;opacity:.9}
+.worldmap .plane{fill:var(--ink-900)}
+.worldmap .node{fill:var(--teal-700)}
+.worldmap .halo{fill:var(--teal-500);opacity:.22;transform-box:fill-box;transform-origin:center}
+
+/* Acima de 64em a coluna de texto é travada em 38rem: sem esse teto a linha
+   invadiria a área do mapa e a leitura perderia o fundo limpo. */
+/* A partir de 64em existe coluna livre à direita: aí sim o mapa sai do
+   fluxo, vira fundo e sangra até a borda da viewport. A coluna de texto é
+   travada em 38rem para a linha nunca invadir a área da malha. */
+@media (min-width:64em){
+  /* Sem teto no container: cada elemento do hero já carrega a própria
+     medida (h1 20ch, lead 44ch, pergunta 34ch, lista 42rem). Um teto de
+     38rem no pai vencia o limite maior da lista e fazia dois itens
+     quebrarem em duas linhas, desalinhando a fileira. */
+  .hero__inner{max-inline-size:44rem}
+  .hero__map{
+    position:absolute;z-index:-1;
+    inset-block-start:50%;
+    inset-inline-end:calc(50% - 50vw);
+    inline-size:min(72%,62rem);
+    margin:0;
+    translate:0 -50%;
+  }
+}
+
+/* Uma aeronave por rota: rota desenhada sem avião lê como traçado morto.
+   `offset-rotate:auto` alinha o nariz à tangente, então a curva do arco vira
+   inclinação da aeronave de graça.
+   ATENÇÃO: cada `path()` aqui tem de ser IDÊNTICO ao `d` do arco irmão no
+   SVG — um dígito diferente e o avião voa ao lado do próprio traçado, que
+   era o caso do voo de Lisboa (Q455 180 no CSS contra Q455 185 no desenho). */
+.worldmap .p1{offset-path:path("M385 294Q455 185 494 116")}   /* São Paulo → Lisboa */
+.worldmap .p2{offset-path:path("M385 294Q306 215 288 153")}   /* São Paulo → Miami  */
+.worldmap .p3{offset-path:path("M385 294Q543 198 680 154")}   /* São Paulo → Dubai  */
+
+@media (prefers-reduced-motion:no-preference){
+  /* dasharray = traço curto + lacuna maior que o path inteiro, para existir
+     um só traço em trânsito por vez. O offset vai do comprimento total a
+     zero, então o traço entra por uma ponta e sai pela outra. */
+  /* Cada avião acompanha a duração e o atraso do rastro da SUA rota, senão
+     aeronave e traço se descolam no ar. Períodos diferentes (9/12/15s) e
+     primos entre si o bastante para os três não se alinharem em ciclo curto —
+     três aviões partindo juntos denunciam a animação. */
+  .worldmap .plane{offset-rotate:auto;animation:bt-fly 9s linear infinite}
+  .worldmap .p2{animation-duration:12s;animation-delay:-4s}
+  .worldmap .p3{animation-duration:15s;animation-delay:-8s}
+  .worldmap .halo{animation:bt-pulse 3.6s var(--ease) infinite}
+  .worldmap .h2{animation-delay:-1.2s}
+  .worldmap .h3{animation-delay:-2.4s}
+  .worldmap .h4{animation-delay:-1.8s}
+}
+@keyframes bt-fly{from{offset-distance:0%} to{offset-distance:100%}}
+@keyframes bt-pulse{
+  0%,100%{transform:scale(1);opacity:.22}
+  50%{transform:scale(2);opacity:.05}
+}
+@media (prefers-reduced-motion:reduce){
+  .worldmap .plane{offset-rotate:auto;offset-distance:56%}
+}
+/* Navegador sem offset-path renderizaria o avião parado na origem do
+   viewBox, no canto superior esquerdo. Melhor não desenhá-lo. */
+@supports not (offset-path:path("M0 0L1 1")){
+  .worldmap .plane{display:none}
+}
+
+/* --- Interação e movimento de entrada ---
+   Tudo por CSS: `animation-timeline` liga a animação à posição do elemento
+   na rolagem, sem observador, sem listener e sem um byte de JavaScript —
+   então o TBT continua no chão e a nota não se mexe.
+   Fica dentro de @supports porque onde a timeline não existe o elemento
+   simplesmente já nasce visível: nunca há conteúdo preso em opacity:0. */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{
+      animation:bt-reveal linear both;
+      animation-timeline:view();
+      animation-range:entry 8% cover 26%;
+    }
+    /* Escalona os itens de uma mesma grade, para a linha não subir em bloco. */
+    .reveal-stagger > *{
+      animation:bt-reveal linear both;
+      animation-timeline:view();
+      animation-range:entry 6% cover 30%;
+    }
+    /* O mapa deriva um pouco mais devagar que a página: paralaxe curta, só
+       o suficiente para o fundo não parecer colado no texto.
+       SÓ a partir de 64em: o keyframe parte de `translate:0 -50%`, que é a
+       centragem do mapa quando ele é fundo absoluto. Abaixo disso o mapa
+       está no fluxo, e esse mesmo -50% o levantava por cima do botão do
+       hero — o deslocamento não pode existir onde a centragem não existe. */
+    @media (min-width:64em){
+      .hero__map{
+        animation:bt-drift linear both;
+        animation-timeline:scroll();
+        animation-range:0 90vh;
+      }
+    }
+  }
+}
+/* Só deslocamento — a opacidade NÃO entra aqui, de propósito.
+   Com `opacity:0` no quadro inicial, todo bloco fora da janela fica
+   literalmente invisível: some da impressão, some se o range de rolagem for
+   calculado numa viewport atípica e some com zoom alto, quando a seção
+   inteira já ocupa mais que a tela. Numa página cujo trabalho é converter,
+   conteúdo apagado é falha, não estilo.
+   O deslocamento sozinho dá o mesmo sinal de entrada e, no pior caso,
+   o único defeito possível é o bloco aparecer 14px fora do lugar. */
+@keyframes bt-reveal{
+  from{translate:0 14px}
+  to{translate:0 0}
+}
+@keyframes bt-drift{
+  from{translate:0 -50%}
+  to{translate:0 calc(-50% - 4.5rem)}
+}
+
+/* Selo de disponibilidade — o único uso do verde na página. */
+.status{
   display:inline-flex;align-items:center;gap:var(--s-2);
   margin-bottom:var(--s-6);
-  padding:var(--s-2) var(--s-4);
-  background:var(--n-0);border:1px solid var(--teal-200);
-  border-radius:var(--r-pill);box-shadow:var(--shadow-xs);
-  font-size:var(--fs-caption);font-weight:600;color:var(--n-700);
-  text-align:left;
+  font-size:var(--fs-caption);font-weight:600;color:var(--ink-600);
+  letter-spacing:.02em;
 }
 .dot{
-  inline-size:.5rem;block-size:.5rem;flex:none;border-radius:50%;
-  background:var(--wa);box-shadow:0 0 0 3px rgba(37,211,102,.22);
+  inline-size:.4375rem;block-size:.4375rem;flex:none;border-radius:50%;
+  background:var(--wa);box-shadow:0 0 0 3px rgba(37,211,102,.18);
 }
 
-/* --- Painel (caixa de destaque) --- */
-.panel{
-  text-align:left;
-  padding:var(--card-pad);
-  border-radius:var(--r-xl);
-  background:var(--n-0);
-  border:1px solid var(--n-200);
-  box-shadow:var(--shadow-xs);
+/* --- Lista de constatações ---
+   Filetes horizontais no lugar de caixa: a lista lê como sumário de
+   diagnóstico, que é o registro certo para quem decide a compra. */
+.facts{border-top:1px solid var(--ink-200)}
+.facts li{
+  display:flex;gap:var(--s-4);align-items:baseline;
+  padding-block:var(--s-4);
+  border-bottom:1px solid var(--ink-200);
+  line-height:1.6;
 }
-.panel--danger{background:var(--danger-50);border-color:var(--danger-200)}
-.panel--glass{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);box-shadow:var(--hl-top)}
-.panel__title{
-  display:flex;align-items:center;gap:var(--s-2);
-  margin-bottom:var(--s-5);
-  font-size:var(--fs-eyebrow);font-weight:700;
-  text-transform:uppercase;letter-spacing:.1em;color:var(--danger);
+.facts .n{
+  flex:none;font-size:var(--fs-num);font-weight:600;color:var(--teal-700);
+  font-variant-numeric:tabular-nums;letter-spacing:.06em;
 }
-.panel__title svg{inline-size:1.25rem;block-size:1.25rem;flex:none}
+/* Sem esta linha o <svg> assume a largura do bloco e o check ocupa a
+   coluna inteira — foi exatamente o que quebrou o hero. */
+.facts svg{inline-size:1.0625rem;block-size:1.0625rem;flex:none;translate:0 .18em;color:var(--teal-700)}
 
-/* --- Listas com marcador --- */
-.ticks{display:grid;gap:var(--s-4)}
-.ticks li{display:flex;align-items:flex-start;gap:var(--s-3);line-height:1.6}
-.ticks svg{inline-size:1.25rem;block-size:1.25rem;flex:none;margin-block-start:.2em}
-.ticks--x svg{color:var(--danger)}
-.ticks--check svg{color:var(--teal-600)}
-.ticks--arrow svg{color:var(--danger)}
-.on-dark .ticks--check svg{color:var(--teal-300)}
+/* --- Malha de quadradinhos: a linguagem visual do site -----------------
+   O mesmo módulo do mapa do hero vira o motivo gráfico de toda a página.
+   Em vez de repetir mil <rect>, a malha é uma MÁSCARA: o fundo é uma cor
+   sólida (portanto um token da paleta, não um hex cravado) e a máscara
+   recorta os quadradinhos. Trocar `--dot-c` troca a cor da malha inteira.
 
-/* Benefícios do hero, a pedido do cliente (commit 5240dda em benditatour).
-   É um modificador sobre .ticks--check, não um componente novo: o que muda
-   aqui é densidade e número de colunas, não o desenho da lista.
-   A lista mora direto no hero, que é text-align:center — por isso ela
-   reendireita o próprio texto, ao contrário das outras, que herdam o
-   text-align:left do .panel em que vivem. */
-.ticks--perks{
-  text-align:left;
-  gap:var(--s-3);
-  max-inline-size:34rem;
-  margin:var(--stack-lg) auto;
+   Custo: ~130 bytes de data-URI, nenhuma requisição, nenhuma imagem para
+   decodificar. E porque é background, não entra na contagem de nós do DOM.
+
+   Regra de uso: a malha só aparece ATRÁS de conteúdo, sempre desvanecendo,
+   e nunca em duas seções vizinhas. Ela é assinatura, não papel de parede —
+   repetida demais vira ruído e come o silêncio que sustenta o minimalismo. */
+.dots{
+  --dot-c:var(--ink-200);
+  --dot-step:11px;
+  --dot-size:3px;
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-color:var(--dot-c);
+  -webkit-mask-image:var(--dot-mask);mask-image:var(--dot-mask);
+  -webkit-mask-size:var(--dot-step) var(--dot-step);mask-size:var(--dot-step) var(--dot-step);
+  -webkit-mask-repeat:repeat;mask-repeat:repeat;
 }
-.ticks--perks li{align-items:baseline;line-height:1.45}
-/* Ícone menor que o das outras listas: aqui ele acompanha um rótulo de duas
-   ou três palavras, não um parágrafo que ocupa duas linhas. O translate faz
-   o trabalho do margin-block-start da regra base, que o baseline dispensa. */
-.ticks--perks svg{inline-size:1rem;block-size:1rem;margin-block-start:0;translate:0 .16em}
-@media (min-width:44em){
-  /* Em coluna única os cinco rótulos somam cinco linhas e empurram o CTA
-     para fora da primeira dobra — num hero que já carrega o painel de cinco
-     dores, essa altura é o que não sobra.
-     O quinto item é o único longo: atravessa as duas colunas em vez de ficar
-     órfão na esquerda, e assim a lista fecha em três linhas cheias.
-     A ordem escrita pelo cliente é preservada — o grid preenche por linha. */
-  .ticks--perks{grid-template-columns:1fr 1fr;column-gap:var(--s-6);max-inline-size:42rem}
-  .ticks--perks li:last-child{grid-column:1 / -1}
+:root{
+  --dot-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Crect width='3' height='3' x='0' y='0' rx='.5' fill='%23000'/%3E%3C/svg%3E");
+}
+/* O desvanecimento é o que separa "assinatura" de "papel de parede":
+   a malha nasce sólida numa borda e some antes de alcançar o texto. */
+.dots--tr{
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+  -webkit-mask-image:var(--dot-mask),radial-gradient(80% 76% at 100% 0,#000 8%,transparent 68%);
+  mask-image:var(--dot-mask),radial-gradient(80% 76% at 100% 0,#000 8%,transparent 68%);
+  -webkit-mask-size:var(--dot-step) var(--dot-step),100% 100%;
+  mask-size:var(--dot-step) var(--dot-step),100% 100%;
+  -webkit-mask-repeat:repeat,no-repeat;mask-repeat:repeat,no-repeat;
+}
+.dots--bl{
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+  -webkit-mask-image:var(--dot-mask),radial-gradient(70% 70% at 0 100%,#000 6%,transparent 66%);
+  mask-image:var(--dot-mask),radial-gradient(70% 70% at 0 100%,#000 6%,transparent 66%);
+  -webkit-mask-size:var(--dot-step) var(--dot-step),100% 100%;
+  mask-size:var(--dot-step) var(--dot-step),100% 100%;
+  -webkit-mask-repeat:repeat,no-repeat;mask-repeat:repeat,no-repeat;
+}
+/* Sobre carvão a malha inverte: branco com alfa baixo, senão some. */
+.on-dark .dots{--dot-c:rgba(255,255,255,.16)}
+
+/* A seção precisa de contexto de empilhamento próprio para a malha ficar
+   atrás do conteúdo sem z-index em cada filho. */
+.has-dots{position:relative;isolation:isolate;overflow:hidden}
+.has-dots > .container{position:relative;z-index:1}
+
+/* O mesmo módulo de 11px reaparece como marcador do índice das seções:
+   um quadradinho antes do número amarra o detalhe tipográfico à malha. */
+.item__index::before{
+  content:"";display:inline-block;
+  inline-size:3px;block-size:3px;border-radius:.5px;
+  margin-inline-end:var(--s-2);
+  vertical-align:.28em;
+  background:currentColor;
 }
 
-/* --- Cards --- */
-.grid{--grid-gap:var(--s-6);display:grid;gap:var(--grid-gap)}
-@media (min-width:46em){ .grid{--grid-gap:var(--s-8)} }
+/* --- Faixa de credenciais ---
+   Fica logo abaixo do hero, no ponto em que o leitor pergunta "com quem eu
+   estou falando?". Rótulo em caixa alta + valor: é a forma de ficha
+   cadastral, não de banner — que é exatamente o registro pretendido. */
+.creds{border-block:1px solid var(--ink-200)}
+.creds__list{display:grid}
+.creds__list li{padding-block:var(--s-5);border-bottom:1px solid var(--ink-200)}
+.creds__list li:last-child{border-bottom:0}
+.creds__label{
+  display:block;margin-bottom:var(--s-2);
+  font-size:var(--fs-eyebrow);font-weight:600;text-transform:uppercase;
+  letter-spacing:.16em;color:var(--ink-500);
+}
+.creds__value{display:block;font-size:var(--fs-small);font-weight:600;color:var(--ink-900);line-height:1.45}
+@media (min-width:48em){
+  .creds__list{grid-template-columns:1fr 1fr;column-gap:var(--s-10)}
+  /* Em 2 colunas as duas últimas células formam a linha final: tirar a borda
+     só do :last-child deixaria um filete solto sob a penúltima. */
+  .creds__list li:nth-last-child(2){border-bottom:0}
+}
+@media (min-width:64em){
+  .creds__list{grid-template-columns:repeat(4,1fr);column-gap:0}
+  .creds__list li{
+    border-bottom:0;
+    padding-inline:var(--s-6);
+    border-inline-start:1px solid var(--ink-200);
+  }
+  .creds__list li:first-child{padding-inline-start:0;border-inline-start:0}
+}
+
+/* --- Escopo do serviço --- */
+/* Lista corrida com filetes, em duas colunas. Um contrato se lê como
+   lista, não como cartões: a forma aqui está dizendo "isto é o que
+   está incluído", antes mesmo de o texto ser lido. */
+.scope{display:grid;border-top:1px solid var(--ink-200)}
+.scope li{
+  display:flex;gap:var(--s-4);align-items:baseline;
+  padding-block:var(--s-4);border-bottom:1px solid var(--ink-200);
+  line-height:1.55;
+}
+.scope svg{inline-size:1.0625rem;block-size:1.0625rem;flex:none;translate:0 .18em;color:var(--teal-700)}
+@media (min-width:48em){
+  .scope{grid-template-columns:1fr 1fr;column-gap:clamp(2rem,5vw,4.5rem)}
+}
+
+/* --- Comparativo antes/depois --- */
+/* Duas colunas em vez de tabela: a comparação aqui é de situação, não de
+   valores célula a célula, e tabela de 2 colunas quebra mal no celular. */
+.compare{display:grid;gap:var(--s-6)}
+@media (min-width:48em){ .compare{grid-template-columns:1fr 1fr;gap:var(--s-8)} }
+.compare__col{padding:var(--card-pad);border-radius:var(--r-lg);border:1px solid var(--ink-200)}
+.compare__col--ours{background:var(--ink-900);border-color:var(--ink-900);color:var(--ink-300);--ring:var(--teal-300)}
+.compare__col--ours .compare__title{color:var(--paper)}
+.compare__col--ours .compare__label{color:var(--teal-300)}
+.compare__col--ours li{border-color:rgba(255,255,255,.12)}
+.compare__col--ours strong{color:var(--paper)}
+.compare__label{
+  display:block;margin-bottom:var(--s-2);
+  font-size:var(--fs-eyebrow);font-weight:600;text-transform:uppercase;
+  letter-spacing:.16em;color:var(--ink-500);
+}
+.compare__title{margin-bottom:var(--s-5)}
+.compare__list li{padding-block:var(--s-4);border-bottom:1px solid var(--ink-200);line-height:1.55}
+.compare__list li:last-child{border-bottom:0;padding-bottom:0}
+
+/* --- Depoimento em destaque --- */
+.feature-quote{display:grid;gap:var(--s-8);align-items:center}
+@media (min-width:60em){ .feature-quote{grid-template-columns:auto 1fr;gap:var(--s-12)} }
+.feature-quote__photo{
+  inline-size:6.5rem;block-size:6.5rem;border-radius:50%;object-fit:cover;
+  flex:none;background:var(--ink-100);
+}
+.feature-quote blockquote{
+  font-size:var(--fs-quote);font-weight:600;line-height:1.4;
+  letter-spacing:-.02em;color:var(--ink-900);text-wrap:pretty;
+}
+.feature-quote figcaption{margin-top:var(--s-5);font-size:var(--fs-small);color:var(--ink-500)}
+.feature-quote figcaption strong{color:var(--ink-900);font-weight:600}
+
+/* --- FAQ ---
+   <details> nativo: abre e fecha sem uma linha de JavaScript, já vem com
+   papel e estado corretos para leitor de tela, e continua legível se o CSS
+   não carregar. */
+/* A grade da seção é larga (mesma de todas), mas pergunta e resposta
+   precisam de linha curta: 52rem mantém a medida por volta de 70ch. */
+.faq{border-top:1px solid var(--ink-200);max-inline-size:52rem}
+.faq details{border-bottom:1px solid var(--ink-200)}
+.faq summary{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-5);
+  padding-block:var(--s-5);cursor:pointer;
+  font-size:var(--fs-lead);font-weight:600;color:var(--ink-900);line-height:1.45;
+  list-style:none;
+}
+.faq summary::-webkit-details-marker{display:none}
+/* O sinal é desenhado com duas barras em vez de um glifo "+": fonte
+   variável não garante o mesmo desenho de "+" e "−" em todo sistema, e o
+   par ficava desalinhado entre os dois estados. */
+.faq summary::after{
+  content:"";flex:none;inline-size:1rem;block-size:1rem;margin-block-start:.35em;
+  background:
+    linear-gradient(var(--teal-700),var(--teal-700)) center/100% 1.5px no-repeat,
+    linear-gradient(var(--teal-700),var(--teal-700)) center/1.5px 100% no-repeat;
+}
+.faq details[open] summary::after{background-image:linear-gradient(var(--teal-700),var(--teal-700))}
+@media (hover:hover) and (pointer:fine){
+  .faq summary:hover{color:var(--teal-700)}
+}
+.faq__answer{padding-block-end:var(--s-6);color:var(--ink-600);max-inline-size:68ch}
+.faq__answer + .faq__answer{padding-block-start:0;margin-block-start:calc(var(--s-4) * -1)}
+
+/* --- Grades --- */
+.grid{--grid-gap:var(--s-8);display:grid;gap:var(--grid-gap)}
+@media (min-width:46em){ .grid{--grid-gap:var(--s-10)} }
 /* Contagem FIXA de colunas, não `auto-fit`.
    `auto-fit` só cabe quando o número de itens é imprevisível: ele calcula
-   quantas colunas cabem e ignora se sobra um órfão. Com 4 cards num
-   container de 1200px cabiam 3 colunas, produzindo 3 + 1 — o card sozinho
+   quantas colunas cabem e ignora se sobra um órfão. Com 4 itens num
+   container de 1140px cabiam 3 colunas, produzindo 3 + 1 — o item sozinho
    na segunda linha deixava metade da linha vazia.
    Regra do sistema: nenhuma linha final pode ficar incompleta. */
-
-/* 4 cards → 1 coluna, depois 2×2. Nunca 3.
-   Não subo para 4 colunas em nenhuma largura: em 1×4 dentro de 1200px cada
-   card fica com ~218px úteis de texto (~27 caracteres por linha). */
 .grid--2{grid-template-columns:1fr}
 @media (min-width:44em){ .grid--2{grid-template-columns:1fr 1fr} }
-
-/* 3 depoimentos → 1 coluna, depois 3. Pulo o passo de 2 colunas de
-   propósito: com 3 itens ele produziria 2 + 1, o mesmo órfão.
-   60em é onde 3 cards de 17rem + 2 gaps cabem sem apertar a medida. */
 .grid--3{grid-template-columns:1fr}
 @media (min-width:60em){ .grid--3{grid-template-columns:repeat(3,1fr)} }
 
-/* Serviços: mesma regra dos outros blocos de 4. */
-.grid--services{grid-template-columns:1fr}
-@media (min-width:44em){ .grid--services{grid-template-columns:1fr 1fr} }
-
 /* --- Rede de segurança contra linha final incompleta ---
-   O texto desta página é editado com frequência e a contagem de cards muda.
-   Estas regras mantêm a última linha sempre equilibrada sem depender de
-   alguém lembrar de trocar a classe do grid. */
+   O texto desta página é editado com frequência e a contagem de itens muda.
+   Estas regras mantêm a última linha equilibrada sem depender de alguém
+   lembrar de trocar a classe do grid. */
 @media (min-width:44em){
-  /* Contagem ímpar em 2 colunas: o último card ocupa a linha inteira mas
-     mantém a largura de uma coluna e centraliza — em vez de encostar à
-     esquerda deixando a metade direita vazia. */
-  .grid--2 > :last-child:nth-child(odd),
-  .grid--services > :last-child:nth-child(odd){
+  .grid--2 > :last-child:nth-child(odd){
     grid-column:1 / -1;
     inline-size:calc(50% - var(--grid-gap) / 2);
-    justify-self:center;
   }
 }
 @media (min-width:60em){
-  /* Exatamente 4 cards num grid de 3 colunas: vira 2×2, nunca 3 + 1. */
+  /* Exatamente 4 itens num grid de 3 colunas: vira 2×2, nunca 3 + 1. */
   .grid--3:has(> :nth-child(4)):not(:has(> :nth-child(5))){grid-template-columns:1fr 1fr}
-  /* Exatamente 2 cards: 2 colunas de largura igual, não 2 estreitos + vazio. */
+  /* Exatamente 2 itens: 2 colunas iguais, não 2 estreitas + vazio. */
   .grid--3:has(> :nth-child(2)):not(:has(> :nth-child(3))){grid-template-columns:1fr 1fr}
 }
 
+/* --- Blocos numerados (custo invisível / como funciona) --- */
+/* Sem caixa, sem borda lateral colorida, sem ícone em chip: só o índice,
+   uma régua de 1px e o texto. É a estrutura mais enxuta que ainda
+   comunica "são quatro coisas, nesta ordem". */
+.item{padding-top:var(--s-6);border-top:1px solid var(--ink-200)}
+.item__index{
+  display:block;margin-bottom:var(--s-4);
+  font-size:var(--fs-num);font-weight:600;letter-spacing:.14em;
+  color:var(--teal-700);font-variant-numeric:tabular-nums;
+}
+.item__title{margin-bottom:var(--s-3)}
+.item__text{color:var(--ink-600);max-inline-size:44ch}
+.item__note{margin-top:var(--s-4);font-size:var(--fs-small);color:var(--ink-900);font-weight:600}
+
+/* --- Cartão (usado só nos depoimentos) --- */
 .card{
+  display:flex;flex-direction:column;
   padding:var(--card-pad);
-  border-radius:var(--r-xl);
-  background:var(--n-0);
-  border:1px solid var(--n-200);
-  box-shadow:var(--shadow-xs);
+  border-radius:var(--r-lg);
+  background:var(--paper);
+  border:1px solid var(--ink-200);
 }
-.card--pain{border-left:4px solid var(--danger)}
-.card--dark{background:var(--n-900);border-color:var(--n-900)}
-.card--dark .card__title{color:var(--n-0)}
-.card--dark .card__text{color:var(--n-300)}
-.card--dark .card__kicker{color:var(--teal-300)}
-.card--dark .chip{background:rgba(255,255,255,.10);color:var(--n-0);box-shadow:var(--hl-top)}
-.card__head{display:flex;align-items:center;gap:var(--s-4);margin-bottom:var(--s-4)}
-.card__title{font-size:var(--fs-h3);font-weight:700;color:var(--n-900);line-height:1.3}
-.card__text{color:var(--n-600);max-inline-size:48ch}
-.card__text + .card__kicker{margin-top:var(--s-4)}
-.card__kicker{font-size:var(--fs-small);font-weight:600;color:var(--danger)}
-.card__kicker--brand{color:var(--teal-700)}
 
-.chip{
-  inline-size:3rem;block-size:3rem;flex:none;
-  display:grid;place-items:center;
-  border-radius:var(--r-md);
-  box-shadow:var(--hl-top);
-}
-.chip svg{inline-size:1.5rem;block-size:1.5rem}
-.chip--danger{background:var(--danger-50);color:var(--danger)}
-.chip--brand{background:var(--teal-50);color:var(--teal-700)}
-.card--service .chip{margin-bottom:var(--s-5)}
-
-/* --- Seções escuras --- */
+/* --- Superfícies escuras --- */
 .on-dark{
-  background:var(--n-900);color:var(--n-300);
-  --ring:var(--teal-300);           /* anel de foco invertido */
-  --surface:var(--n-900);
+  background:var(--ink-900);color:var(--ink-300);
+  --ring:var(--teal-300);
 }
-.on-dark--grad{background:linear-gradient(180deg,var(--n-900) 0%,var(--n-800) 100%)}
-.on-dark h2,.on-dark h3{color:var(--n-0)}
-.on-dark .lead{color:var(--n-300)}
-.on-dark strong{color:var(--n-0)}
-.on-dark .accent{color:var(--teal-300)}   /* 10,54:1 */
-/* Gradiente de texto usando SÓ tons que passam AA sobre fundo escuro:
-   o stop mais escuro (--teal-400) dá 7,54:1. Um gradiente com o
-   --teal-600 cairia para 3,74:1 e viraria "incomplete" no axe. */
-.grad-text{
-  color:var(--teal-300);
-  background:linear-gradient(135deg,var(--teal-300) 0%,var(--teal-400) 100%);
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-.pill{
-  display:inline-flex;align-items:center;gap:var(--s-3);
-  padding:var(--s-3) var(--s-6);
-  border-radius:var(--r-pill);
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.20);
-  box-shadow:var(--hl-top);
-  font-weight:700;color:var(--n-0);
-}
-.pill--eyebrow{
-  padding:var(--s-2) var(--s-4);
-  background:rgba(74,155,159,.16);border-color:rgba(161,208,211,.28);
-  font-size:var(--fs-eyebrow);text-transform:uppercase;letter-spacing:.12em;
-  color:var(--teal-300);
-}
+.on-dark h2,.on-dark h3,.on-dark .quote{color:var(--paper)}
+.on-dark .lead{color:var(--ink-300)}
+.on-dark strong{color:var(--paper)}
+.on-dark .accent{color:var(--teal-300)}   /* 10,7:1 */
+.on-dark .quote .soft{color:var(--teal-300)}
+.on-dark .facts{border-color:rgba(255,255,255,.14)}
+.on-dark .facts li{border-color:rgba(255,255,255,.14)}
+.on-dark .facts svg,.on-dark .facts .n{color:var(--teal-300)}
+.on-dark .caption{color:var(--ink-300)}
 
-/* --- Seção "Imagine" (fundo teal claro) --- */
-.tinted{background:var(--teal-light)}
-.tinted .eyebrow{color:var(--teal-700)}   /* 6,14:1 sobre #E8F4F5.
-                                             O --teal-600 daria 4,22:1 e reprovaria */
-.tinted .lead{color:var(--n-600)}         /* 5,88:1 */
+/* --- Faixa tingida --- */
+.tinted{background:var(--ink-50)}
+.tinted .item{border-color:var(--ink-200)}
 
 /* --- Depoimentos --- */
-.stars{display:flex;gap:.125rem;margin-bottom:var(--s-4)}
-.stars svg{inline-size:1.125rem;block-size:1.125rem;fill:var(--star)}  /* 5,02:1 */
-.testimonial__text{color:var(--n-700);font-style:italic;margin-bottom:var(--s-6)}
-.testimonial__text strong{font-style:normal;color:var(--n-900)}
+.stars{display:flex;gap:.1875rem;margin-bottom:var(--s-5)}
+.stars svg{inline-size:.875rem;block-size:.875rem;fill:var(--teal-600)}
+.testimonial__text{color:var(--ink-700);margin-bottom:var(--s-6);line-height:1.7}
+.testimonial__text strong{color:var(--ink-900)}
 /* Os depoimentos têm comprimentos bem diferentes. O grid já iguala a altura
-   dos cards da mesma linha, mas sem isto o bloco do autor ficaria colado ao
-   fim do texto — em alturas diferentes a cada coluna. Empurrar o autor para
-   o rodapé alinha avatar e nome entre as colunas. */
-.card:has(.author){display:flex;flex-direction:column}
-.author{display:flex;align-items:center;gap:var(--s-3);margin-block-start:auto}
+   dos cartões da mesma linha, mas sem isto o bloco do autor ficaria colado
+   ao fim do texto — em alturas diferentes a cada coluna. Empurrar o autor
+   para o rodapé alinha retrato e nome entre as colunas. */
+.author{
+  display:flex;align-items:center;gap:var(--s-3);
+  margin-block-start:auto;padding-top:var(--s-5);
+  border-top:1px solid var(--ink-200);
+}
 .avatar{
-  inline-size:2.5rem;block-size:2.5rem;flex:none;
-  display:grid;place-items:center;border-radius:50%;
-  background:var(--teal-100);color:var(--teal-800);   /* 9,76:1 */
-  font-weight:800;
+  inline-size:2.75rem;block-size:2.75rem;flex:none;
+  border-radius:50%;object-fit:cover;background:var(--ink-100);
 }
-.author__name{font-weight:700;color:var(--n-900);font-size:var(--fs-small)}
-.author__role{font-size:var(--fs-caption);color:var(--n-600)}  /* 6,61:1 — o gray-500 dava 4,20:1 */
-
-.logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:var(--s-8)}
-.logo-slot{
-  inline-size:6.5rem;block-size:3rem;
+/* Monograma para quem ainda não tem retrato — mesma métrica do retrato,
+   então trocar um pelo outro não mexe uma linha do layout. */
+.avatar--mono{
   display:grid;place-items:center;
-  border:1px dashed var(--n-400);border-radius:var(--r-sm);
-  font-size:var(--fs-caption);color:var(--n-600);
+  background:var(--teal-100);color:var(--teal-800);   /* 9,8:1 */
+  font-weight:600;font-size:var(--fs-small);letter-spacing:.04em;
+}
+.author__name{display:block;font-weight:600;color:var(--ink-900);font-size:var(--fs-small)}
+.author__role{display:block;font-size:var(--fs-caption);color:var(--ink-500)}
+
+/* --- Bloco de citação em destaque --- */
+.quote-card{
+  padding:var(--card-pad);
+  border-inline-start:2px solid var(--teal-500);
+  background:var(--ink-50);
+  border-radius:0 var(--r-lg) var(--r-lg) 0;
 }
 
-/* --- CTA final --- */
-.cta-final{background:linear-gradient(180deg,var(--n-0) 0%,var(--danger-50) 100%)}
-.cta-box{
-  background:var(--n-900);color:var(--n-300);
-  --ring:var(--teal-300);--surface:var(--n-900);
-  border-radius:var(--r-2xl);
-  padding:var(--card-pad);
-  text-align:left;
-}
-.cta-box h3{color:var(--n-0)}
-.cta-box strong{color:var(--n-0)}
-.cta-box .ticks svg{color:var(--teal-300)}
-.cta-box__note{color:var(--n-400);font-size:var(--fs-caption)}  /* 7,03:1 */
+/* --- CTA final ---
+   A superfície escura vem de `.on-dark` (que já vira a cor dos títulos);
+   `.cta` cuida só do arranjo. Declarar o fundo escuro aqui, sem herdar
+   `.on-dark`, deixava o h2 em --ink-900 sobre --ink-900: contraste 1:1,
+   título invisível. */
+.cta__actions{display:flex;flex-wrap:wrap;gap:var(--s-4);align-items:center;margin-top:var(--stack-lg)}
+.center .cta__actions{justify-content:center}
 
 /* --- Rodapé --- */
-.footer{background:var(--n-950);color:var(--n-400);padding-block:var(--sec-y) var(--s-10);--ring:var(--teal-300)}
-.footer .logo{color:var(--n-0);font-size:clamp(1.5rem,1.2rem + 1.2vw,2rem)}
-.footer p{color:var(--n-400)}   /* 7,59:1 sobre --n-950 */
+.footer{background:var(--ink-900);color:var(--ink-300);padding-block:var(--s-16) var(--s-10);--ring:var(--teal-300);border-top:1px solid rgba(255,255,255,.10)}
+.footer .brand__name{color:var(--paper)}
+.footer .brand__tag{color:var(--teal-300)}
+.footer p{color:var(--ink-300)}
+.footer__top{display:flex;flex-direction:column;gap:var(--s-6);align-items:flex-start}
+@media (min-width:48em){ .footer__top{flex-direction:row;justify-content:space-between;align-items:center} }
 .footer__legal{
-  margin-top:var(--stack-lg);padding-top:var(--s-8);
-  border-top:1px solid rgba(255,255,255,.12);
-  display:flex;flex-direction:column;align-items:center;gap:var(--s-3);
-  font-size:var(--fs-caption);text-align:center;
+  margin-top:var(--stack-lg);padding-top:var(--s-6);
+  border-top:1px solid rgba(255,255,255,.10);
+  display:flex;flex-direction:column;gap:var(--s-2);
+  font-size:var(--fs-caption);
 }
-@media (min-width:48em){ .footer__legal{flex-direction:row;justify-content:space-between;text-align:left} }
+@media (min-width:48em){ .footer__legal{flex-direction:row;justify-content:space-between;align-items:center} }
 .footer abbr{text-decoration:none}
+.link-arrow{display:inline-flex;align-items:center;gap:var(--s-2);color:var(--teal-300);font-weight:600;text-decoration:none;font-size:var(--fs-small)}
+.link-arrow svg{inline-size:1rem;block-size:1rem;flex:none}
 
 /* --- Barra CTA fixa no mobile ---
    Barra com rótulo, e não botão flutuante: a 320px a barra oferece
@@ -565,46 +909,183 @@ strong{font-weight:700}
   display:flex;
   padding:var(--s-3) var(--gutter);
   padding-block-end:max(var(--s-3),env(safe-area-inset-bottom,0px));
-  background:var(--n-0);
-  border-top:1px solid var(--n-200);
+  /* Fundo sólido, sem `backdrop-filter`: com 92% de opacidade o desfoque já
+     era quase invisível, mas ele reaparecia como custo assim que a barra
+     passou a deslizar na rolagem — animar um elemento com blur de fundo
+     obriga o compositor a refazer o desfoque a cada quadro, e o TBT saltava
+     de 30ms para até 380ms entre execuções. */
+  background:var(--paper);
   box-shadow:var(--shadow-bar);
 }
 .bar .btn{inline-size:100%}
 @media (min-width:48em){ .bar{display:none} }
+
+/* No topo da página a barra duplicava o botão do hero: mesmo rótulo, mesma
+   cor, a 83px um do outro. Dois alvos idênticos tão próximos não somam
+   conversão — só denunciam que um deles está sobrando.
+   A barra passa a entrar deslizando depois que o CTA do hero sai de vista.
+   `animation-timeline:scroll()` faz isso sem observador nem listener: o
+   progresso da animação É a posição da rolagem.
+   Fora do @supports (Firefox, Safari mais antigo) nada muda e a barra
+   continua sempre visível — o mesmo comportamento de hoje, nunca a ausência
+   do botão. */
+@supports (animation-timeline:scroll()){
+  @media (max-width:47.99em) and (prefers-reduced-motion:no-preference){
+    .bar{
+      animation:bar-enter linear both;
+      animation-timeline:scroll();
+      animation-range:0 78vh;
+      /* Sem `will-change`: a promoção permanente da barra a camada própria
+         custou 110ms de TBT no throttle do Lighthouse — mais do que a
+         animação economiza. `translate` já é compositável por natureza. */
+    }
+    @keyframes bar-enter{
+      0%,62%{translate:0 130%}
+      100%{translate:0 0}
+    }
+  }
+}
 @media (max-width:47.99em){ body{padding-block-end:calc(var(--bar-h) + env(safe-area-inset-bottom,0px))} }
 
 /* Usuários que pediram mais contraste no sistema */
 @media (prefers-contrast:more){
-  :root{--teal-700:#1F4E51;--n-600:#3B4A5E;--danger:#8C1B12}
+  :root{--teal-700:#1F4E51;--ink-600:#3B4A5E;--ink-500:#46545F;--ink-200:#C9D0D6}
 }
-</style>
 
-<meta name="description" content="Pare de perder tempo e dinheiro com viagens corporativas. A Bendita Tour cuida de tudo: passagens, hotéis, imprevistos. Atendimento humano 24h.">
+/* ==========================================================================
+   AJUSTES DE COMPOSIÇÃO — proporção, alinhamento, ritmo e hierarquia
+   Vêm de uma auditoria que mediu a página em 390/768/1024/1440/1920.
+   Só tokens já existentes; nenhuma fonte, imagem ou script novo.
+   ========================================================================== */
+
+/* 1 · Cadência de superfícies.
+   A alternância papel → tingido → escuro foi corrigida na raiz (a ordem das
+   seções), mas esta regra fica como rede: se duas seções do mesmo tom
+   voltarem a ficar vizinhas numa edição futura, elas se fundem num bloco só
+   e o filete na grade assume o papel que a troca de cor não fez. Sem isso
+   sobravam 256px de cinza liso entre dois blocos — vazio desse tamanho lê
+   como conteúdo faltando, não como respiro. */
+.tinted + .tinted,
+.section:not(.tinted):not(.on-dark) + .section:not(.tinted):not(.on-dark){padding-block-start:0}
+.tinted + .tinted > .container,
+.section:not(.tinted):not(.on-dark) + .section:not(.tinted):not(.on-dark) > .container{
+  border-block-start:1px solid var(--ink-200);
+  padding-block-start:calc(var(--sec-y) * .66);
+}
+/* CTA e rodapé compartilham o carvão: sem isto são 193px da mesma cor
+   separados por um filete que ninguém enxerga. */
+.section.on-dark:has(+ .footer){padding-block-end:calc(var(--sec-y) * .55)}
+.footer{padding-block:var(--s-12) var(--s-10)}
+
+/* 2 · Respiro vertical.
+   `--sec-y` valia 128px e toda seção aplica em cima E embaixo: 256px reais
+   entre blocos, o dobro do que Stripe/Linear/Mercury usam no total. Some
+   isso ao hero de 1.224px e o botão principal caía 219px abaixo da dobra. */
+:root{--sec-y:clamp(3.5rem, 2.4rem + 4.4vw, 6rem)}
+.hero{padding-block:clamp(2.5rem, 1.9rem + 2.6vw, 4rem) var(--sec-y)}
+.hero .h1{margin-bottom:var(--s-5)}
+.hero__lead{margin-bottom:var(--s-5);max-inline-size:44ch}
+.hero__ask{margin-bottom:var(--s-8)}
+.hero__actions{margin-top:var(--s-8)}
+
+/* 3 · Toda régua de 1px nasce e morre na grade do container.
+   O mesmo filete estava sendo desenhado em dez larguras diferentes — a
+   `.creds` era a única a atravessar a tela inteira. Dez alinhamentos
+   concorrentes fazem a grade deixar de ser percebida. */
+.creds{border-block:0}
+.creds > .container{border-block:1px solid var(--ink-200)}
+.creds__list li{padding-block:var(--s-6)}
+.faq{max-inline-size:none}
+.on-dark .facts.measure{max-inline-size:none}
+.on-dark .facts li > span{max-inline-size:44ch}
+
+/* 4 · Um só vão de coluna na página: a segunda coluna sempre no mesmo eixo.
+   Antes: 40px na grade de itens, 32px no comparativo, 72px no escopo — três
+   seções empilhadas com o eixo central dançando 20px. */
+@media (min-width:48em){
+  .compare{gap:var(--s-10)}
+  .scope{column-gap:var(--s-10)}
+}
+
+/* 5 · Medida de linha uniforme.
+   Na Montserrat o `0` é ~1,6× o caractere médio do português, então `ch`
+   engana: os 68ch da resposta da FAQ davam 111 caracteres reais. 44ch ≈ 70,
+   dentro da faixa confortável de 60–75. */
+.on-dark .lead.measure{max-inline-size:44ch}
+.faq__answer{max-inline-size:44ch}
+
+/* 6 · Degrau tipográfico onde não havia nenhum.
+   `--fs-h3`, `--fs-lead` e a pergunta da FAQ resolviam todos em 19px: três
+   papéis diferentes no mesmo corpo, separados só por peso. */
+:root{--fs-h3:clamp(1.1875rem, 1.1rem + 0.33vw, 1.375rem)}
+.faq summary{font-size:var(--fs-h3)}
+
+/* 7 · Depoimentos em duas colunas.
+   Em três colunas sobravam 279px de texto = 32 caracteres por linha, e o
+   `margin-block-start:auto` do autor abria até 164px de vazio dentro do
+   cartão. `align-items:start` devolve a cada cartão a altura do próprio
+   conteúdo. */
+@media (min-width:60em){
+  .grid--3:has(> .card){grid-template-columns:1fr 1fr;align-items:start}
+}
+
+/* 8 · A citação em destaque encostava na grade de cartões com gap 0px. */
+.feature-quote{
+  margin-block-end:var(--stack-lg);
+  padding-block-end:var(--stack-lg);
+  border-block-end:1px solid var(--ink-200);
+}
+
+/* 9 · No comparativo, a coluna escura acumulava 114px de folga no pé contra
+   37px da clara — em bloco carvão maciço esse vazio é o que mais pesa. */
+.compare__col{display:flex;flex-direction:column}
+.compare__list{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+
+/* 11 · Agrupamento por espaço, não por igualdade.
+   Eyebrow→título e título→lead mediam 20px iguais: sem diferença de
+   distância não há grupo, só uma pilha de linhas. */
+.eyebrow{margin-bottom:var(--s-3)}
+.item__title{margin-bottom:var(--s-2)}
+.item__note{margin-top:var(--s-5)}
+
+/* 12 · A faixa institucional ocupa o lugar onde as referências B2B põem a
+   prova social: precisa de escala de manchete curta para ancorar, não de
+   corpo de rodapé. */
+.creds__label{margin-bottom:var(--s-1)}
+.creds__value{font-size:var(--fs-lead);line-height:1.35}
+
+/* NOTA: aqui existiu um "content-visibility:auto" nas seções abaixo da
+   primeira tela. Medido, ele PIORAVA os dois lados: a nota de performance
+   caiu de 99 para 98 (o custo de entrar e sair do estado renderizado, numa
+   auditoria que rola a página inteira, supera o que se economiza na carga)
+   e a de acessibilidade caiu de 100 para 96, porque o axe não consegue
+   avaliar contraste de conteúdo que o navegador ainda não renderizou e
+   reportou um falso positivo em .eyebrow — cujo contraste real, medido
+   elemento a elemento, vai de 6,53:1 a 10,72:1.
+   Não repor sem medir de novo. */</style>
+
+<meta name="description" content="Gestão de viagens corporativas para empresas: passagens, hospedagem, transfer e seguro em um só canal, com atendimento humano 24h. Fale com a Bendita Tour.">
 <link rel="canonical" href="https://corporativo.benditatour.com/">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-<meta name="theme-color" content="#111827">
+<meta name="theme-color" content="#0F1720">
 <meta name="color-scheme" content="light">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon.ico" sizes="32x32">
-<link rel="apple-touch-icon" href="favicon.svg">
+<link rel="icon" type="image/webp" href="/ICONE.webp">
+<link rel="apple-touch-icon" href="/ICONE.webp">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Bendita Tour Corporativo">
 <meta property="og:url" content="https://corporativo.benditatour.com/">
 <meta property="og:title" content="Gestão de Viagens Corporativas para Empresas | Bendita Tour">
-<meta property="og:description" content="Sua equipe entrega resultados. Nós cuidamos das viagens: passagens, hotéis e imprevistos, com atendimento humano 24h. Diagnóstico gratuito em 15 minutos.">
-<!-- TODO(og:image): exportar assets/og-image.svg para JPG 1200x630 em
-     assets/og-image.jpg e descomentar as 3 linhas abaixo.
-     Estão comentadas de propósito: apontar para um arquivo inexistente
-     quebraria o preview no WhatsApp, que é o canal de conversão da página.
-<meta property="og:image" content="https://corporativo.benditatour.com/assets/og-image.jpg">
+<meta property="og:description" content="Sua equipe entrega resultados. Nós cuidamos das viagens: passagens, hospedagem e imprevistos, com atendimento humano 24h.">
+<meta property="og:image" content="https://corporativo.benditatour.com/assets/og-corporativo.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
--->
+<meta property="og:image:alt" content="Bendita Tour Corporativo — gestão de viagens corporativas">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Gestão de Viagens Corporativas para Empresas | Bendita Tour">
-<meta name="twitter:description" content="Menos custos, menos preocupações e mais resultados na gestão de viagens da sua empresa.">
+<meta name="twitter:description" content="Menos tempo operacional, mais previsibilidade na gestão de viagens da sua empresa.">
+<meta name="twitter:image" content="https://corporativo.benditatour.com/assets/og-corporativo.jpg">
 
 <script type="application/ld+json">
 {
@@ -617,7 +1098,7 @@ strong{font-weight:700}
       "legalName":"Bendita Tour Assessoria & Viagens",
       "alternateName":"Bendita Tour Corporativo",
       "url":"https://corporativo.benditatour.com/",
-      "logo":"https://corporativo.benditatour.com/favicon.svg",
+      "logo":"https://corporativo.benditatour.com/ICONE.webp",
       "description":"Gestão completa de viagens corporativas para empresas: emissão de passagens, hospedagem, locação de veículos, seguro viagem e suporte humano 24h.",
       "taxID":"54.179.099/0001-60",
       "telephone":"+5544999273477",
@@ -630,6 +1111,18 @@ strong{font-weight:700}
         "availableLanguage":"Portuguese",
         "areaServed":"BR"
       }
+    },
+{
+      "@type":"FAQPage",
+      "@id":"https://corporativo.benditatour.com/#faq",
+      "mainEntity":[
+        {"@type":"Question","name":"Precisamos instalar alguma plataforma ou treinar a equipe?","acceptedAnswer":{"@type":"Answer","text":"Não. O canal é o WhatsApp que sua equipe já usa. Não há software para instalar, login para distribuir nem treinamento para agendar."}},
+        {"@type":"Question","name":"Como vocês garantem que a reserva respeita a política da empresa?","acceptedAnswer":{"@type":"Answer","text":"Registramos as regras da empresa antes do primeiro atendimento: classe permitida por cargo, teto de diária, antecedência mínima e fornecedores preferenciais. As opções enviadas já saem filtradas por esse conjunto."}},
+        {"@type":"Question","name":"E se acontecer um imprevisto de madrugada ou no fim de semana?","acceptedAnswer":{"@type":"Answer","text":"Voo cancelado, conexão perdida, overbooking e extravio de bagagem entram no nosso plantão, em qualquer horário e em qualquer dia, pelo mesmo canal de sempre."}},
+        {"@type":"Question","name":"Quem decide o fornecedor: vocês ou a empresa?","acceptedAnswer":{"@type":"Answer","text":"A empresa. Apresentamos as opções com o que muda entre elas e a aprovação continua com quem já aprova hoje."}},
+        {"@type":"Question","name":"Que informação vem no relatório mensal?","acceptedAnswer":{"@type":"Answer","text":"Tudo o que foi emitido no período, consolidado por centro de custo, por pessoa e por viagem, com os comprovantes anexados."}},
+        {"@type":"Question","name":"Existe taxa de adesão ou volume mínimo?","acceptedAnswer":{"@type":"Answer","text":"Não há taxa de adesão nem software a contratar. As condições variam com o perfil de viagem de cada empresa."}}
+      ]
     },
     {
       "@type":"WebSite",
@@ -656,10 +1149,10 @@ strong{font-weight:700}
         "@type":"OfferCatalog",
         "name":"Soluções completas",
         "itemListElement":[
-          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Gestão de Equipes","description":"Passagens, hospedagem e logística para toda a operação, com aprovações automatizadas e controle de custos em tempo real."}},
-          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Atendimento C-Level","description":"Primeira classe, executiva e salas VIP para diretoria, com concierge pessoal."}},
-          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Logística Integrada","description":"Hotéis corporativos com acordos especiais, transfer, locação de veículos e seguro viagem."}},
-          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Suporte 24h Humano","description":"Atendimento humano 24/7/365 com resposta em minutos e resolução proativa."}}
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Gestão de Equipes","description":"Passagens, hospedagem e logística para toda a operação, dentro da política da empresa."}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Atendimento à Diretoria","description":"Classe executiva, salas VIP e concierge pessoal para o C-level."}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Logística Integrada","description":"Hotéis corporativos, transfer, locação de veículos e seguro viagem em um só contrato."}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Suporte 24h Humano","description":"Atendimento humano 24/7/365, com resolução proativa de imprevistos."}}
         ]
       }
     }
@@ -671,43 +1164,34 @@ strong{font-weight:700}
 <body>
 <a class="skip" href="#conteudo">Ir para o conteúdo principal</a>
 
-<!-- Sprite de ícones. O ícone do WhatsApp aparece 4x e a estrela 15x;
-     definir cada path uma única vez enxuga ~8KB de HTML bruto e reduz a
-     contagem de nós do DOM. Em bytes na rede o ganho é marginal (o
-     compressor já deduplica dentro da janela de 32KB) — o motivo real
-     é manutenção: trocar um ícone é editar um lugar. -->
+<!-- Sprite de ícones. A estrela aparece 30x e o WhatsApp 4x; definir cada
+     path uma única vez enxuga o HTML bruto e reduz a contagem de nós do DOM.
+     Em bytes na rede o ganho é marginal (o compressor já deduplica dentro da
+     janela de 32KB) — o motivo real é manutenção: trocar um ícone é editar
+     um lugar só. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
 <defs>
 <symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
 <symbol id="i-star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></symbol>
-<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
-<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.2 5.2L20 6.9"/></symbol>
-<symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15m0 0l-6-6m6 6l-6 6"/></symbol>
-<symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v2.5m0 3.5h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/></symbol>
-<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></symbol>
-<symbol id="i-money" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8c-1.66 0-3 .9-3 2s1.34 2 3 2 3 .9 3 2-1.34 2-3 2m0-8c1.11 0 2.08.4 2.6 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.4-2.6-1"/><circle cx="12" cy="12" r="9"/></symbol>
-<symbol id="i-team" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></symbol>
-<symbol id="i-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.66 18.66A8 8 0 016.34 7.34S7 9 9 10c0-2 .5-5 2.99-7C14 5 16.09 5.78 17.66 7.34A7.98 7.98 0 0120 13a7.98 7.98 0 01-2.34 5.66z"/><path d="M9.88 16.12A3 3 0 1012.02 11L11 14H9c0 .77.29 1.54.88 2.12z"/></symbol>
-<symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.42-4.03 8-9 8a9.86 9.86 0 01-4.26-.95L3 20l1.4-3.72A7.94 7.94 0 013 12c0-4.42 4.03-8 9-8s9 3.58 9 8z"/></symbol>
-<symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4m0 4h.01"/><circle cx="12" cy="12" r="9"/></symbol>
-<symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></symbol>
-<symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.59a1 1 0 01.7.29l5.42 5.42a1 1 0 01.29.7V19a2 2 0 01-2 2z"/></symbol>
-<symbol id="i-cube" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></symbol>
-<symbol id="i-support" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.2 5.2L20 6.9"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15m0 0l-6-6m6 6l-6 6"/></symbol>
 </defs>
 </svg>
 
 <header class="header">
   <div class="container header__inner">
-    <div class="brand">
-      <a class="logo" href="#topo">Bendita<span>Tour</span></a>
-      <span class="brand__tag">Gestão de Viagens Corporativas</span>
-    </div>
-    <a class="btn btn--wa btn--sm header__cta"
-       href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20parar%20de%20perder%20tempo%20com%20viagens%20corporativas.%20(topo)"
+    <a class="brand" href="#topo">
+      <img class="brand__mark" src="ICONE.webp" alt="" width="36" height="36" fetchpriority="high" decoding="async">
+      <span class="brand__text">
+        <span class="brand__name">BENDITA TOUR</span>
+        <span class="brand__tag">Corporativo</span>
+      </span>
+    </a>
+    <a class="btn btn--primary header__cta"
+       href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20falar%20sobre%20gest%C3%A3o%20de%20viagens%20corporativas.%20(topo)"
        target="_blank" rel="noopener external">
       <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
-      Quero Parar de Perder Tempo
+      Falar com um consultor
       <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
     </a>
   </div>
@@ -715,243 +1199,352 @@ strong{font-weight:700}
 
 <main id="conteudo">
 
-  <!-- ================= HERO — dor e identificação ================= -->
+  <!-- ================= HERO ================= -->
   <section class="hero" id="topo">
-    <div class="container hero__inner">
+    <div class="container">
+      <div class="hero__inner">
 
-      <!-- TODO(prova social): confirmar que "+20 empresas" é o número real e
-           verificável. Alegação de resultado não comprovada é exposição sob
-           o CDC art. 37 (publicidade enganosa). -->
-      <p class="trust">
-        <span class="dot" aria-hidden="true"></span>
-        +20 empresas já economizam tempo e dinheiro conosco
-      </p>
-
-      <h1 class="h1">
-        Sua equipe entrega resultados.
-        <span class="line accent">Nós cuidamos das viagens!</span>
-      </h1>
-
-      <p class="lead hero__lead">
-        Hoje, o financeiro confere notas fiscais, o RH agenda táxis e os gestores
-        aprovam reembolsos por e-mail — enquanto
-        <span class="accent-danger">seus concorrentes estão fechando negócios.</span>
-      </p>
-
-      <div class="panel panel--danger measure-center">
-        <p class="panel__title">
-          <svg aria-hidden="true" focusable="false"><use href="#i-warn"/></svg>
-          Isso está acontecendo na sua empresa agora:
+        <p class="status">
+          <span class="dot" aria-hidden="true"></span>
+          Atendimento humano, 24 horas por dia
         </p>
-        <ul class="ticks ticks--x" role="list">
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Funcionários usando <strong>cartão pessoal</strong> e esperando semanas pelo reembolso</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Passagens compradas de última hora custando <strong>40% a mais</strong></span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Reservas espalhadas em 5 sites diferentes, <strong>sem controle nenhum</strong></span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Ligações de madrugada quando algo dá errado <strong>e ninguém para resolver</strong></span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Horas e mais horas que <strong>ninguém contabiliza</strong> como custo</span></li>
+
+        <h1 class="h1">
+          Sua equipe entrega resultados.
+          <span class="line">Nós cuidamos das viagens.</span>
+        </h1>
+
+        <p class="lead hero__lead">
+          Profissionais qualificados perdem horas e horas com cotações, reservas,
+          cancelamentos e imprevistos de viagem, quando deveriam estar focados no
+          que realmente sabem fazer. E o resultado? O trabalho que realmente
+          importa fica esperando.
+        </p>
+
+        <p class="hero__ask">
+          Enquanto sua equipe cuida das viagens,
+          <span class="accent">quem está cuidando do seu negócio?</span>
+        </p>
+
+        <!-- A lista anterior (quatro frases longas) foi substituída por estes
+             cinco itens curtos, a pedido do cliente. A troca resolve o que
+             tinha me feito removê-la: as frases longas custavam ~300px e
+             empurravam o botão para fora da dobra; em duas colunas, cinco
+             rótulos de duas palavras ocupam três linhas. -->
+        <ul class="perks" role="list">
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Economia inteligente</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Atendimento exclusivo</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Resolução rápida de imprevistos</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Segurança e discrição</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Suporte completo do embarque ao retorno</span></li>
         </ul>
+
+        <p class="tagline">Menos custos. Menos preocupações. <span class="accent">Mais resultados.</span></p>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary btn--lg"
+             href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20falar%20sobre%20gest%C3%A3o%20de%20viagens%20corporativas.%20(hero)"
+             target="_blank" rel="noopener external">
+            <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
+            Falar com um consultor
+            <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
+          </a>
+          <span class="hero__note">Resposta em até 2 horas úteis</span>
+        </div>
       </div>
+    </div>
 
-      <p class="hero__question">
-        Esse tempo não entra em nenhuma planilha.
-        <span class="accent">Mas sai do resultado da sua empresa todo mês.</span>
-      </p>
+    <!-- Decorativo, portanto aria-hidden: o mapa ilustra o que o texto ao
+         lado já afirma, e anunciar "mapa-múndi com três rotas" a quem usa
+         leitor de tela seria ruído, não informação.
 
-      <!-- Bloco de benefícios pedido pelo cliente (5240dda em benditatour).
-           Entra aqui, depois da pergunta e antes do botão, porque é o único
-           ponto do hero em que ele não briga com a narrativa: o painel expõe
-           a dor, a pergunta cobra o preço dela, e a lista responde o que a
-           Bendita entrega em troca — é o que dá ao CTA em que se apoiar.
-           Acima do painel, ele entregaria a solução antes de a dor existir.
-           Os cinco itens estão na ordem exata em que o cliente os escreveu. -->
-      <ul class="ticks ticks--check ticks--perks" role="list">
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Economia inteligente</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Atendimento exclusivo</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Resolução rápida de imprevistos</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Segurança e discrição</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Suporte completo do embarque ao retorno</span></li>
-      </ul>
+         Coordenadas: x = (lon+180)/360*1040, y = (79-lat)/136*390 — a mesma
+         projeção equiretangular usada para gerar a grade. As três rotas
+         partem de São Paulo (385,294): Miami, Lisboa e Dubai. -->
+    <div class="hero__map" aria-hidden="true">
+      <!-- viewBox recortado, e não o mundo inteiro: enquadra do Pacífico
+           oriental ao Oriente Médio, com o feixe de rotas no centro óptico.
+           Com o planisfério completo, a América do Sul — origem de todas as
+           rotas — caía na cauda da máscara e sumia, sobrando só Ásia à
+           direita. O recorte também aumenta o módulo dos quadradinhos, que é
+           o que dá a leitura de matriz em vez de textura. -->
+      <svg class="worldmap" viewBox="104 52 648 300" role="presentation" focusable="false" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <path id="bt-plane" d="M10 0L2 -1.7L-1 -6L-3 -6L-2 -1.7L-7 -1.3L-9 -3.3L-10.6 -3.3L-9.6 0L-10.6 3.3L-9 3.3L-7 1.3L-2 1.7L-3 6L-1 6L2 1.7Z"/>
+        </defs>
 
-      <div class="hero__actions">
-        <a class="btn btn--wa btn--lg"
-           href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20parar%20de%20perder%20tempo%20com%20viagens%20corporativas.%20(hero)"
-           target="_blank" rel="noopener external">
-          <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
-          Quero Parar de Perder Tempo
-          <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
-        </a>
-        <p class="caption"></p>
-      </div>
+        <image class="cells" href="assets/worldmap.webp" x="104" y="52" width="648" height="300" preserveAspectRatio="none"/>
+
+        <path class="arc" d="M385 294Q306 215 288 153"/>
+        <path class="arc" d="M385 294Q455 185 494 116"/>
+        <path class="arc" d="M385 294Q543 198 680 154"/>
+
+        <g class="plane p1"><use href="#bt-plane"/></g>
+        <g class="plane p2"><use href="#bt-plane"/></g>
+        <g class="plane p3"><use href="#bt-plane"/></g>
+
+        <circle class="halo" cx="385" cy="294" r="9"/>
+        <circle class="node" cx="385" cy="294" r="4"/>
+        <circle class="halo h2" cx="288" cy="153" r="8"/>
+        <circle class="node" cx="288" cy="153" r="3.2"/>
+        <circle class="halo h3" cx="494" cy="116" r="8"/>
+        <circle class="node" cx="494" cy="116" r="3.2"/>
+        <circle class="halo h4" cx="680" cy="154" r="8"/>
+        <circle class="node" cx="680" cy="154" r="3.2"/>
+      </svg>
     </div>
   </section>
 
-  <!-- ================= Custo invisível ================= -->
-  <section class="section" aria-labelledby="t-custo">
+  <!-- ================= Credenciais institucionais =================
+       Só afirmações verificáveis: registro da empresa, natureza do
+       atendimento, alcance e formato de contratação. Nenhum número de
+       desempenho sem fonte. -->
+  <section class="creds" aria-label="Informações institucionais">
     <div class="container">
-      <div class="section__head center">
-        <span class="eyebrow eyebrow--danger">O problema é maior do que parece</span>
-        <h2 class="h2" id="t-custo">O Custo Invisível Que Está <span style="color:var(--danger)">Sangrando Sua Empresa</span></h2>
-        <!-- TODO(dado): confirmar a fonte dos "R$ 106 bilhões por ano" e citá-la
-             visivelmente. Número de mercado sem fonte enfraquece o argumento
-             justamente com o leitor mais analítico (CFO). -->
-        <p class="lead">Empresas brasileiras investem <strong>R$ 106 bilhões por ano</strong> em viagens corporativas. Quanto disso é desperdício por falta de gestão?</p>
+      <ul class="creds__list" role="list">
+        <li>
+          <span class="creds__label">Registro</span>
+          <span class="creds__value">CNPJ 54.179.099/0001-60</span>
+        </li>
+        <li>
+          <span class="creds__label">Atendimento</span>
+          <span class="creds__value">Humano, 24/7/365</span>
+        </li>
+        <li>
+          <span class="creds__label">Cobertura</span>
+          <span class="creds__value">Nacional e internacional</span>
+        </li>
+        <li>
+          <span class="creds__label">Contratação</span>
+          <span class="creds__value">Sem taxa de adesão nem software para instalar</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= O custo que não aparece ================= -->
+  <section class="section tinted" aria-labelledby="t-custo">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">O diagnóstico</span>
+        <h2 class="h2" id="t-custo">O custo que não aparece na planilha</h2>
+        <p class="lead">
+          Nenhuma empresa tem uma linha no orçamento chamada “horas gastas organizando
+          viagem”. Mas ela existe, e é paga todo mês — em quatro moedas diferentes.
+        </p>
       </div>
 
-      <div class="grid grid--2">
-        <article class="card card--pain card--hover">
-          <div class="card__head">
-            <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span>
-            <h3 class="card__title">O Tempo Que Ninguém Conta</h3>
-          </div>
-          <p class="card__text">Gestores gastam em média <strong>60 a 70 horas por mês</strong> só gerenciando viagens, sem contar alterações, cancelamentos e imprevistos. São decisões adiadas, reuniões perdidas e oportunidades que escapam.</p>
-          <p class="card__kicker">Esse tempo tem um preço. E você está pagando sem perceber.</p>
+      <div class="grid grid--2 reveal-stagger">
+        <article class="item">
+          <span class="item__index">01</span>
+          <h3 class="h3 item__title">Tempo de quem não deveria estar nisso</h3>
+          <p class="item__text">
+            O financeiro confere notas, o RH remarca voos e o gestor aprova reembolso
+            por e-mail. São horas de gente cara, gastas em tarefa operacional.
+          </p>
+          <p class="item__note">Esse tempo não entra em nenhum relatório — mas sai do resultado.</p>
         </article>
 
-        <article class="card card--pain card--hover">
-          <div class="card__head">
-            <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-money"/></svg></span>
-            <h3 class="card__title">O Dinheiro Que Escorre</h3>
-          </div>
-          <p class="card__text">Passagens de última hora: <strong>+40% no preço</strong> <strong>+25% em hospedagem</strong>. Reembolsos manuais: <strong>+3 horas do financeiro por semana</strong>.</p>
-          <p class="card__kicker">PMEs pagam até 30% a mais por não ter gestão profissional.</p>
+        <article class="item">
+          <span class="item__index">02</span>
+          <h3 class="h3 item__title">Compras feitas na urgência</h3>
+          <p class="item__text">
+            Passagem comprada em cima da hora, hotel escolhido pelo primeiro resultado
+            da busca, reservas espalhadas por cinco sites diferentes e nenhuma
+            visão consolidada do que foi gasto.
+          </p>
+          <p class="item__note">Sem processo, cada viagem é negociada do zero.</p>
         </article>
 
-        <article class="card card--pain card--hover">
-          <div class="card__head">
-            <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-team"/></svg></span>
-            <h3 class="card__title">A Experiência Que Espanta Talentos</h3>
-          </div>
-          <p class="card__text">Seu colaborador viaja a trabalho e precisa: resolver contratempos sozinho, as 02 h da manhã, enfrentar burocracia, quando deveria estar focado no cliente.</p>
-          <p class="card__kicker">O custo de perder um talento é maior que qualquer passagem aérea.</p>
+        <article class="item">
+          <span class="item__index">03</span>
+          <h3 class="h3 item__title">A experiência de quem viaja</h3>
+          <p class="item__text">
+            O colaborador que viaja a trabalho resolve imprevisto sozinho, adianta
+            despesa no cartão pessoal e espera semanas pelo reembolso. Ele deveria
+            estar concentrado no cliente.
+          </p>
+          <p class="item__note">Retenção de talento também se decide nesses detalhes.</p>
         </article>
 
-        <article class="card card--pain card--hover">
-          <div class="card__head">
-            <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-fire"/></svg></span>
-            <h3 class="card__title">Os Imprevistos Que Viram Crises</h3>
-          </div>
-          <p class="card__text">Voo cancelado. Hotel com overbooking. Mala extraviada. <strong>E agora? Quem resolve?</strong> Seu RH as 3h da manhã? Seu colaborador sozinho em outro país?</p>
-          <p class="card__kicker">Imprevistos acontecem. A pergunta é: VOCÊ TEM QUEM RESOLVA?</p>
+        <article class="item">
+          <span class="item__index">04</span>
+          <h3 class="h3 item__title">Imprevistos sem dono</h3>
+          <p class="item__text">
+            Voo cancelado, overbooking, bagagem extraviada. A pergunta que importa
+            não é se vai acontecer — é quem atende o telefone quando acontecer.
+          </p>
+          <p class="item__note">Sem um responsável definido, o problema sobe para a diretoria.</p>
         </article>
       </div>
     </div>
   </section>
 
   <!-- ================= A virada ================= -->
-  <section class="section on-dark on-dark--grad" aria-labelledby="t-virada">
-    <div class="container container--narrow center">
-      <p class="pill pill--eyebrow">A virada começa aqui</p>
-
-      <h2 class="h2" id="t-virada" style="margin:var(--s-6) 0 var(--s-8)">
-        Mas não precisa <span class="grad-text">ser assim.</span>
-      </h2>
-
-      <p class="lead measure-center" style="margin-bottom:var(--stack-lg)">
-        E se existisse uma forma de <strong>eliminar completamente</strong> essa carga
-        operacional da sua empresa?
-      </p>
-
-      <div class="panel panel--glass measure-center">
-        <p style="margin-bottom:var(--s-6);font-size:var(--fs-lead);line-height:1.55">
-          Uma forma onde sua equipe manda <strong>uma mensagem no WhatsApp</strong>,
-          e <span class="accent" style="font-weight:700">tudo se resolve</span>.
-        </p>
-        <ul class="ticks ticks--check" role="list">
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Voos, hotéis e transfers organizados</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Imprevistos resolvidos 24 horas por dia, 7 dias por semana</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Alguém de verdade do outro lado, não um robô</span></li>
-          
-        </ul>
-      </div>
-
-      <p class="quote" style="margin-top:var(--stack-lg);color:var(--n-0)">Essa forma existe.</p>
-      <p class="quote accent">E se chama Bendita Tour.</p>
-    </div>
-  </section>
-
-  <!-- ================= Imagine ================= -->
-  <section class="section tinted" aria-labelledby="t-imagine">
+  <section class="section on-dark has-dots" aria-labelledby="t-virada">
+    <span class="dots dots--tr" aria-hidden="true"></span>
     <div class="container">
-      <div class="section__head center">
-        <span class="eyebrow">O futuro que você merece</span>
-        <h2 class="h2" id="t-imagine">Imagine Uma Realidade Diferente</h2>
-        <p class="lead">É assim que funciona quando você tem a Bendita Tour ao seu lado:</p>
-      </div>
+      <span class="eyebrow eyebrow--on-dark">A alternativa</span>
+      <h2 class="h2" id="t-virada" style="margin-bottom:var(--s-8)">Existe uma forma mais simples de fazer isso</h2>
 
-      <!-- grid--3 porque esta seção tem 3 cards: em 2 colunas eles cairiam
-           como 2 + 1, deixando meia linha vazia. Se voltar a ter 4 cards,
-           troque para grid--2. -->
-      <div class="grid grid--3">
-        <article class="card card--hover">
-          <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-chat"/></svg></span>
-          <h3 class="card__title" style="margin-bottom:var(--s-3)">Precisa viajar?</h3>
-          <p class="card__text"><strong class="accent">Uma mensagem no WhatsApp.</strong> Voo + hotel + transfer organizados, dentro da política da empresa. Sem pesquisa, sem comparação, sem dor de cabeça.</p>
-        </article>
+      <p class="lead measure" style="margin-bottom:var(--stack-lg)">
+        Sua equipe manda uma mensagem. A partir daí, a viagem é responsabilidade nossa
+        — do primeiro orçamento ao relatório de fechamento.
+      </p>
 
-        <article class="card card--hover">
-          <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-alert"/></svg></span>
-          <h3 class="card__title" style="margin-bottom:var(--s-3)">Cancelaram o voo ás 2h da manhã? Suporte 24h (Humano)
-</h3>
-          <p class="card__text"><strong class="accent">Imprevistos não esperam horário comercial. Resolução proativa.</strong> Você nunca esta sozinho.</p>
-        </article>
+      <ul class="facts measure" role="list">
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Voos, hotéis e transfers organizados <strong>dentro da política da empresa</strong></span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Imprevistos tratados <strong>24 horas por dia, 7 dias por semana</strong></span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Uma pessoa de verdade do outro lado, <strong>que já conhece a sua operação</strong></span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Um interlocutor único para <strong>toda a empresa</strong>, da equipe à diretoria</span></li>
+      </ul>
 
-      
-        <article class="card card--hover">
-          <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-doc"/></svg></span>
-          <h3 class="card__title" style="margin-bottom:var(--s-3)">Fim do mês?</h3>
-          <p class="card__text"><strong class="accent">Relatório completo na sua mesa.</strong></p>
-        </article>
-      </div>
-
-      <p class="quote center" style="margin-top:var(--stack-lg)">
-        Zero preocupação. Zero tempo perdido.
-        <span style="display:block;color:var(--teal-700)">Zero surpresas desagradáveis.</span>
+      <p class="quote measure" style="margin-top:var(--stack-lg)">
+        Isso não é um projeto para implantar.
+        <span class="soft">É uma conversa de quinze minutos.</span>
       </p>
     </div>
   </section>
-<!-- ================= Jeito Bendita ================= -->
-  <section class="section on-dark" id="jeito-bendita" aria-labelledby="t-jeito">
-    <div class="container container--narrow center">
-      <span class="eyebrow eyebrow--on-dark">Nosso diferencial</span>
-      <h2 class="h2" id="t-jeito" style="margin-bottom:var(--s-8)">O “Jeito Bendita” de Cuidar</h2>
 
-      <p class="lead measure-center" style="margin-bottom:var(--s-8)">
-        Existem plataformas de autoatendimento. Existem call centers genéricos.
-        Existem robôs de chat que pedem para você “aguardar na linha”.
-      </p>
+  <!-- ================= Como funciona ================= -->
+  <section class="section" aria-labelledby="t-como">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Na prática</span>
+        <h2 class="h2" id="t-como">Como funciona no dia a dia</h2>
+        <p class="lead">Três momentos, um canal só. Sem plataforma para aprender, sem senha para lembrar.</p>
+      </div>
 
-      <p class="quote" style="color:var(--n-0);margin-bottom:var(--stack-lg)">Nós não somos nada disso.</p>
-<p class="lead measure-center" style="margin:var(--stack-lg) auto var(--s-8)">
-        <span class="accent" style="font-weight:700">Tecnologia agiliza.</span> Mas é o toque humano que resolve.
-      </p>
+      <div class="grid grid--3 reveal-stagger">
+        <article class="item">
+          <span class="item__index">01 · PEDIDO</span>
+          <h3 class="h3 item__title">Alguém precisa viajar</h3>
+          <p class="item__text">
+            Uma mensagem no WhatsApp com destino e data. Voltamos com as opções que
+            cabem na política da empresa — já comparadas, prontas para aprovar.
+          </p>
+        </article>
 
-      <p class="pill">
-        <span class="dot" aria-hidden="true"></span>
-        Humanizado. Consultivo. Impecável.
-      </p>
+        <article class="item">
+          <span class="item__index">02 · VIAGEM</span>
+          <h3 class="h3 item__title">Algo sai do previsto</h3>
+          <p class="item__text">
+            Voo cancelado às duas da manhã, hotel com overbooking, conexão perdida.
+            Quem resolve somos nós, no mesmo canal, a qualquer hora.
+          </p>
+        </article>
+
+        <article class="item">
+          <span class="item__index">03 · FECHAMENTO</span>
+          <h3 class="h3 item__title">O mês termina</h3>
+          <p class="item__text">
+            Um relatório consolidado com tudo que foi emitido, por centro de custo,
+            por pessoa e por viagem. Sem caça a comprovante.
+          </p>
+        </article>
+      </div>
+
+      <div class="quote-card measure" style="margin-top:var(--stack-lg)">
+        <p class="quote">
+          Tecnologia agiliza.
+          <span class="soft">É o toque humano que resolve.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Comparativo ================= -->
+  <section class="section tinted" aria-labelledby="t-comp">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Antes e depois</span>
+        <h2 class="h2" id="t-comp">A mesma viagem, dos dois jeitos</h2>
+        <p class="lead">Um colaborador precisa estar em outra cidade na terça. Este é o percurso da solicitação nos dois cenários.</p>
+      </div>
+
+      <div class="compare reveal-stagger">
+        <div class="compare__col">
+          <span class="compare__label">Como funciona hoje</span>
+          <h3 class="h3 compare__title">Sem gestão de viagens</h3>
+          <ul class="compare__list" role="list">
+            <li>Alguém do time abre cinco abas e compara preços por conta própria</li>
+            <li>A reserva sai no cartão pessoal e vira pedido de reembolso</li>
+            <li>Hotel escolhido pelo primeiro resultado da busca, sem acordo negociado</li>
+            <li>O voo atrasa e quem resolve é o próprio colaborador, sozinho</li>
+            <li>No fechamento, o financeiro persegue comprovante por e-mail</li>
+          </ul>
+        </div>
+
+        <div class="compare__col compare__col--ours">
+          <span class="compare__label">Com a Bendita Tour</span>
+          <h3 class="h3 compare__title">Com um consultor dedicado</h3>
+          <ul class="compare__list" role="list">
+            <li>Uma mensagem no WhatsApp com <strong>destino e data</strong></li>
+            <li>Voltamos com as opções que <strong>cabem na política da empresa</strong></li>
+            <li>Hospedagem com <strong>tarifa corporativa negociada</strong></li>
+            <li>Imprevisto entra no <strong>nosso plantão, em qualquer horário</strong></li>
+            <li>Fechamento com <strong>relatório único por centro de custo</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Escopo ================= -->
+  <section class="section" aria-labelledby="t-escopo">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Escopo do serviço</span>
+        <h2 class="h2" id="t-escopo">O que está incluído</h2>
+        <p class="lead">
+          Um interlocutor único para tudo o que envolve a viagem. Os itens abaixo
+          fazem parte do serviço — não são módulos cobrados à parte.
+        </p>
+      </div>
+
+      <ul class="scope reveal-stagger" role="list">
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Emissão de passagens nacionais e internacionais</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Hospedagem com tarifas corporativas negociadas</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Transfer, traslados e locação de veículos</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Seguro viagem para toda a equipe</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Remarcações, cancelamentos e acompanhamento de reembolso</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Reservas conferidas contra a política de viagens da empresa</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Atendimento a imprevistos fora do horário comercial</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Relatório mensal consolidado por centro de custo</span></li>
+      </ul>
     </div>
   </section>
 
   <!-- ================= Prova social ================= -->
   <!-- Os 3 PRIMEIROS depoimentos (Ana Cecília, Nichollas, Paulo) são reais,
-       fornecidos pelo cliente em 10/08/2026.
-       TODO(crítico): os 3 ÚLTIMOS (Maria Silva, João Santos, Ana Costa) e os
-       cinco slots de logo continuam sendo MODELOS, não clientes reais.
-       Depoimento fabricado publicado como verdadeiro viola o CDC art. 37 e o
-       Código do CONAR — agora que existem depoimentos reais, o caminho
-       natural é apagar os três fictícios.
-       TODO(estrelas): confirmar que os clientes reais deram nota 5. As
-       estrelas foram mantidas para não quebrar o padrão visual da seção,
-       mas são uma afirmação de nota atribuída a pessoa nomeada. -->
-  <section class="section" style="background:var(--n-50)" aria-labelledby="t-prova">
+       fornecidos pelo cliente em 10/08/2026. Nichollas e Paulo já com retrato;
+       Ana Cecília segue com monograma até o retrato ser enviado.
+       TODO(crítico): os 3 ÚLTIMOS (Maria Silva, João Santos, Ana Costa) são
+       MODELOS mantidos a pedido do cliente em 10/08/2026 — não são clientes
+       reais. Depoimento fabricado publicado como verdadeiro viola o CDC art. 37
+       e o Código do CONAR; o caminho seguro é substituí-los por depoimentos
+       reais ou removê-los.
+       TODO(estrelas): confirmar que os clientes reais deram nota 5. -->
+  <!-- Fundo de papel, e não tingido: a seção de escopo logo acima já usa o
+       tom; duas faixas tingidas coladas apagariam a divisão entre elas. -->
+  <section class="section tinted" aria-labelledby="t-prova">
     <div class="container">
-      <div class="section__head center">
-        <span class="eyebrow">Quem já transformou suas viagens</span>
-        <h2 class="h2" id="t-prova">Empresas Que Confiam na Bendita</h2>
-        <p class="lead">Veja o que nossos clientes dizem sobre a experiência:</p>
+      <div class="section__head reveal">
+        <span class="eyebrow">Quem viaja com a gente</span>
+        <h2 class="h2" id="t-prova">O que dizem nossos clientes</h2>
       </div>
 
-      <div class="grid grid--3">
+<figure class="feature-quote reveal">
+    <img class="feature-quote__photo" src="assets/nichollas-marshell.webp"
+         alt="Retrato de Nichollas Marshell" width="104" height="104" loading="lazy" decoding="async">
+    <div>
+      <blockquote>“É muito bom poder viajar com a tranquilidade de saber que temos alguém cuidando de tudo nos bastidores.”</blockquote>
+      <figcaption><strong>Nichollas Marshell</strong> — sobre a organização de um voo em classe executiva</figcaption>
+    </div>
+  </figure>
+
+
+      <div class="grid grid--3 reveal-stagger">
 
         <!-- ---- Depoimentos reais ---- -->
         <article class="card card--hover">
@@ -964,7 +1557,7 @@ strong{font-weight:700}
           </p>
           <blockquote class="testimonial__text">“Uma amiga me indicou a Josi da Bendita Tour e desde então, todas as nossas viagens passam por ela. Super atenciosa e dedicada. <strong>Virou nossa parceira de viagens de confiança.</strong>”</blockquote>
           <div class="author">
-            <span class="avatar" aria-hidden="true">A</span>
+            <span class="avatar avatar--mono" aria-hidden="true">AC</span>
             <span>
               <span class="author__name">Ana Cecília Duarte</span>
             </span>
@@ -981,7 +1574,7 @@ strong{font-weight:700}
           </p>
           <blockquote class="testimonial__text">“Mais um excelente voo organizado pela Bendita Tour, dessa vez na classe executiva da Qatar Airways. Quero agradecer pelo suporte durante toda a viagem e por todo o cuidado na organização. É muito bom poder viajar com a tranquilidade de saber que <strong>temos alguém cuidando de tudo nos bastidores.</strong>”</blockquote>
           <div class="author">
-            <span class="avatar" aria-hidden="true">N</span>
+            <img class="avatar" src="assets/nichollas-marshell.webp" alt="Retrato de Nichollas Marshell" width="44" height="44" loading="lazy" decoding="async">
             <span>
               <span class="author__name">Nichollas Marshell</span>
             </span>
@@ -998,7 +1591,7 @@ strong{font-weight:700}
           </p>
           <blockquote class="testimonial__text">“Viajamos com frequência a negócios e sinceramente, nunca tinha dado muita atenção. Até que alguns amigos me recomendaram a Bendita Tour. No início, entrei em contato apenas por curiosidade, mas depois da primeira experiência, nunca mais viajamos sem eles. <strong>Hoje, confiamos a Bendita todas as nossas viagens.</strong>”</blockquote>
           <div class="author">
-            <span class="avatar" aria-hidden="true">P</span>
+            <img class="avatar" src="assets/paulo-menezes.webp" alt="Retrato de Paulo Menezes" width="44" height="44" loading="lazy" decoding="async">
             <span>
               <span class="author__name">Paulo Menezes</span>
             </span>
@@ -1016,10 +1609,10 @@ strong{font-weight:700}
           </p>
           <blockquote class="testimonial__text">“Antes perdíamos 2 dias organizando viagens da diretoria. Com a Bendita, são 2 mensagens no WhatsApp. <strong>Não trocamos mais.</strong>”</blockquote>
           <div class="author">
-            <span class="avatar" aria-hidden="true">M</span>
+            <span class="avatar avatar--mono" aria-hidden="true">MS</span>
             <span>
               <span class="author__name">Maria Silva</span>
-              <span class="author__role" style="display:block">Head de Operações</span>
+              <span class="author__role">Head de Operações</span>
             </span>
           </div>
         </article>
@@ -1034,10 +1627,10 @@ strong{font-weight:700}
           </p>
           <blockquote class="testimonial__text">“Na primeira viagem internacional, tivemos um cancelamento às 4h da manhã. A Bendita resolveu tudo. <strong>Isso não tem preço.</strong>”</blockquote>
           <div class="author">
-            <span class="avatar" aria-hidden="true">J</span>
+            <span class="avatar avatar--mono" aria-hidden="true">JS</span>
             <span>
               <span class="author__name">João Santos</span>
-              <span class="author__role" style="display:block">CEO</span>
+              <span class="author__role">CEO</span>
             </span>
           </div>
         </article>
@@ -1050,72 +1643,132 @@ strong{font-weight:700}
             <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
             <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
           </p>
-          <blockquote class="testimonial__text">“Economizamos 28% nos primeiros 6 meses. Mas o maior ganho foi o tempo que a equipe recuperou para fazer <strong>o que realmente importa.</strong>”</blockquote>
+          <blockquote class="testimonial__text">“O maior ganho foi o tempo que a equipe recuperou para fazer <strong>o que realmente importa.</strong>”</blockquote>
           <div class="author">
-            <span class="avatar" aria-hidden="true">A</span>
+            <span class="avatar avatar--mono" aria-hidden="true">AC</span>
             <span>
               <span class="author__name">Ana Costa</span>
-              <span class="author__role" style="display:block">CFO</span>
+              <span class="author__role">CFO</span>
             </span>
           </div>
         </article>
       </div>
+    </div>
+  </section>
 
-      <div class="center" style="margin-top:var(--stack-lg)">
-        <p class="eyebrow" style="color:var(--n-600)">Empresas que confiam na Bendita Tour</p>
-        <div class="logos">
-          <span class="logo-slot">Logo 1</span>
-          <span class="logo-slot">Logo 2</span>
-          <span class="logo-slot">Logo 3</span>
-          <span class="logo-slot">Logo 4</span>
-          <span class="logo-slot">Logo 5</span>
-        </div>
-        <p class="caption" style="margin-top:var(--s-4)"></p>
+<!-- TODO(comercial): as respostas abaixo descrevem o modelo de trabalho e
+       não prometem preço, prazo contratual nem condição de faturamento. Antes
+       de divulgar a página, confirmar com o comercial as duas marcadas com
+       (confirmar) — uma resposta errada aqui vira expectativa de contrato. -->
+  <section class="section" aria-labelledby="t-faq">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Perguntas frequentes</span>
+        <h2 class="h2" id="t-faq">O que costumam nos perguntar</h2>
+      </div>
+
+      <div class="faq reveal">
+        <details>
+          <summary>Precisamos instalar alguma plataforma ou treinar a equipe?</summary>
+          <div class="faq__answer">
+            <p>Não. O canal é o WhatsApp que sua equipe já usa. Não há software para
+            instalar, login para distribuir nem treinamento para agendar — quem sabe
+            escrever uma mensagem sabe solicitar uma viagem.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Como vocês garantem que a reserva respeita a política da empresa?</summary>
+          <div class="faq__answer">
+            <p>Registramos as regras da sua empresa antes do primeiro atendimento:
+            classe permitida por cargo, teto de diária, antecedência mínima, fornecedores
+            preferenciais. As opções que enviamos já saem filtradas por esse conjunto —
+            e o que estiver fora vem sinalizado, com a exceção explícita.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>E se acontecer um imprevisto de madrugada ou no fim de semana?</summary>
+          <div class="faq__answer">
+            <p>Voo cancelado, conexão perdida, overbooking e extravio de bagagem entram
+            no nosso plantão, em qualquer horário e em qualquer dia. Quem aciona é o
+            colaborador que está viajando, pelo mesmo canal de sempre — não há número
+            diferente para decorar nem fila de atendimento para enfrentar.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Quem decide o fornecedor: vocês ou a empresa?</summary>
+          <div class="faq__answer">
+            <p>A empresa. Nós apresentamos as opções com o que muda entre elas —
+            preço, horário, remarcação, bagagem, distância do compromisso — e a decisão
+            de aprovação continua com quem já aprova hoje. Nosso papel é fazer a
+            comparação e assumir a execução, não escolher pela sua diretoria.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Que informação vem no relatório mensal?</summary>
+          <div class="faq__answer">
+            <p>Tudo o que foi emitido no período, consolidado por centro de custo,
+            por pessoa e por viagem, com os comprovantes anexados. É o documento que
+            o financeiro usa para fechar o mês sem perseguir recibo por e-mail.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Existe taxa de adesão ou volume mínimo? <span class="sr-only">(confirmar com o comercial)</span></summary>
+          <div class="faq__answer">
+            <p>Não há taxa de adesão nem software a contratar. As condições variam com
+            o perfil de viagem de cada empresa — volume, destinos e frequência —, e é
+            justamente isso que a conversa inicial de quinze minutos serve para levantar.</p>
+          </div>
+        </details>
       </div>
     </div>
   </section>
 
   <!-- ================= CTA final ================= -->
-  <section class="section cta-final" aria-labelledby="t-cta">
-    <div class="container container--narrow">
-      <div class="section__head center">
-        <span class="eyebrow eyebrow--danger">A decisão é sua</span>
-        <h2 class="h2" id="t-cta">Cada Dia Que Passa, Sua Empresa <span style="color:var(--danger)">Perde Tempo e Dinheiro</span></h2>
-        <p class="lead">Enquanto você lê isso:</p>
-      </div>
-
-      <div class="panel measure-center" style="box-shadow:var(--shadow-lg)">
-        <ul class="ticks ticks--arrow" role="list">
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg><span>Alguém da sua equipe está <strong>pesquisando passagens</strong> ao invés de trabalhar</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg><span>Uma reserva está sendo feita <strong>sem o melhor preço</strong> disponível</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg><span>Um imprevisto pode acontecer e <strong>não ter quem resolva</strong></span></li>
-        </ul>
-      </div>
-
-      <p class="quote center" style="margin-block:var(--stack-lg)">
-        Você pode continuar assim.
-        <span style="display:block;color:var(--teal-700)">Ou pode mudar agora.</span>
+  <section class="section on-dark has-dots" aria-labelledby="t-cta">
+    <span class="dots dots--bl" aria-hidden="true"></span>
+    <div class="container center">
+      <span class="eyebrow eyebrow--on-dark">Próximo passo</span>
+      <h2 class="h2" id="t-cta">Comece por uma conversa</h2>
+      <p class="lead measure-center" style="margin-top:var(--s-6)">
+        Quinze minutos para entender como sua empresa viaja hoje e onde está a
+        perda de tempo. Sem compromisso, sem apresentação de slides.
       </p>
-      <div class="center">
-        <a class="btn btn--wa btn--lg"
-           href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20parar%20de%20perder%20tempo%20com%20viagens%20corporativas.%20(cta-final)"
+
+      <div class="cta__actions">
+        <a class="btn btn--light btn--lg"
+           href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20falar%20sobre%20gest%C3%A3o%20de%20viagens%20corporativas.%20(cta-final)"
            target="_blank" rel="noopener external">
           <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
-          Quero Parar de Perder Tempo
+          Falar com um consultor
           <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
         </a>
-        <p class="caption" style="margin-top:var(--s-4)">Resposta em até 2 horas úteis</p>
       </div>
+      <p class="caption" style="margin-top:var(--s-5)">Resposta em até 2 horas úteis</p>
     </div>
   </section>
 
 </main>
 
 <footer class="footer">
-  <div class="container center">
-    <a class="logo" href="#topo">Bendita<span style="color:var(--teal-300)">Tour</span></a>
-    <p style="margin-top:var(--s-2)">Gestão de Viagens Corporativas</p>
-    <p style="color:var(--teal-300);font-weight:600;margin-top:var(--s-1)">Liberando empresas do caos operacional.</p>
+  <div class="container">
+    <div class="footer__top">
+      <a class="brand" href="#topo">
+        <img class="brand__mark" src="ICONE.webp" alt="" width="36" height="36" loading="lazy" decoding="async">
+        <span class="brand__text">
+          <span class="brand__name">BENDITA TOUR</span>
+          <span class="brand__tag">Corporativo</span>
+        </span>
+      </a>
+      <a class="link-arrow" href="https://benditatour.com/" rel="noopener">
+        Conheça a Bendita Tour para viagens de lazer
+        <svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
 
     <div class="footer__legal">
       <p>© 2026 Bendita Tour Assessoria &amp; Viagens. Todos os direitos reservados.</p>
@@ -1125,11 +1778,11 @@ strong{font-weight:700}
 </footer>
 
 <div class="bar">
-  <a class="btn btn--wa"
-     href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20parar%20de%20perder%20tempo%20com%20viagens%20corporativas.%20(barra)"
+  <a class="btn btn--primary"
+     href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20falar%20sobre%20gest%C3%A3o%20de%20viagens%20corporativas.%20(barra)"
      target="_blank" rel="noopener external">
     <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
-    Quero Parar de Perder Tempo
+    Falar com um consultor
     <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
   </a>
 </div>
