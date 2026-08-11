@@ -350,6 +350,34 @@ strong{font-weight:700}
 .ticks--arrow svg{color:var(--danger)}
 .on-dark .ticks--check svg{color:var(--teal-300)}
 
+/* Benefícios do hero, a pedido do cliente (commit 5240dda em benditatour).
+   É um modificador sobre .ticks--check, não um componente novo: o que muda
+   aqui é densidade e número de colunas, não o desenho da lista.
+   A lista mora direto no hero, que é text-align:center — por isso ela
+   reendireita o próprio texto, ao contrário das outras, que herdam o
+   text-align:left do .panel em que vivem. */
+.ticks--perks{
+  text-align:left;
+  gap:var(--s-3);
+  max-inline-size:34rem;
+  margin:var(--stack-lg) auto;
+}
+.ticks--perks li{align-items:baseline;line-height:1.45}
+/* Ícone menor que o das outras listas: aqui ele acompanha um rótulo de duas
+   ou três palavras, não um parágrafo que ocupa duas linhas. O translate faz
+   o trabalho do margin-block-start da regra base, que o baseline dispensa. */
+.ticks--perks svg{inline-size:1rem;block-size:1rem;margin-block-start:0;translate:0 .16em}
+@media (min-width:44em){
+  /* Em coluna única os cinco rótulos somam cinco linhas e empurram o CTA
+     para fora da primeira dobra — num hero que já carrega o painel de cinco
+     dores, essa altura é o que não sobra.
+     O quinto item é o único longo: atravessa as duas colunas em vez de ficar
+     órfão na esquerda, e assim a lista fecha em três linhas cheias.
+     A ordem escrita pelo cliente é preservada — o grid preenche por linha. */
+  .ticks--perks{grid-template-columns:1fr 1fr;column-gap:var(--s-6);max-inline-size:42rem}
+  .ticks--perks li:last-child{grid-column:1 / -1}
+}
+
 /* --- Cards --- */
 .grid{--grid-gap:var(--s-6);display:grid;gap:var(--grid-gap)}
 @media (min-width:46em){ .grid{--grid-gap:var(--s-8)} }
@@ -728,6 +756,21 @@ strong{font-weight:700}
         Esse tempo não entra em nenhuma planilha.
         <span class="accent">Mas sai do resultado da sua empresa todo mês.</span>
       </p>
+
+      <!-- Bloco de benefícios pedido pelo cliente (5240dda em benditatour).
+           Entra aqui, depois da pergunta e antes do botão, porque é o único
+           ponto do hero em que ele não briga com a narrativa: o painel expõe
+           a dor, a pergunta cobra o preço dela, e a lista responde o que a
+           Bendita entrega em troca — é o que dá ao CTA em que se apoiar.
+           Acima do painel, ele entregaria a solução antes de a dor existir.
+           Os cinco itens estão na ordem exata em que o cliente os escreveu. -->
+      <ul class="ticks ticks--check ticks--perks" role="list">
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Economia inteligente</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Atendimento exclusivo</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Resolução rápida de imprevistos</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Segurança e discrição</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Suporte completo do embarque ao retorno</span></li>
+      </ul>
 
       <div class="hero__actions">
         <a class="btn btn--wa btn--lg"
