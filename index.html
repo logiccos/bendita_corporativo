@@ -41,7 +41,7 @@
   font-family:'Montserrat Fallback';
   src:local('Arial'),local('Roboto'),local('Helvetica Neue'),local('Segoe UI');
   size-adjust:112.8%;
-  ascent-override:85.8%;
+  ascent-override:85.8%; 
   descent-override:22.3%;
   line-gap-override:0%;
 }
@@ -270,6 +270,15 @@ strong{font-weight:700}
 .brand__tag{display:none;font-size:var(--fs-caption);color:var(--n-600);border-left:1px solid var(--n-300);padding-left:var(--s-3)}
 @media (min-width:56em){ .brand__tag{display:block} }
 
+/* O rótulo "Quero Parar de Perder Tempo" não cabe no header abaixo de 768px:
+   a 320px o logo (~121px) mais o botão (~279px) somam ~416px para 288px
+   disponíveis, e o botão quebraria em duas linhas.
+   Abaixo de 48em quem carrega o CTA é a barra fixa inferior, com EXATAMENTE
+   o mesmo rótulo — não existe buraco de cobertura, e o rótulo continua
+   idêntico nos quatro pontos de conversão. */
+.header__cta{display:none}
+@media (min-width:48em){ .header__cta{display:inline-flex} }
+
 /* Celular em paisagem (altura 360px) E zoom 400% (altura efetiva 256px):
    header fixo + barra fixa somariam 59% da altura útil. Solta o header. */
 @media (max-height:30rem){
@@ -293,7 +302,7 @@ strong{font-weight:700}
     radial-gradient(42% 38% at 4% 96%, rgba(74,155,159,.10), transparent 70%);
 }
 .hero__inner{position:relative;z-index:1;text-align:center}
-.hero .h1{margin-bottom:var(--s-6);max-inline-size:22ch;margin-inline:auto}
+.hero .h1{margin-bottom:var(--s-6);max-inline-size:32ch;margin-inline:auto}
 .hero__lead{margin:0 auto var(--stack-lg);max-inline-size:58ch}
 .hero__question{margin:var(--stack-lg) auto;max-inline-size:34ch;font-size:var(--fs-lead);font-weight:700;color:var(--n-900);line-height:1.4}
 .hero__actions{display:flex;flex-direction:column;align-items:center;gap:var(--s-3)}
@@ -342,17 +351,52 @@ strong{font-weight:700}
 .on-dark .ticks--check svg{color:var(--teal-300)}
 
 /* --- Cards --- */
-.grid{display:grid;gap:var(--s-6)}
-@media (min-width:46em){ .grid{gap:var(--s-8)} }
-/* auto-fit + minmax(min(100%,X)) cobre 1→2→3→4 colunas continuamente,
-   sem uma única media query. O `min(100%, …)` impede overflow quando o
-   container é menor que o mínimo. */
-.grid--2{grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
-.grid--3{grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
-/* Serviços em 2×2 e não 1×4: em 1×4 dentro de 1200px cada card fica com
-   ~218px úteis de texto — cerca de 27 caracteres por linha. Ilegível. */
+.grid{--grid-gap:var(--s-6);display:grid;gap:var(--grid-gap)}
+@media (min-width:46em){ .grid{--grid-gap:var(--s-8)} }
+/* Contagem FIXA de colunas, não `auto-fit`.
+   `auto-fit` só cabe quando o número de itens é imprevisível: ele calcula
+   quantas colunas cabem e ignora se sobra um órfão. Com 4 cards num
+   container de 1200px cabiam 3 colunas, produzindo 3 + 1 — o card sozinho
+   na segunda linha deixava metade da linha vazia.
+   Regra do sistema: nenhuma linha final pode ficar incompleta. */
+
+/* 4 cards → 1 coluna, depois 2×2. Nunca 3.
+   Não subo para 4 colunas em nenhuma largura: em 1×4 dentro de 1200px cada
+   card fica com ~218px úteis de texto (~27 caracteres por linha). */
+.grid--2{grid-template-columns:1fr}
+@media (min-width:44em){ .grid--2{grid-template-columns:1fr 1fr} }
+
+/* 3 depoimentos → 1 coluna, depois 3. Pulo o passo de 2 colunas de
+   propósito: com 3 itens ele produziria 2 + 1, o mesmo órfão.
+   60em é onde 3 cards de 17rem + 2 gaps cabem sem apertar a medida. */
+.grid--3{grid-template-columns:1fr}
+@media (min-width:60em){ .grid--3{grid-template-columns:repeat(3,1fr)} }
+
+/* Serviços: mesma regra dos outros blocos de 4. */
 .grid--services{grid-template-columns:1fr}
 @media (min-width:44em){ .grid--services{grid-template-columns:1fr 1fr} }
+
+/* --- Rede de segurança contra linha final incompleta ---
+   O texto desta página é editado com frequência e a contagem de cards muda.
+   Estas regras mantêm a última linha sempre equilibrada sem depender de
+   alguém lembrar de trocar a classe do grid. */
+@media (min-width:44em){
+  /* Contagem ímpar em 2 colunas: o último card ocupa a linha inteira mas
+     mantém a largura de uma coluna e centraliza — em vez de encostar à
+     esquerda deixando a metade direita vazia. */
+  .grid--2 > :last-child:nth-child(odd),
+  .grid--services > :last-child:nth-child(odd){
+    grid-column:1 / -1;
+    inline-size:calc(50% - var(--grid-gap) / 2);
+    justify-self:center;
+  }
+}
+@media (min-width:60em){
+  /* Exatamente 4 cards num grid de 3 colunas: vira 2×2, nunca 3 + 1. */
+  .grid--3:has(> :nth-child(4)):not(:has(> :nth-child(5))){grid-template-columns:1fr 1fr}
+  /* Exatamente 2 cards: 2 colunas de largura igual, não 2 estreitos + vazio. */
+  .grid--3:has(> :nth-child(2)):not(:has(> :nth-child(3))){grid-template-columns:1fr 1fr}
+}
 
 .card{
   padding:var(--card-pad);
@@ -432,7 +476,12 @@ strong{font-weight:700}
 .stars svg{inline-size:1.125rem;block-size:1.125rem;fill:var(--star)}  /* 5,02:1 */
 .testimonial__text{color:var(--n-700);font-style:italic;margin-bottom:var(--s-6)}
 .testimonial__text strong{font-style:normal;color:var(--n-900)}
-.author{display:flex;align-items:center;gap:var(--s-3)}
+/* Os depoimentos têm comprimentos bem diferentes. O grid já iguala a altura
+   dos cards da mesma linha, mas sem isto o bloco do autor ficaria colado ao
+   fim do texto — em alturas diferentes a cada coluna. Empurrar o autor para
+   o rodapé alinha avatar e nome entre as colunas. */
+.card:has(.author){display:flex;flex-direction:column}
+.author{display:flex;align-items:center;gap:var(--s-3);margin-block-start:auto}
 .avatar{
   inline-size:2.5rem;block-size:2.5rem;flex:none;
   display:grid;place-items:center;border-radius:50%;
@@ -516,7 +565,7 @@ strong{font-weight:700}
 <meta property="og:site_name" content="Bendita Tour Corporativo">
 <meta property="og:url" content="https://corporativo.benditatour.com/">
 <meta property="og:title" content="Gestão de Viagens Corporativas para Empresas | Bendita Tour">
-<meta property="og:description" content="Enquanto sua equipe organiza viagens, seus concorrentes fecham negócios. Diagnóstico gratuito em 15 minutos.">
+<meta property="og:description" content="Sua equipe entrega resultados. Nós cuidamos das viagens: passagens, hotéis e imprevistos, com atendimento humano 24h. Diagnóstico gratuito em 15 minutos.">
 <!-- TODO(og:image): exportar assets/og-image.svg para JPG 1200x630 em
      assets/og-image.jpg e descomentar as 3 linhas abaixo.
      Estão comentadas de propósito: apontar para um arquivo inexistente
@@ -626,11 +675,11 @@ strong{font-weight:700}
       <a class="logo" href="#topo">Bendita<span>Tour</span></a>
       <span class="brand__tag">Gestão de Viagens Corporativas</span>
     </div>
-    <a class="btn btn--wa btn--sm"
-       href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20gratuito%20de%20viagens%20corporativas.%20(topo)"
+    <a class="btn btn--wa btn--sm header__cta"
+       href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20parar%20de%20perder%20tempo%20com%20viagens%20corporativas.%20(topo)"
        target="_blank" rel="noopener external">
       <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
-      Diagnóstico Gratuito
+      Quero Parar de Perder Tempo
       <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
     </a>
   </div>
@@ -651,14 +700,13 @@ strong{font-weight:700}
       </p>
 
       <h1 class="h1">
-        Sua equipe ainda perde
-        <span class="line accent">horas toda semana</span>
-        <span class="sub">organizando viagens corporativas?</span>
+        Sua equipe entrega resultados.
+        <span class="line accent">Nós cuidamos das viagens!</span>
       </h1>
 
       <p class="lead hero__lead">
-        Enquanto seu time financeiro confere notas fiscais, seu RH agenda táxis e seus
-        gestores aprovam reembolsos por e-mail…
+        Hoje, o financeiro confere notas fiscais, o RH agenda táxis e os gestores
+        aprovam reembolsos por e-mail — enquanto
         <span class="accent-danger">seus concorrentes estão fechando negócios.</span>
       </p>
 
@@ -671,25 +719,25 @@ strong{font-weight:700}
           <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Funcionários usando <strong>cartão pessoal</strong> e esperando semanas pelo reembolso</span></li>
           <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Passagens compradas de última hora custando <strong>40% a mais</strong></span></li>
           <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Reservas espalhadas em 5 sites diferentes, <strong>sem controle nenhum</strong></span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Ligações de madrugada quando algo dá errado — <strong>e ninguém para resolver</strong></span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Ligações de madrugada quando algo dá errado <strong>e ninguém para resolver</strong></span></li>
           <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg><span>Horas e mais horas que <strong>ninguém contabiliza</strong> como custo</span></li>
         </ul>
       </div>
 
       <p class="hero__question">
-        Você sabe o preço da passagem.
-        <span class="accent">Mas sabe o preço do tempo que sua equipe perde organizando tudo isso?</span>
+        Esse tempo não entra em nenhuma planilha.
+        <span class="accent">Mas sai do resultado da sua empresa todo mês.</span>
       </p>
 
       <div class="hero__actions">
         <a class="btn btn--wa btn--lg"
-           href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20gratuito%20de%20viagens%20corporativas.%20(hero)"
+           href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20parar%20de%20perder%20tempo%20com%20viagens%20corporativas.%20(hero)"
            target="_blank" rel="noopener external">
           <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
           Quero Parar de Perder Tempo
           <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
         </a>
-        <p class="caption">Diagnóstico gratuito em 15 minutos</p>
+        <p class="caption"></p>
       </div>
     </div>
   </section>
@@ -712,7 +760,7 @@ strong{font-weight:700}
             <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span>
             <h3 class="card__title">O Tempo Que Ninguém Conta</h3>
           </div>
-          <p class="card__text">Gestores gastam em média <strong>10 a 15 horas por mês</strong> só gerenciando viagens. São decisões adiadas, reuniões perdidas e oportunidades que escapam.</p>
+          <p class="card__text">Gestores gastam em média <strong>60 a 70 horas por mês</strong> só gerenciando viagens, sem contar alterações, cancelamentos e imprevistos. São decisões adiadas, reuniões perdidas e oportunidades que escapam.</p>
           <p class="card__kicker">Esse tempo tem um preço. E você está pagando sem perceber.</p>
         </article>
 
@@ -721,8 +769,8 @@ strong{font-weight:700}
             <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-money"/></svg></span>
             <h3 class="card__title">O Dinheiro Que Escorre</h3>
           </div>
-          <p class="card__text">Passagens de última hora: <strong>+40% no preço</strong>. Sem acordos corporativos: <strong>+22% em hospedagem</strong>. Reembolsos manuais: <strong>+3 horas do financeiro por semana</strong>.</p>
-          <p class="card__kicker">PMEs pagam até 25% a mais por não ter gestão profissional.</p>
+          <p class="card__text">Passagens de última hora: <strong>+40% no preço</strong> <strong>+25% em hospedagem</strong>. Reembolsos manuais: <strong>+3 horas do financeiro por semana</strong>.</p>
+          <p class="card__kicker">PMEs pagam até 30% a mais por não ter gestão profissional.</p>
         </article>
 
         <article class="card card--pain card--hover">
@@ -730,7 +778,7 @@ strong{font-weight:700}
             <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-team"/></svg></span>
             <h3 class="card__title">A Experiência Que Espanta Talentos</h3>
           </div>
-          <p class="card__text">Seu colaborador viaja a trabalho e precisa: pagar do próprio bolso, resolver problemas sozinho às 23h, enfrentar burocracia quando deveria estar focado no cliente.</p>
+          <p class="card__text">Seu colaborador viaja a trabalho e precisa: resolver contratempos sozinho, as 02 h da manhã, enfrentar burocracia, quando deveria estar focado no cliente.</p>
           <p class="card__kicker">O custo de perder um talento é maior que qualquer passagem aérea.</p>
         </article>
 
@@ -739,8 +787,8 @@ strong{font-weight:700}
             <span class="chip chip--danger"><svg aria-hidden="true" focusable="false"><use href="#i-fire"/></svg></span>
             <h3 class="card__title">Os Imprevistos Que Viram Crises</h3>
           </div>
-          <p class="card__text">Voo cancelado. Hotel com overbooking. Mala extraviada. <strong>E agora? Quem resolve?</strong> Seu RH às 3h da manhã? Seu colaborador sozinho em outro país?</p>
-          <p class="card__kicker">Imprevistos acontecem. A pergunta é: você tem quem resolva?</p>
+          <p class="card__text">Voo cancelado. Hotel com overbooking. Mala extraviada. <strong>E agora? Quem resolve?</strong> Seu RH as 3h da manhã? Seu colaborador sozinho em outro país?</p>
+          <p class="card__kicker">Imprevistos acontecem. A pergunta é: VOCÊ TEM QUEM RESOLVA?</p>
         </article>
       </div>
     </div>
@@ -766,10 +814,10 @@ strong{font-weight:700}
           e <span class="accent" style="font-weight:700">tudo se resolve</span>.
         </p>
         <ul class="ticks ticks--check" role="list">
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Voos, hotéis e transfers organizados em minutos</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Voos, hotéis e transfers organizados</span></li>
           <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Imprevistos resolvidos 24 horas por dia, 7 dias por semana</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Alguém de verdade do outro lado — não um robô</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Controle total de gastos sem planilhas infinitas</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Alguém de verdade do outro lado, não um robô</span></li>
+          
         </ul>
       </div>
 
@@ -787,29 +835,28 @@ strong{font-weight:700}
         <p class="lead">É assim que funciona quando você tem a Bendita Tour ao seu lado:</p>
       </div>
 
-      <div class="grid grid--2">
+      <!-- grid--3 porque esta seção tem 3 cards: em 2 colunas eles cairiam
+           como 2 + 1, deixando meia linha vazia. Se voltar a ter 4 cards,
+           troque para grid--2. -->
+      <div class="grid grid--3">
         <article class="card card--hover">
           <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-chat"/></svg></span>
           <h3 class="card__title" style="margin-bottom:var(--s-3)">Precisa viajar?</h3>
-          <p class="card__text"><strong class="accent">Uma mensagem no WhatsApp.</strong> Em minutos, voo + hotel + transfer organizados, dentro da política da empresa. Sem pesquisa, sem comparação, sem dor de cabeça.</p>
+          <p class="card__text"><strong class="accent">Uma mensagem no WhatsApp.</strong> Voo + hotel + transfer organizados, dentro da política da empresa. Sem pesquisa, sem comparação, sem dor de cabeça.</p>
         </article>
 
         <article class="card card--hover">
           <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-alert"/></svg></span>
-          <h3 class="card__title" style="margin-bottom:var(--s-3)">Cancelaram o voo às 2h da manhã?</h3>
-          <p class="card__text"><strong class="accent">Problema nosso.</strong> Já estamos realocando seu colaborador antes mesmo dele ligar. Ele acorda com a solução pronta no celular.</p>
+          <h3 class="card__title" style="margin-bottom:var(--s-3)">Cancelaram o voo ás 2h da manhã? Suporte 24h (Humano)
+</h3>
+          <p class="card__text"><strong class="accent">Imprevistos não esperam horário comercial. Resolução proativa.</strong> Você nunca esta sozinho.</p>
         </article>
 
-        <article class="card card--hover">
-          <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>
-          <h3 class="card__title" style="margin-bottom:var(--s-3)">Diretoria viajando?</h3>
-          <p class="card__text"><strong class="accent">Tratamento exclusivo.</strong> Primeira classe, sala VIP, preferências memorizadas. Sem burocracias. A experiência que executivos merecem.</p>
-        </article>
-
+      
         <article class="card card--hover">
           <span class="chip chip--brand" style="margin-bottom:var(--s-5)"><svg aria-hidden="true" focusable="false"><use href="#i-doc"/></svg></span>
           <h3 class="card__title" style="margin-bottom:var(--s-3)">Fim do mês?</h3>
-          <p class="card__text"><strong class="accent">Relatório completo na sua mesa.</strong> Gastos consolidados, fornecedores utilizados, economias realizadas. Visibilidade total sem esforço.</p>
+          <p class="card__text"><strong class="accent">Relatório completo na sua mesa.</strong></p>
         </article>
       </div>
 
@@ -819,49 +866,7 @@ strong{font-weight:700}
       </p>
     </div>
   </section>
-
-  <!-- ================= Serviços ================= -->
-  <section class="section" id="servicos" aria-labelledby="t-servicos">
-    <div class="container">
-      <div class="section__head center">
-        <span class="eyebrow">Soluções completas</span>
-        <h2 class="h2" id="t-servicos">Gestão Total de Viagens Corporativas</h2>
-        <p class="lead">Tudo que sua empresa precisa. Em um único parceiro.</p>
-      </div>
-
-      <div class="grid grid--services">
-        <article class="card card--service card--hover">
-          <span class="chip chip--brand"><svg aria-hidden="true" focusable="false"><use href="#i-team"/></svg></span>
-          <h3 class="card__title" style="margin-bottom:var(--s-3)">Gestão de Equipes</h3>
-          <p class="card__text">Passagens, hospedagem e logística para toda a operação. Cotações em minutos, aprovações automatizadas, controle de custos em tempo real.</p>
-          <p class="card__kicker card__kicker--brand">Sua equipe viaja, sua empresa cresce.</p>
-        </article>
-
-        <article class="card card--service card--dark">
-          <span class="chip"><svg aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>
-          <h3 class="card__title" style="margin-bottom:var(--s-3)">Atendimento C-Level</h3>
-          <p class="card__text">Exclusividade absoluta para diretores. Primeira classe, executiva, salas VIP. Preferências memorizadas. Concierge pessoal.</p>
-          <p class="card__kicker">O tratamento que executivos merecem.</p>
-        </article>
-
-        <article class="card card--service card--hover">
-          <span class="chip chip--brand"><svg aria-hidden="true" focusable="false"><use href="#i-cube"/></svg></span>
-          <h3 class="card__title" style="margin-bottom:var(--s-3)">Logística Integrada</h3>
-          <p class="card__text">Não apenas voos. Hotéis corporativos com acordos especiais, transfer, locação de veículos e seguro viagem completo.</p>
-          <p class="card__kicker card__kicker--brand">Uma mensagem, tudo resolvido.</p>
-        </article>
-
-        <article class="card card--service card--hover">
-          <span class="chip chip--brand"><svg aria-hidden="true" focusable="false"><use href="#i-support"/></svg></span>
-          <h3 class="card__title" style="margin-bottom:var(--s-3)">Suporte 24h (Humano)</h3>
-          <p class="card__text">Imprevistos não esperam horário comercial. Atendimento humano 24/7/365. Resposta em minutos, resolução proativa.</p>
-          <p class="card__kicker card__kicker--brand">Seu colaborador nunca está sozinho.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= Jeito Bendita ================= -->
+<!-- ================= Jeito Bendita ================= -->
   <section class="section on-dark" id="jeito-bendita" aria-labelledby="t-jeito">
     <div class="container container--narrow center">
       <span class="eyebrow eyebrow--on-dark">Nosso diferencial</span>
@@ -873,18 +878,7 @@ strong{font-weight:700}
       </p>
 
       <p class="quote" style="color:var(--n-0);margin-bottom:var(--stack-lg)">Nós não somos nada disso.</p>
-
-      <div class="panel panel--glass measure-center">
-        <p style="margin-bottom:var(--s-6);font-weight:700;font-size:var(--fs-lead);color:var(--n-0)">Aqui você tem um time dedicado que:</p>
-        <ul class="ticks ticks--check" role="list">
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Conhece as <strong>preferências de cada diretor</strong> da sua empresa</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Sabe de cor a <strong>política de viagens</strong> do seu negócio</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Atende <strong>pelo nome</strong>, não pelo número de protocolo</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Resolve <strong>antes de você precisar cobrar</strong></span></li>
-        </ul>
-      </div>
-
-      <p class="lead measure-center" style="margin:var(--stack-lg) auto var(--s-8)">
+<p class="lead measure-center" style="margin:var(--stack-lg) auto var(--s-8)">
         <span class="accent" style="font-weight:700">Tecnologia agiliza.</span> Mas é o toque humano que resolve.
       </p>
 
@@ -896,11 +890,16 @@ strong{font-weight:700}
   </section>
 
   <!-- ================= Prova social ================= -->
-  <!-- TODO(crítico, antes de publicar): os três depoimentos abaixo e os
-       cinco slots de logo são MODELOS, não clientes reais. Publicar
-       depoimento fabricado como verdadeiro viola o CDC art. 37 e o
-       Código do CONAR. Substitua por depoimentos reais com autorização
-       por escrito, ou remova a seção inteira. -->
+  <!-- Os 3 PRIMEIROS depoimentos (Ana Cecília, Nichollas, Paulo) são reais,
+       fornecidos pelo cliente em 10/08/2026.
+       TODO(crítico): os 3 ÚLTIMOS (Maria Silva, João Santos, Ana Costa) e os
+       cinco slots de logo continuam sendo MODELOS, não clientes reais.
+       Depoimento fabricado publicado como verdadeiro viola o CDC art. 37 e o
+       Código do CONAR — agora que existem depoimentos reais, o caminho
+       natural é apagar os três fictícios.
+       TODO(estrelas): confirmar que os clientes reais deram nota 5. As
+       estrelas foram mantidas para não quebrar o padrão visual da seção,
+       mas são uma afirmação de nota atribuída a pessoa nomeada. -->
   <section class="section" style="background:var(--n-50)" aria-labelledby="t-prova">
     <div class="container">
       <div class="section__head center">
@@ -910,6 +909,8 @@ strong{font-weight:700}
       </div>
 
       <div class="grid grid--3">
+
+        <!-- ---- Depoimentos reais ---- -->
         <article class="card card--hover">
           <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
             <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
@@ -918,7 +919,59 @@ strong{font-weight:700}
             <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
             <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
           </p>
-          <blockquote class="testimonial__text">“Antes perdíamos 2 dias organizando viagens da diretoria. Com a Bendita, são 2 mensagens no WhatsApp. <strong>Não voltamos mais.</strong>”</blockquote>
+          <blockquote class="testimonial__text">“Uma amiga me indicou a Josi da Bendita Tour e desde então, todas as nossas viagens passam por ela. Super atenciosa e dedicada. <strong>Virou nossa parceira de viagens de confiança.</strong>”</blockquote>
+          <div class="author">
+            <span class="avatar" aria-hidden="true">A</span>
+            <span>
+              <span class="author__name">Ana Cecília Duarte</span>
+            </span>
+          </div>
+        </article>
+
+        <article class="card card--hover">
+          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+          </p>
+          <blockquote class="testimonial__text">“Mais um excelente voo organizado pela Bendita Tour, dessa vez na classe executiva da Qatar Airways. Quero agradecer pelo suporte durante toda a viagem e por todo o cuidado na organização. É muito bom poder viajar com a tranquilidade de saber que <strong>temos alguém cuidando de tudo nos bastidores.</strong>”</blockquote>
+          <div class="author">
+            <span class="avatar" aria-hidden="true">N</span>
+            <span>
+              <span class="author__name">Nichollas Marshell</span>
+            </span>
+          </div>
+        </article>
+
+        <article class="card card--hover">
+          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+          </p>
+          <blockquote class="testimonial__text">“Viajamos com frequência a negócios e sinceramente, nunca tinha dado muita atenção. Até que alguns amigos me recomendaram a Bendita Tour. No início, entrei em contato apenas por curiosidade, mas depois da primeira experiência, nunca mais viajamos sem eles. <strong>Hoje, confiamos a Bendita todas as nossas viagens.</strong>”</blockquote>
+          <div class="author">
+            <span class="avatar" aria-hidden="true">P</span>
+            <span>
+              <span class="author__name">Paulo Menezes</span>
+            </span>
+          </div>
+        </article>
+
+        <!-- ---- Depoimentos modelo (substituir ou remover) ---- -->
+        <article class="card card--hover">
+          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+          </p>
+          <blockquote class="testimonial__text">“Antes perdíamos 2 dias organizando viagens da diretoria. Com a Bendita, são 2 mensagens no WhatsApp. <strong>Não trocamos mais.</strong>”</blockquote>
           <div class="author">
             <span class="avatar" aria-hidden="true">M</span>
             <span>
@@ -936,7 +989,7 @@ strong{font-weight:700}
             <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
             <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
           </p>
-          <blockquote class="testimonial__text">“Na primeira viagem internacional, tivemos um cancelamento às 4h da manhã. A Bendita já tinha resolvido antes de eu acordar. <strong>Isso não tem preço.</strong>”</blockquote>
+          <blockquote class="testimonial__text">“Na primeira viagem internacional, tivemos um cancelamento às 4h da manhã. A Bendita resolveu tudo. <strong>Isso não tem preço.</strong>”</blockquote>
           <div class="author">
             <span class="avatar" aria-hidden="true">J</span>
             <span>
@@ -974,7 +1027,7 @@ strong{font-weight:700}
           <span class="logo-slot">Logo 4</span>
           <span class="logo-slot">Logo 5</span>
         </div>
-        <p class="caption" style="margin-top:var(--s-4)">(Adicione os logos reais dos seus clientes aqui)</p>
+        <p class="caption" style="margin-top:var(--s-4)"></p>
       </div>
     </div>
   </section>
@@ -1000,30 +1053,15 @@ strong{font-weight:700}
         Você pode continuar assim.
         <span style="display:block;color:var(--teal-700)">Ou pode mudar agora.</span>
       </p>
-
-      <div class="cta-box">
-        <div class="center" style="margin-bottom:var(--s-8)">
-          <h3 class="h3" style="font-size:var(--fs-h2);margin-bottom:var(--s-3)">Diagnóstico Gratuito de Viagens Corporativas</h3>
-          <p class="cta-box__note" style="font-size:var(--fs-body)">Em 15 minutos, nossa equipe analisa:</p>
-        </div>
-
-        <ul class="ticks ticks--check" role="list" style="max-inline-size:32rem;margin-inline:auto">
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Quanto sua empresa <strong>gasta</strong> (e quanto pode economizar)</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Quantas <strong>horas sua equipe perde</strong> com gestão de viagens</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Quais processos podem ser <strong>eliminados imediatamente</strong></span></li>
-        </ul>
-
-        <div class="center" style="margin-top:var(--stack-lg)">
-          <p class="cta-box__note" style="margin-bottom:var(--s-6)">Sem compromisso. Sem custo. Só clareza.</p>
-          <a class="btn btn--wa btn--lg"
-             href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20gratuito%20de%20viagens%20corporativas%20para%20minha%20empresa.%20(cta-final)"
-             target="_blank" rel="noopener external">
-            <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
-            Quero Meu Diagnóstico Gratuito
-            <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
-          </a>
-          <p class="cta-box__note" style="margin-top:var(--s-4)">Resposta em até 2 horas úteis</p>
-        </div>
+      <div class="center">
+        <a class="btn btn--wa btn--lg"
+           href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20parar%20de%20perder%20tempo%20com%20viagens%20corporativas.%20(cta-final)"
+           target="_blank" rel="noopener external">
+          <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
+          Quero Parar de Perder Tempo
+          <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
+        </a>
+        <p class="caption" style="margin-top:var(--s-4)">Resposta em até 2 horas úteis</p>
       </div>
     </div>
   </section>
@@ -1045,10 +1083,10 @@ strong{font-weight:700}
 
 <div class="bar">
   <a class="btn btn--wa"
-     href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20um%20diagn%C3%B3stico%20gratuito%20de%20viagens%20corporativas.%20(barra)"
+     href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20parar%20de%20perder%20tempo%20com%20viagens%20corporativas.%20(barra)"
      target="_blank" rel="noopener external">
     <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
-    Quero Meu Diagnóstico Gratuito
+    Quero Parar de Perder Tempo
     <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
   </a>
 </div>

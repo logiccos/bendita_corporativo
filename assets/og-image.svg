@@ -20,10 +20,9 @@
   <text x="88" y="132" font-family="Montserrat, Arial, sans-serif" font-size="40" font-weight="800" letter-spacing="-0.8" fill="#FFFFFF">Bendita<tspan fill="#A1D0D3">Tour</tspan></text>
 
   <!-- Chamada -->
-  <text font-family="Montserrat, Arial, sans-serif" font-size="72" font-weight="800" letter-spacing="-2" fill="#FFFFFF">
-    <tspan x="88" y="300">Sua equipe ainda perde</tspan>
-    <tspan x="88" y="384" fill="#A1D0D3">horas toda semana</tspan>
-    <tspan x="88" y="462" font-size="44" font-weight="700" fill="#C5CBD3">organizando viagens corporativas?</tspan>
+  <text font-family="Montserrat, Arial, sans-serif" font-size="54" font-weight="800" letter-spacing="-1.5" fill="#FFFFFF">
+    <tspan x="88" y="320">Sua equipe entrega resultados.</tspan>
+    <tspan x="88" y="392" fill="#A1D0D3">Nós cuidamos das viagens.</tspan>
   </text>
 
   <!-- Selo -->

@@ -242,16 +242,37 @@ que o olho registra sem conseguir nomear, e é uma das razões pelas quais um si
 `vw` puro: com `vw` puro o texto para de responder ao zoom do navegador e reprova
 o **WCAG 1.4.4 (Resize Text)**.
 
-**Grid sem media query:**
-```css
-grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-```
-Cobre 1→2→3→4 colunas continuamente de 320px a 4K. O `min(100%, …)` impede overflow
-quando o container é menor que o mínimo.
+**Contagem fixa de colunas, não `auto-fit`.** Eu tinha usado
+`repeat(auto-fit, minmax(min(100%,20rem), 1fr))`, que é elegante e estava **errado**
+aqui. `auto-fit` calcula quantas colunas cabem e ignora se sobra órfão: com 4 cards
+num container de 1200px cabiam 3 colunas, produzindo **3 + 1** — o quarto card
+sozinho na segunda linha, deixando metade da linha vazia.
 
-**Serviços em 2×2, não 1×4.** Em 4 colunas dentro de 1200px, cada card ficava com
-~218px úteis de texto — cerca de **27 caracteres por linha**. Em 2×2 a medida vai
-para ~46ch, dentro da faixa confortável de 45–75.
+`auto-fit` só serve quando a quantidade de itens é **imprevisível**. Com número
+fixo, ele acerta a matemática e erra a composição.
+
+**Regra do sistema: nenhuma linha final pode ficar incompleta.**
+
+| Grid | Colunas | Por quê |
+|---|---|---|
+| `.grid--2` (4 cards) | 1 → 2 | 2×2. Não subo para 4: em 1×4 dentro de 1200px cada card fica com ~218px úteis de texto (~27 caracteres por linha) |
+| `.grid--3` (3 cards) | 1 → 3 | pulo o passo de 2 colunas de propósito: com 3 itens ele produziria 2 + 1, o mesmo órfão |
+
+**Rede de segurança.** O texto desta página é editado com frequência e a contagem de
+cards muda (aconteceu duas vezes em um dia). Duas regras cobrem isso sem depender de
+alguém lembrar de trocar a classe:
+
+```css
+/* contagem ímpar em 2 colunas: o último card centraliza na largura de uma coluna */
+.grid--2 > :last-child:nth-child(odd){
+  grid-column:1 / -1; inline-size:calc(50% - var(--grid-gap) / 2); justify-self:center;
+}
+/* exatamente 4 cards num grid de 3 colunas: vira 2×2, nunca 3 + 1 */
+.grid--3:has(> :nth-child(4)):not(:has(> :nth-child(5))){grid-template-columns:1fr 1fr}
+```
+
+O `--grid-gap` existe como variável só para que o `calc()` acerte a metade do gap
+nas duas faixas (24px abaixo de 46em, 32px acima).
 
 **Medida de leitura limitada em `ch`.** Os parágrafos anteriores rodavam a ~86
 caracteres por linha (`max-w-4xl` = 896px), acima do limite de 80 do WCAG 1.4.8.
@@ -331,6 +352,25 @@ está em `assets/og-image.svg`; exporte para JPG 1200×630 e descomente as 3 lin
 | 5 | Confirmar que `corporativo.benditatour.com` resolve e serve HTTPS com 301 de `http://`. Cada redirect custa 1 RTT direto no FCP e no LCP. | Média |
 | 6 | Endereço no JSON-LD. Deixei de fora para não inventar dado; preencher fortalece o rich result de `LocalBusiness`. | Baixa |
 | 7 | Arquivo `nul` (89 bytes) na raiz — lixo de um redirecionamento de shell. Pode apagar. | Baixa |
+| 8 | A seção **Serviços** foi removida da página, mas o `hasOfferCatalog` do JSON-LD ainda lista os 4 serviços. Os serviços são reais, então não é dado falso — mas o Google orienta que dado estruturado represente conteúdo **visível**. Ou a seção volta, ou o `hasOfferCatalog` sai. | Média |
+
+### Bugs introduzidos por edição concorrente (corrigidos em 10/08/2026)
+
+O agente de copywriting editou o `index.html` em paralelo e quebrou três coisas.
+Ficam registradas porque são o tipo de erro que reaparece:
+
+1. **Dois `</div>` órfãos** no CTA final — ele removeu o bloco escuro `.cta-box` mas
+   deixou os fechamentos. Havia 3 fechamentos para 1 abertura, o que fechava o
+   `<main>` antes da hora. Efeito visível: o botão virou filho direto do container
+   (sem centralização) e colou na esquerda.
+2. **`.cta-box__note` sobre fundo claro** — a classe é cor para superfície escura
+   (`--n-400`). Sobre o rosa do gradiente dava **2,32:1**, reprovação de AA. Trocada
+   por `.caption` (`--n-600`, 6,08:1).
+3. **Seção "Imagine" caiu de 4 para 3 cards** sem trocar a classe do grid, gerando
+   2 + 1. Corrigido para `.grid--3`.
+
+**Verificação mecânica:** o balanço de tags fecha (33 `<div>` abrem, 33 fecham) e
+os 3 grids da página têm linhas cheias.
 
 ---
 

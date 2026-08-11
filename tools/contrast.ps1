@@ -49,6 +49,8 @@ $pares = @(
   @('danger','n-0',      4.5,'Texto de alerta sobre branco'),
   @('danger','danger-50',4.5,'Titulo do painel de dor'),
   @('danger','n-50',     4.5,'Kicker vermelho dos cards'),
+  @('n-600','danger-50', 4.5,'Legenda do CTA final (fundo rosa do gradiente)'),
+  @('n-900','danger-50', 4.5,'Titulo do CTA final'),
   @('n-0','n-900',       4.5,'Titulos sobre secao escura'),
   @('n-300','n-900',     4.5,'Corpo sobre secao escura'),
   @('teal-300','n-900',  4.5,'Destaque teal sobre secao escura'),
