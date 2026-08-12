@@ -928,8 +928,6 @@ strong{font-weight:600;color:var(--ink-900)}
 .tinted .item{border-color:var(--ink-200)}
 
 /* --- Depoimentos --- */
-.stars{display:flex;gap:.1875rem;margin-bottom:var(--s-5)}
-.stars svg{inline-size:.875rem;block-size:.875rem;fill:var(--teal-600)}
 .testimonial__text{color:var(--ink-700);margin-bottom:var(--s-6);line-height:1.7}
 .testimonial__text strong{color:var(--ink-900)}
 /* O reset zera margem de tudo. Depoimentos longos vêm em mais de um
@@ -1314,15 +1312,14 @@ strong{font-weight:600;color:var(--ink-900)}
 <body>
 <a class="skip" href="#conteudo">Ir para o conteúdo principal</a>
 
-<!-- Sprite de ícones. A estrela aparece 30x e o WhatsApp 4x; definir cada
-     path uma única vez enxuga o HTML bruto e reduz a contagem de nós do DOM.
+<!-- Sprite de ícones. O WhatsApp aparece 4x; definir cada path uma única
+     vez enxuga o HTML bruto e reduz a contagem de nós do DOM.
      Em bytes na rede o ganho é marginal (o compressor já deduplica dentro da
      janela de 32KB) — o motivo real é manutenção: trocar um ícone é editar
      um lugar só. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
 <defs>
 <symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
-<symbol id="i-star" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></symbol>
 <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.2 5.2L20 6.9"/></symbol>
 <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15m0 0l-6-6m6 6l-6 6"/></symbol>
 </defs>
@@ -1636,13 +1633,6 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
 
         <!-- ---- Depoimentos reais ---- -->
         <article class="card card--hover">
-          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-          </p>
           <blockquote class="testimonial__text">“Uma amiga me indicou a Josi da Bendita Tour e desde então, todas as nossas viagens passam por ela. Super atenciosa e dedicada. <strong>Virou nossa parceira de viagens de confiança.</strong>”</blockquote>
           <div class="author">
             <img class="avatar" src="assets/ana-cecilia-duarte.webp" alt="Retrato de Ana Cecília Duarte" width="44" height="44" loading="lazy" decoding="async">
@@ -1654,13 +1644,6 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
 
         <!-- Depoimento real, recebido do cliente em 11/08/2026, com retrato. -->
         <article class="card card--hover">
-          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-          </p>
           <blockquote class="testimonial__text">
             <p>“Eu já viajei muito por conta própria e com alguém me assessorando. Mas confesso que a Bendita e a Josi, foram um verdadeiro achado.</p>
             <p>Toda viagem a gente corre o risco de ter um perrengue, principalmente quando são vários destinos. Por isso sempre indico a Bendita para todos, pois é uma agência séria e de confiança.</p>
@@ -1675,13 +1658,6 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
         </article>
 
         <article class="card card--hover">
-          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-          </p>
           <blockquote class="testimonial__text">“Mais um excelente voo organizado pela Bendita Tour, dessa vez na classe executiva da Qatar Airways. Quero agradecer pelo suporte durante toda a viagem e por todo o cuidado na organização. É muito bom poder viajar com a tranquilidade de saber que <strong>temos alguém cuidando de tudo nos bastidores.</strong>”</blockquote>
           <div class="author">
             <img class="avatar" src="assets/nichollas-marshell.webp" alt="Retrato de Nichollas Marshell" width="44" height="44" loading="lazy" decoding="async">
@@ -1692,13 +1668,6 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
         </article>
 
         <article class="card card--hover">
-          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-          </p>
           <blockquote class="testimonial__text">“Viajamos com frequência a negócios e sinceramente, nunca tinha dado muita atenção. Até que alguns amigos me recomendaram a Bendita Tour. No início, entrei em contato apenas por curiosidade, mas depois da primeira experiência, nunca mais viajamos sem eles. <strong>Hoje, confiamos a Bendita todas as nossas viagens.</strong>”</blockquote>
           <div class="author">
             <img class="avatar" src="assets/paulo-menezes.webp" alt="Retrato de Paulo Menezes" width="44" height="44" loading="lazy" decoding="async">
@@ -1709,13 +1678,6 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
         </article>
 
         <article class="card card--hover">
-          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-          </p>
           <blockquote class="testimonial__text">“Antes perdíamos 2 dias organizando viagens da diretoria. Com a Bendita, são 2 mensagens no WhatsApp. <strong>Não trocamos mais.</strong>”</blockquote>
           <div class="author">
             <img class="avatar" src="assets/maria-silva.webp" alt="Retrato de Maria Silva" width="44" height="44" loading="lazy" decoding="async">
@@ -1727,13 +1689,6 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
         </article>
 
         <article class="card card--hover">
-          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-          </p>
           <blockquote class="testimonial__text">“O maior ganho foi o tempo que a equipe recuperou para fazer <strong>o que realmente importa.</strong>”</blockquote>
           <div class="author">
             <img class="avatar" src="assets/laura-costa.webp" alt="Retrato de Laura Costa" width="44" height="44" loading="lazy" decoding="async">
@@ -1744,18 +1699,12 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
           </div>
         </article>
 
-        <!-- Depoimento real, enviado pelo cliente em 11/08/2026, verbatim. -->
+        <!-- Depoimento real, enviado pelo cliente em 11/08/2026. São as
+             palavras dela; a autoapresentação de abertura saiu com aval do
+             cliente, porque o nome já aparece logo abaixo. Nada reescrito. -->
         <article class="card card--hover">
-          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-          </p>
           <blockquote class="testimonial__text">
-            <p>“Me chamo Eliane e vou contar um pouquinho da minha experiência de viajar com a Bendita Tour.</p>
-            <p>A Joselaine sempre muito atenciosa mandando mensagens pra saber se eu já estava nos aeroportos, se eu não estava esquecendo de nada. Meu voo GRU/Madrid atrasou e ela ficou comigo no celular me orientando e me direcionando pro portão de embarque do próximo destino, deu tudo certo.</p>
+            <p>“A Joselaine sempre muito atenciosa, mandando mensagens pra saber se eu já estava nos aeroportos, se eu não estava esquecendo de nada. Meu voo GRU/Madrid atrasou e ela ficou comigo no celular me orientando e me direcionando pro portão de embarque do próximo destino, deu tudo certo.</p>
             <p>Na volta a mesma coisa, fez todos os meus check-in. <strong>Não precisei me preocupar com nada.</strong>”</p>
           </blockquote>
           <div class="author">
