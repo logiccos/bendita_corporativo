@@ -927,6 +927,9 @@ strong{font-weight:600;color:var(--ink-900)}
 .stars svg{inline-size:.875rem;block-size:.875rem;fill:var(--teal-600)}
 .testimonial__text{color:var(--ink-700);margin-bottom:var(--s-6);line-height:1.7}
 .testimonial__text strong{color:var(--ink-900)}
+/* O reset zera margem de tudo. Depoimentos longos vêm em mais de um
+   parágrafo, e sem este respiro virariam um bloco único ilegível. */
+.testimonial__text p + p{margin-top:var(--s-4)}
 /* Os depoimentos têm comprimentos bem diferentes. O grid já iguala a altura
    dos cartões da mesma linha, mas sem isto o bloco do autor ficaria colado
    ao fim do texto — em alturas diferentes a cada coluna. Empurrar o autor
@@ -1638,6 +1641,31 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
             <img class="avatar" src="assets/ana-cecilia-duarte.webp" alt="Retrato de Ana Cecília Duarte" width="44" height="44" loading="lazy" decoding="async">
             <span>
               <span class="author__name">Ana Cecília Duarte</span>
+            </span>
+          </div>
+        </article>
+
+        <!-- Depoimento real, recebido do cliente em 11/08/2026.
+             TODO(retrato): segue com monograma até o retrato ser escolhido —
+             existe um karolline_domingues.webp no repo do site de lazer que
+             serve, mas o cliente vai indicar qual foto usar. -->
+        <article class="card card--hover">
+          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+          </p>
+          <blockquote class="testimonial__text">
+            <p>“Eu já viajei muito por conta própria e com alguém me assessorando. Mas confesso que a Bendita e a Josi, foram um verdadeiro achado.</p>
+            <p>Toda viagem a gente corre o risco de ter um perrengue, principalmente quando são vários destinos. Por isso sempre indico a Bendita para todos, pois é uma agência séria e de confiança.</p>
+            <p>Primeiro, que você tem menos trabalho, menos preocupação. Segundo, você vai aproveitar o seu destino muito melhor, ou os seus destinos muito melhor. E se acontecer de ter um perrengue, como eu tive com a LATAM, ela me assessorou em tudo e me ajudou em todos os passos que eu tinha que tomar, inclusive com a minha advogada. <strong>Recomendo e muito!!</strong>”</p>
+          </blockquote>
+          <div class="author">
+            <span class="avatar avatar--mono" aria-hidden="true">KD</span>
+            <span>
+              <span class="author__name">Karolline Domingues</span>
             </span>
           </div>
         </article>
