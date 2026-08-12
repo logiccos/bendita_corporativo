@@ -753,6 +753,9 @@ strong{font-weight:600;color:var(--ink-900)}
   letter-spacing:.16em;color:var(--ink-500);
 }
 .creds__value{display:block;font-size:var(--fs-small);font-weight:600;color:var(--ink-900);line-height:1.45}
+/* Órgão emissor: qualifica o número acima sem competir com ele. Fica no
+   tamanho do rótulo, mas em caixa normal — é frase, não etiqueta. */
+.creds__note{display:block;margin-block-start:var(--s-2);font-size:var(--fs-eyebrow);color:var(--ink-500);line-height:1.4}
 @media (min-width:48em){
   .creds__list{grid-template-columns:1fr 1fr;column-gap:var(--s-10)}
   /* Em 2 colunas as duas últimas células formam a linha final: tirar a borda
@@ -1041,6 +1044,7 @@ strong{font-weight:600;color:var(--ink-900)}
 .footer .creds > .container{border-block-end:0;border-block-start-color:rgba(255,255,255,.10)}
 .footer .creds__list li{border-color:rgba(255,255,255,.10)}
 .footer .creds__label{color:var(--ink-300)}
+.footer .creds__note{color:var(--ink-300)}
 .footer .creds__value{color:var(--paper)}
 
 /* --- Barra CTA fixa no mobile ---
@@ -1845,7 +1849,8 @@ Contratempos em viagens não se limitam ao horário comercial. Por isso, oferece
       <ul class="creds__list" role="list">
         <li>
           <span class="creds__label">Registro</span>
-          <span class="creds__value">CNPJ 54.179.099/0001-60</span>
+          <span class="creds__value">CNPJ e CADASTUR 54.179.099/0001-60</span>
+          <span class="creds__note">Secretaria Nacional de Políticas de Turismo</span>
         </li>
         <li>
           <span class="creds__label">Atendimento</span>
@@ -1865,7 +1870,7 @@ Contratempos em viagens não se limitam ao horário comercial. Por isso, oferece
 
   <div class="container">
     <div class="footer__legal">
-      <p>© 2026 Bendita Tour Assessoria &amp; Viagens. Todos os direitos reservados.</p>
+      <p>© 2024 Bendita Tour Assessoria &amp; Viagens. Todos os direitos reservados.</p>
     </div>
   </div>
 </footer>
