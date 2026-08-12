@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gestão de Viagens Corporativas para Empresas | Bendita Tour</title>
+<title>Gestão de Viagens Corporativas | Bendita Tour</title>
 
 <!-- Preload ANTES do <style>: o preload scanner dispara a fonte no mesmo tick
      em que começa a parsear o CSS. Ganha ~1 RTT no LCP.
@@ -91,14 +91,34 @@ img,svg,video{display:block;max-width:100%}
   --teal-100:#E6F4F4;
   --teal-50:#F4FAFB;
 
-  --wa:#25D366;        /* só no ponto verde de disponibilidade */
+  /* Verde do WhatsApp: o ponto de disponibilidade e, desde 11/08/2026, o
+     CTA primário. Os dois tons abaixo são o mesmo verde escurecido para
+     hover e clique — sem eles o botão saltava para o teal escuro do tema
+     antigo ao passar o mouse, que é outra cor, não outro estado. */
+  --wa:#25D366;
+  --wa-hover:#20BA5A;  /* --ink-900 por cima: 7,1:1 */
+  --wa-active:#1CA850;
+
+  /* Vermelho de alerta, importado junto com o bloco "A decisão é sua".
+     Entra em um único lugar da página, de propósito: se o vermelho
+     aparecer em três seções ele deixa de significar urgência e vira
+     decoração. Contrastes medidos: 6,6:1 no papel branco e 6,1:1 sobre
+     o --danger-50 do fim do gradiente — os dois passam o AA (4,5:1). */
+  --danger:#B42318;
+  --danger-50:#FEF3F2;
 
   /* ---- Tipografia fluida: trava em 375px e em 1440px.
           A parte "preferida" é sempre rem + vw, nunca vw puro: com vw puro
           o texto para de responder ao zoom e reprova WCAG 1.4.4.
           Os topos são deliberadamente mais baixos que os da v1 — a escala
           curta é o que dá o tom de documento executivo. ---- */
-  --fs-display: clamp(2rem, 1.55rem + 1.92vw, 3.375rem);
+  /* Reduzido a 78% do valor original (era clamp(2rem, 1.55rem + 1.92vw,
+     3.375rem)) para aproximar as duas primeiras linhas do h1 da terceira,
+     que está em caixa alta e corpo menor. A 100% a diferença entre elas
+     era de 1,6× — degrau grande demais dentro de um mesmo título, que lia
+     como dois títulos empilhados. A 78% o degrau cai para 1,25×.
+     Usado só pelo `.h1`, que só existe no hero. */
+  --fs-display: clamp(1.5625rem, 1.21rem + 1.5vw, 2.625rem);
   --fs-h2:      clamp(1.5rem, 1.29rem + 0.9vw, 2.125rem);
   --fs-h3:      clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
   --fs-lead:    clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
@@ -133,6 +153,11 @@ img,svg,video{display:block;max-width:100%}
   --shadow-xs:0 1px 2px rgba(15,23,32,.04);
   --shadow-sm:0 1px 2px rgba(15,23,32,.05),0 8px 24px -12px rgba(15,23,32,.14);
   --shadow-bar:0 -1px 0 var(--ink-200),0 -12px 32px -16px rgba(15,23,32,.18);
+  /* A exceção à regra acima: o painel do bloco "A decisão é sua" é a única
+     superfície branca sobre um fundo quase branco (o gradiente termina em
+     #FEF3F2). Sem elevação a borda de 1px teria que fazer o trabalho
+     sozinha, e a 1,05:1 de diferença entre os dois brancos ela some. */
+  --shadow-lg:0 4px 8px -4px rgba(15,23,32,.06),0 16px 32px -8px rgba(15,23,32,.10);
 
   --ease:cubic-bezier(.2,.8,.2,1);
   --dur:180ms;
@@ -229,7 +254,55 @@ strong{font-weight:600;color:var(--ink-900)}
 .eyebrow--on-dark{color:var(--teal-300)}
 
 .h1{font-size:var(--fs-display);font-weight:600;line-height:1.1;letter-spacing:-.03em}
-.h1 .line{display:block;color:var(--ink-500);font-weight:400}
+/* A segunda linha do h1 sai no verde da marca, o mesmo --teal-700 do
+   `.accent` da pergunta logo abaixo: as duas frases que falam da Bendita
+   passam a ter a mesma cor, e o contraste sobe de 4,9:1 (o --ink-500 de
+   antes) para 6,9:1.
+   Em caixa alta, com dois ajustes que ela exige:
+   - o tracking sai do -.03em do h1 (aperto pensado para caixa baixa, que
+     em maiúscula fecha as contraformas) e vai a +.01em;
+   - quem faz a caixa alta é o `text-transform`, não a digitação: escrito
+     em maiúsculas no HTML, parte dos leitores de tela soletraria letra
+     por letra, e o texto copiado da página viria gritando. */
+.h1 .line{
+  display:block;
+  color:var(--teal-700);
+  font-weight:400;
+  text-transform:uppercase;
+  letter-spacing:.01em;
+  /* .76em, não .8em. A .8em o tamanho absoluto batia exatamente o de antes
+     (20px a 360px) e a frase pedia ~327px numa coluna de 318px — quebrava
+     em duas por 9px. Não é caso de ajustar no limite: .76em dá ~13px de
+     folga a 360px e mantém o degrau para as linhas de cima em 1,32×, que
+     continua proporcional. Medido em 320/360/414/768/1024/1440. */
+  font-size:.76em;
+  /* Itálico sintético, de propósito. O @font-face declara só
+     `font-style:normal` — a Montserrat variável do projeto não traz o
+     desenho itálico —, então o navegador inclina o normal. Um arquivo
+     itálico de verdade custaria +37 KB e uma requisição a mais, contra a
+     meta de nota 100. O oblíquo aqui é uma linha curta de título, onde a
+     inclinação basta para o efeito. */
+  font-style:italic;
+  text-wrap:balance;
+}
+/* "entregar resultados." em vermelho — e só isso. Nada de corpo, caixa ou
+   espacejamento próprios: a expressão herda tudo do h1 e fica no mesmo
+   formato de "Sua equipe precisa", exatamente como o resto do título. A
+   cor é o único sinal, e é o bastante: #B42318 sobre o papel branco mede
+   6,6:1, com folga sobre o mínimo de 4,5:1 do WCAG.
+   O ponto final está dentro do vermelho, junto com a expressão.
+   Em caixa alta: o tracking sai do -.03em do h1 (aperto de caixa baixa,
+   que em maiúscula fecha as contraformas) e vai a +.01em. Quem faz a
+   caixa alta é o `text-transform`, não a digitação — escrito em
+   maiúsculas no HTML, parte dos leitores de tela soletraria letra a
+   letra e o texto copiado da página viria gritando. */
+.h1 .shout{
+  display:block;
+  font-size:.84em;
+  color:var(--danger);
+  text-transform:uppercase;
+  letter-spacing:.01em;
+}
 .h2{font-size:var(--fs-h2);line-height:1.2;letter-spacing:-.025em}
 .h3{font-size:var(--fs-h3);font-weight:600;line-height:1.4;letter-spacing:-.01em}
 .lead{font-size:var(--fs-lead);line-height:1.65;color:var(--ink-600);font-weight:400}
@@ -237,7 +310,12 @@ strong{font-weight:600;color:var(--ink-900)}
 .caption{font-size:var(--fs-caption);color:var(--ink-500);line-height:1.6}
 .accent{color:var(--teal-700)}
 .quote{font-size:var(--fs-quote);font-weight:600;line-height:1.35;letter-spacing:-.025em;color:var(--ink-900)}
-.quote .soft{display:block;color:var(--ink-500);font-weight:400}
+/* A segunda linha da citação sai no verde da marca (o mesmo --teal-700 do
+   `.accent` e da segunda linha do h1), e não mais no cinza --ink-500.
+   Vale só para fundo claro: sobre o carvão o override `.on-dark .quote
+   .soft` continua mandando, com --teal-300, porque o --teal-700 ali
+   mediria 1,8:1. Contraste aqui: 6,6:1 sobre o --ink-50 do cartão. */
+.quote .soft{display:block;color:var(--teal-700);font-weight:400}
 
 .section__head{margin-bottom:var(--stack-lg)}
 .section__head .h2{margin-bottom:var(--s-5)}
@@ -258,11 +336,14 @@ strong{font-weight:600;color:var(--ink-900)}
 .btn--lg{min-block-size:3.25rem;padding:var(--s-4) var(--s-8);font-size:var(--fs-body)}
 @media (pointer:coarse){ .btn{min-block-size:3rem} }
 
-/* CTA primário em carvão sólido: branco sobre #0F1720 mede 18,0:1.
-   O verde WhatsApp saturado era o objeto mais barulhento da página e
-   competia com o próprio conteúdo; o canal continua sinalizado pelo
-   ícone, que é o que o usuário de fato reconhece. */
-.btn--primary{background:var(--ink-900);color:var(--paper);box-shadow:var(--shadow-xs)}
+/* CTA primário no verde do WhatsApp, a pedido do cliente em 11/08/2026.
+   (Antes era carvão sólido, para não competir com o conteúdo. A troca é
+   deliberada: o verde é o sinal mais reconhecível do canal e o cliente
+   quer que ele apareça.)
+   O texto TEM que ser escuro: --ink-900 sobre #25D366 mede 9,1:1, mas
+   branco sobre o mesmo verde mede 1,99:1 — reprova o WCAG 1.4.3 até pelo
+   limiar mais permissivo. Não trocar por --paper. */
+.btn--primary{background:var(--wa);color:var(--ink-900);box-shadow:var(--shadow-xs)}
 .btn--ghost{background:transparent;border-color:var(--ink-300);color:var(--ink-900)}
 .btn--light{background:var(--paper);color:var(--ink-900)}
 
@@ -270,14 +351,14 @@ strong{font-weight:600;color:var(--ink-900)}
    hover "gruda" após o toque e o botão fica deslocado até o próximo tap. */
 @media (hover:hover) and (pointer:fine){
   .btn{transition:background-color var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
-  .btn--primary:hover{background:var(--teal-800)}
+  .btn--primary:hover{background:var(--wa-hover)}
   .btn--ghost:hover{border-color:var(--ink-900);background:var(--ink-50)}
   .btn--light:hover{background:var(--teal-100)}
   .card--hover{transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
   .card--hover:hover{border-color:var(--ink-300);box-shadow:var(--shadow-sm)}
   .link-arrow:hover{color:var(--teal-800)}
 }
-.btn--primary:active{background:var(--ink-800)}
+.btn--primary:active{background:var(--wa-active)}
 .btn__icon{inline-size:1.125rem;block-size:1.125rem;flex:none;fill:currentColor}
 @media (max-width:29.99em){ .btn{inline-size:100%} }
 
@@ -331,7 +412,12 @@ strong{font-weight:600;color:var(--ink-900)}
    hero vem do tamanho do título contra o vazio ao redor. */
 .hero{padding-block:clamp(3rem,2rem + 4.3vw,6rem) var(--sec-y)}
 .hero__inner{max-inline-size:52rem}
-.hero .h1{margin-bottom:var(--s-8);max-inline-size:20ch}
+/* A medida era 20ch. `ch` acompanha a fonte do próprio h1, então ao
+   reduzir o --fs-display em 22% a coluna encolheu junto — e a terceira
+   linha, que é caixa alta e tem tamanho próprio, deixou de caber numa
+   linha a 360px. 26ch devolve a MESMA largura em pixels de antes
+   (20ch ÷ 0,78), sem alterar onde as duas primeiras linhas quebram. */
+.hero .h1{margin-bottom:var(--s-8);max-inline-size:26ch}
 .hero__lead{margin-bottom:var(--s-8);max-inline-size:56ch}
 /* A pergunta é o gancho do hero: sai do corpo do parágrafo e ganha um degrau
    de hierarquia própria, entre o lead e o h2. Sem caixa, sem cor de fundo —
@@ -880,6 +966,39 @@ strong{font-weight:600;color:var(--ink-900)}
 .cta__actions{display:flex;flex-wrap:wrap;gap:var(--s-4);align-items:center;margin-top:var(--stack-lg)}
 .center .cta__actions{justify-content:center}
 
+/* --- Bloco "A decisão é sua" ---
+   Importado do index.html do rebuild. É a única seção da página que usa
+   vermelho, e o gradiente branco→rosé existe para justificar isso: o tom
+   quente entra por baixo, gradualmente, em vez de o vermelho aparecer do
+   nada num bloco branco igual a todos os outros.
+   O gradiente também faz o papel que a alternância de fundos faria — por
+   isso `.cta-final` é tratada como superfície própria na regra de cadência
+   lá embaixo, senão o FAQ seguinte encostaria nela com padding zero. */
+.cta-final{background:linear-gradient(180deg,var(--paper) 0%,var(--danger-50) 100%)}
+/* Com a prova social logo abaixo, o gradiente não pode morrer no rosé: rosé
+   encostando no cinza da faixa tingida vira um degrau de cor. Fecha no mesmo
+   ink-50 do vizinho para a emenda desaparecer. */
+.cta-final:has(+ .tinted){background:linear-gradient(180deg,var(--paper) 0%,var(--danger-50) 62%,var(--ink-50) 100%)}
+.eyebrow--danger{color:var(--danger)}
+
+/* O painel branco sobre o fim do gradiente: ver a nota do --shadow-lg. */
+.panel{
+  text-align:left;
+  padding:var(--card-pad);
+  border-radius:var(--r-lg);
+  background:var(--paper);
+  border:1px solid var(--ink-200);
+  box-shadow:var(--shadow-lg);
+}
+
+/* Lista com seta: a seta aponta para frente e é lida como consequência
+   ("isto está acontecendo agora"), diferente do check das listas de
+   entrega, que é lido como item cumprido. */
+.ticks{display:grid;gap:var(--s-4)}
+.ticks li{display:flex;align-items:flex-start;gap:var(--s-3);line-height:1.6}
+.ticks svg{inline-size:1.25rem;block-size:1.25rem;flex:none;margin-block-start:.2em}
+.ticks--arrow svg{color:var(--danger)}
+
 /* --- Rodapé --- */
 .footer{background:var(--ink-900);color:var(--ink-300);padding-block:var(--s-16) var(--s-10);--ring:var(--teal-300);border-top:1px solid rgba(255,255,255,.10)}
 .footer .brand__name{color:var(--paper)}
@@ -897,6 +1016,22 @@ strong{font-weight:600;color:var(--ink-900)}
 .footer abbr{text-decoration:none}
 .link-arrow{display:inline-flex;align-items:center;gap:var(--s-2);color:var(--teal-300);font-weight:600;text-decoration:none;font-size:var(--fs-small)}
 .link-arrow svg{inline-size:1rem;block-size:1rem;flex:none}
+
+/* A ficha institucional passou de baixo do hero para dentro do rodapé.
+   A estrutura é a mesma (rótulo em versalete + valor) e os tamanhos não
+   mudam; o que muda é a superfície. Sobre o carvão o filete --ink-200
+   (#E4E8EB) tem mais contraste que o próprio texto e vira a coisa mais
+   visível do bloco, então os filetes adotam o rgba branco a 10% que já
+   separa o resto do rodapé. As cores do texto invertem: valor em --paper
+   (18,0:1) e rótulo em --ink-300 (11,6:1) — o --ink-500 original daria
+   3,7:1 aqui, abaixo do mínimo do WCAG para corpo de texto.
+   O filete de baixo sai: o `border-top` do .footer__legal, logo abaixo,
+   já desenha essa linha na mesma largura de container. */
+.footer .creds{margin-block-start:var(--stack-lg)}
+.footer .creds > .container{border-block-end:0;border-block-start-color:rgba(255,255,255,.10)}
+.footer .creds__list li{border-color:rgba(255,255,255,.10)}
+.footer .creds__label{color:var(--ink-300)}
+.footer .creds__value{color:var(--paper)}
 
 /* --- Barra CTA fixa no mobile ---
    Barra com rótulo, e não botão flutuante: a 320px a barra oferece
@@ -964,11 +1099,14 @@ strong{font-weight:600;color:var(--ink-900)}
    voltarem a ficar vizinhas numa edição futura, elas se fundem num bloco só
    e o filete na grade assume o papel que a troca de cor não fez. Sem isso
    sobravam 256px de cinza liso entre dois blocos — vazio desse tamanho lê
-   como conteúdo faltando, não como respiro. */
+   como conteúdo faltando, não como respiro.
+   O `.cta-final` fica de fora dos dois lados: ele tem gradiente próprio,
+   ou seja, já é uma troca de superfície. Sem esse :not(), o FAQ logo
+   abaixo entraria com padding-block-start:0 e encostaria no rosé. */
 .tinted + .tinted,
-.section:not(.tinted):not(.on-dark) + .section:not(.tinted):not(.on-dark){padding-block-start:0}
+.section:not(.tinted):not(.on-dark):not(.cta-final) + .section:not(.tinted):not(.on-dark):not(.cta-final){padding-block-start:0}
 .tinted + .tinted > .container,
-.section:not(.tinted):not(.on-dark) + .section:not(.tinted):not(.on-dark) > .container{
+.section:not(.tinted):not(.on-dark):not(.cta-final) + .section:not(.tinted):not(.on-dark):not(.cta-final) > .container{
   border-block-start:1px solid var(--ink-200);
   padding-block-start:calc(var(--sec-y) * .66);
 }
@@ -1064,7 +1202,7 @@ strong{font-weight:600;color:var(--ink-900)}
    elemento a elemento, vai de 6,53:1 a 10,72:1.
    Não repor sem medir de novo. */</style>
 
-<meta name="description" content="Gestão de viagens corporativas para empresas: passagens, hospedagem, transfer e seguro em um só canal, com atendimento humano 24h. Fale com a Bendita Tour.">
+<meta name="description" content="Gestão de viagens corporativas: passagens, hospedagem, transfer e seguro em um só canal, com atendimento humano 24h. Fale com a Bendita Tour.">
 <link rel="canonical" href="https://corporativo.benditatour.com/">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta name="theme-color" content="#0F1720">
@@ -1076,14 +1214,14 @@ strong{font-weight:600;color:var(--ink-900)}
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Bendita Tour Corporativo">
 <meta property="og:url" content="https://corporativo.benditatour.com/">
-<meta property="og:title" content="Gestão de Viagens Corporativas para Empresas | Bendita Tour">
+<meta property="og:title" content="Gestão de Viagens Corporativas | Bendita Tour">
 <meta property="og:description" content="Sua equipe entrega resultados. Nós cuidamos das viagens: passagens, hospedagem e imprevistos, com atendimento humano 24h.">
 <meta property="og:image" content="https://corporativo.benditatour.com/assets/og-corporativo.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Bendita Tour Corporativo — gestão de viagens corporativas">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gestão de Viagens Corporativas para Empresas | Bendita Tour">
+<meta name="twitter:title" content="Gestão de Viagens Corporativas | Bendita Tour">
 <meta name="twitter:description" content="Menos tempo operacional, mais previsibilidade na gestão de viagens da sua empresa.">
 <meta name="twitter:image" content="https://corporativo.benditatour.com/assets/og-corporativo.jpg">
 
@@ -1099,7 +1237,7 @@ strong{font-weight:600;color:var(--ink-900)}
       "alternateName":"Bendita Tour Corporativo",
       "url":"https://corporativo.benditatour.com/",
       "logo":"https://corporativo.benditatour.com/ICONE.webp",
-      "description":"Gestão completa de viagens corporativas para empresas: emissão de passagens, hospedagem, locação de veículos, seguro viagem e suporte humano 24h.",
+      "description":"Gestão completa de viagens corporativas: emissão de passagens, hospedagem, locação de veículos, seguro viagem e suporte humano 24h.",
       "taxID":"54.179.099/0001-60",
       "telephone":"+5544999273477",
       "areaServed":{"@type":"Country","name":"Brasil"},
@@ -1210,36 +1348,21 @@ strong{font-weight:600;color:var(--ink-900)}
         </p>
 
         <h1 class="h1">
-          Sua equipe entrega resultados.
+          Sua equipe precisa
+          <span class="shout">entregar resultados.</span>
           <span class="line">Nós cuidamos das viagens.</span>
         </h1>
 
         <p class="lead hero__lead">
-          Profissionais qualificados perdem horas e horas com cotações, reservas,
-          cancelamentos e imprevistos de viagem, quando deveriam estar focados no
+          Profissionais qualificados perdem horas e horas com cotações, reservas e imprevistos de viagem, quando deveriam estar focados no
           que realmente sabem fazer. E o resultado? O trabalho que realmente
-          importa fica esperando.
+          importa, fica esperando.
         </p>
 
         <p class="hero__ask">
           Enquanto sua equipe cuida das viagens,
           <span class="accent">quem está cuidando do seu negócio?</span>
         </p>
-
-        <!-- A lista anterior (quatro frases longas) foi substituída por estes
-             cinco itens curtos, a pedido do cliente. A troca resolve o que
-             tinha me feito removê-la: as frases longas custavam ~300px e
-             empurravam o botão para fora da dobra; em duas colunas, cinco
-             rótulos de duas palavras ocupam três linhas. -->
-        <ul class="perks" role="list">
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Economia inteligente</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Atendimento exclusivo</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Resolução rápida de imprevistos</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Segurança e discrição</span></li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Suporte completo do embarque ao retorno</span></li>
-        </ul>
-
-        <p class="tagline">Menos custos. Menos preocupações. <span class="accent">Mais resultados.</span></p>
 
         <div class="hero__actions">
           <a class="btn btn--primary btn--lg"
@@ -1295,86 +1418,64 @@ strong{font-weight:600;color:var(--ink-900)}
     </div>
   </section>
 
-  <!-- ================= Credenciais institucionais =================
-       Só afirmações verificáveis: registro da empresa, natureza do
-       atendimento, alcance e formato de contratação. Nenhum número de
-       desempenho sem fonte. -->
-  <section class="creds" aria-label="Informações institucionais">
-    <div class="container">
-      <ul class="creds__list" role="list">
-        <li>
-          <span class="creds__label">Registro</span>
-          <span class="creds__value">CNPJ 54.179.099/0001-60</span>
-        </li>
-        <li>
-          <span class="creds__label">Atendimento</span>
-          <span class="creds__value">Humano, 24/7/365</span>
-        </li>
-        <li>
-          <span class="creds__label">Cobertura</span>
-          <span class="creds__value">Nacional e internacional</span>
-        </li>
-        <li>
-          <span class="creds__label">Contratação</span>
-          <span class="creds__value">Sem taxa de adesão nem software para instalar</span>
-        </li>
-      </ul>
-    </div>
-  </section>
-
   <!-- ================= O custo que não aparece ================= -->
   <section class="section tinted" aria-labelledby="t-custo">
     <div class="container">
       <div class="section__head reveal">
-        <span class="eyebrow">O diagnóstico</span>
-        <h2 class="h2" id="t-custo">O custo que não aparece na planilha</h2>
+      
+        <h2 class="h2" id="t-custo">O custo invisível que não aparece na planilha</h2>
         <p class="lead">
-          Nenhuma empresa tem uma linha no orçamento chamada “horas gastas organizando
-          viagem”. Mas ela existe, e é paga todo mês — em quatro moedas diferentes.
+          Esse tempo não entra em nenhuma planilha chamada “horas gastas organizando
+          viagens”. Mas ela existe e é paga todo mês em quatro moedas diferentes.
         </p>
       </div>
 
       <div class="grid grid--2 reveal-stagger">
         <article class="item">
           <span class="item__index">01</span>
-          <h3 class="h3 item__title">Tempo de quem não deveria estar nisso</h3>
+          <h3 class="h3 item__title">O tempo que ninguém conta</h3>
           <p class="item__text">
-            O financeiro confere notas, o RH remarca voos e o gestor aprova reembolso
-            por e-mail. São horas de gente cara, gastas em tarefa operacional.
+            Gestores gastam em média 60 a 70 horas por mês apenas gerenciando viagens, sem contar cancelamentos e imprevistos. Nesse tempo, decisões estratégicas ficam para trás e atividades importantes são deixadas de lado.
           </p>
-          <p class="item__note">Esse tempo não entra em nenhum relatório — mas sai do resultado.</p>
+          <p class="item__note">Esse tempo tem um preço. E você está pagando mais caro, sem perceber.</p>
         </article>
 
         <article class="item">
           <span class="item__index">02</span>
-          <h3 class="h3 item__title">Compras feitas na urgência</h3>
+          <h3 class="h3 item__title">O dinheiro que escorre</h3>
           <p class="item__text">
-            Passagem comprada em cima da hora, hotel escolhido pelo primeiro resultado
-            da busca, reservas espalhadas por cinco sites diferentes e nenhuma
-            visão consolidada do que foi gasto.
+            Passagens compradas em cima da hora, hotéis escolhidos pelo primeiro resultado da busca, reservas espalhadas por vários sites diferentes.
+
+Horas e mais horas de profissionais qualificados são desperdiçadas em uma atividade que não dominam e que nem deveria estar nas mãos deles.
+
+
+
+
           </p>
-          <p class="item__note">Sem processo, cada viagem é negociada do zero.</p>
+          <p class="item__note">PMEs pagam 30% a mais por falta de uma gestão profissional.
+
+
+</p>
         </article>
 
         <article class="item">
           <span class="item__index">03</span>
           <h3 class="h3 item__title">A experiência de quem viaja</h3>
           <p class="item__text">
-            O colaborador que viaja a trabalho resolve imprevisto sozinho, adianta
-            despesa no cartão pessoal e espera semanas pelo reembolso. Ele deveria
-            estar concentrado no cliente.
+            Seu colaborador viaja a trabalho e precisa: resolver contratempos sozinho, as 02 h da manhã, enfrentar burocracia, quando deveria
+            estar focado no cliente.
           </p>
           <p class="item__note">Retenção de talento também se decide nesses detalhes.</p>
         </article>
 
         <article class="item">
           <span class="item__index">04</span>
-          <h3 class="h3 item__title">Imprevistos sem dono</h3>
+          <h3 class="h3 item__title">Imprevistos acontecem. O problema é, quem precisa parar para resolver.</h3>
           <p class="item__text">
-            Voo cancelado, overbooking, bagagem extraviada. A pergunta que importa
-            não é se vai acontecer — é quem atende o telefone quando acontecer.
+            Voo cancelado, overbooking, bagagem extraviada, alteração de última hora. A pergunta que importa
+            não é se vai acontecer, é quem atende o telefone quando acontecer. Seu RH precisa parar tudo para atender um colaborador? Seu gestor precisa interromper o dia? Com a Bendita Tour, sua equipe não precisa parar para resolver nada. Nós resolvemos.
           </p>
-          <p class="item__note">Sem um responsável definido, o problema sobe para a diretoria.</p>
+          <p class="item__note">Imprevistos fazem parte das viagens. Parar sua equipe para resolvê-los, não.</p>
         </article>
       </div>
     </div>
@@ -1384,24 +1485,25 @@ strong{font-weight:600;color:var(--ink-900)}
   <section class="section on-dark has-dots" aria-labelledby="t-virada">
     <span class="dots dots--tr" aria-hidden="true"></span>
     <div class="container">
-      <span class="eyebrow eyebrow--on-dark">A alternativa</span>
-      <h2 class="h2" id="t-virada" style="margin-bottom:var(--s-8)">Existe uma forma mais simples de fazer isso</h2>
+      <h2 class="h2" id="t-virada" style="margin-bottom:var(--s-8)">E se existisse uma forma de eliminar completamente essa carga operacional da sua empresa?</h2>
 
       <p class="lead measure" style="margin-bottom:var(--stack-lg)">
-        Sua equipe manda uma mensagem. A partir daí, a viagem é responsabilidade nossa
-        — do primeiro orçamento ao relatório de fechamento.
+        Uma forma onde sua equipe manda uma mensagem no whatsapp e tudo se resolve?
       </p>
 
       <ul class="facts measure" role="list">
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Voos, hotéis e transfers organizados <strong>dentro da política da empresa</strong></span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Imprevistos tratados <strong>24 horas por dia, 7 dias por semana</strong></span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Uma pessoa de verdade do outro lado, <strong>que já conhece a sua operação</strong></span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Um interlocutor único para <strong>toda a empresa</strong>, da equipe à diretoria</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Passagem aérea (nacional/ internacional),
+           hospedagens, transfers, seguro viagem</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Suporte completo <strong>24 horas por dia, 7 dias por semana</strong></span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Atendimento exclusivo</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span><strong>Resolução rápida de imprevistos</strong></span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Economia inteligente</span></li>
+        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span><strong>Segurança e discrição</strong></span></li>
       </ul>
 
       <p class="quote measure" style="margin-top:var(--stack-lg)">
-        Isso não é um projeto para implantar.
-        <span class="soft">É uma conversa de quinze minutos.</span>
+        Essa forma existe.
+        <span class="soft">E se chama Bendita Tour.</span>
       </p>
     </div>
   </section>
@@ -1410,9 +1512,8 @@ strong{font-weight:600;color:var(--ink-900)}
   <section class="section" aria-labelledby="t-como">
     <div class="container">
       <div class="section__head reveal">
-        <span class="eyebrow">Na prática</span>
         <h2 class="h2" id="t-como">Como funciona no dia a dia</h2>
-        <p class="lead">Três momentos, um canal só. Sem plataforma para aprender, sem senha para lembrar.</p>
+        <p class="lead">É assim que funciona quando você tem a Bendita Tour ao seu lado:</p>
       </div>
 
       <div class="grid grid--3 reveal-stagger">
@@ -1420,17 +1521,16 @@ strong{font-weight:600;color:var(--ink-900)}
           <span class="item__index">01 · PEDIDO</span>
           <h3 class="h3 item__title">Alguém precisa viajar</h3>
           <p class="item__text">
-            Uma mensagem no WhatsApp com destino e data. Voltamos com as opções que
-            cabem na política da empresa — já comparadas, prontas para aprovar.
+            Uma mensagem no whatspp com origem/destino/datas. Voo + hospedagem + transfer, organizados, dentro da política da empresa. Sem pesquisas, comparações e sem dor de cabeça.
           </p>
         </article>
 
         <article class="item">
           <span class="item__index">02 · VIAGEM</span>
-          <h3 class="h3 item__title">Algo sai do previsto</h3>
+          <h3 class="h3 item__title">Alteração/ cancelamento</h3>
           <p class="item__text">
-            Voo cancelado às duas da manhã, hotel com overbooking, conexão perdida.
-            Quem resolve somos nós, no mesmo canal, a qualquer hora.
+            Imprevistos não esperam horário comercial. Voo cancelado às 02 h da manhã, alteração, conexão perdida?
+            Nós resolvemos, a qualquer hora. Você nunca esta sozinho.
           </p>
         </article>
 
@@ -1438,8 +1538,7 @@ strong{font-weight:600;color:var(--ink-900)}
           <span class="item__index">03 · FECHAMENTO</span>
           <h3 class="h3 item__title">O mês termina</h3>
           <p class="item__text">
-            Um relatório consolidado com tudo que foi emitido, por centro de custo,
-            por pessoa e por viagem. Sem caça a comprovante.
+          Relatório completo na sua mesa.
           </p>
         </article>
       </div>
@@ -1447,71 +1546,49 @@ strong{font-weight:600;color:var(--ink-900)}
       <div class="quote-card measure" style="margin-top:var(--stack-lg)">
         <p class="quote">
           Tecnologia agiliza.
-          <span class="soft">É o toque humano que resolve.</span>
+          <span class="soft">Mas é o toque humano que resolve!</span>
         </p>
       </div>
     </div>
   </section>
-
-  <!-- ================= Comparativo ================= -->
-  <section class="section tinted" aria-labelledby="t-comp">
+  <!-- ================= A decisão é sua =================
+       Entra ANTES da prova social a pedido do cliente (11/08/2026): primeiro
+       o custo de continuar como está, depois a prova de que dá para mudar —
+       os depoimentos passam a responder à tensão criada aqui.
+       O CTA sóbrio ("Comece por uma conversa") continua no fim da página,
+       depois do FAQ — os dois têm papéis diferentes: este aperta, aquele
+       convida. A prova social entre eles impede que soem como repetição. -->
+  <section class="section cta-final" aria-labelledby="t-decisao">
     <div class="container">
-      <div class="section__head reveal">
-        <span class="eyebrow">Antes e depois</span>
-        <h2 class="h2" id="t-comp">A mesma viagem, dos dois jeitos</h2>
-        <p class="lead">Um colaborador precisa estar em outra cidade na terça. Este é o percurso da solicitação nos dois cenários.</p>
+      <div class="section__head center reveal">
+        <span class="eyebrow eyebrow--danger">A decisão é sua</span>
+        <h2 class="h2" id="t-decisao">Cada dia que passa, sua empresa <span style="color:var(--danger)">perde tempo e dinheiro</span></h2>
+        <p class="lead measure-center">Enquanto você lê isso:</p>
       </div>
 
-      <div class="compare reveal-stagger">
-        <div class="compare__col">
-          <span class="compare__label">Como funciona hoje</span>
-          <h3 class="h3 compare__title">Sem gestão de viagens</h3>
-          <ul class="compare__list" role="list">
-            <li>Alguém do time abre cinco abas e compara preços por conta própria</li>
-            <li>A reserva sai no cartão pessoal e vira pedido de reembolso</li>
-            <li>Hotel escolhido pelo primeiro resultado da busca, sem acordo negociado</li>
-            <li>O voo atrasa e quem resolve é o próprio colaborador, sozinho</li>
-            <li>No fechamento, o financeiro persegue comprovante por e-mail</li>
-          </ul>
-        </div>
-
-        <div class="compare__col compare__col--ours">
-          <span class="compare__label">Com a Bendita Tour</span>
-          <h3 class="h3 compare__title">Com um consultor dedicado</h3>
-          <ul class="compare__list" role="list">
-            <li>Uma mensagem no WhatsApp com <strong>destino e data</strong></li>
-            <li>Voltamos com as opções que <strong>cabem na política da empresa</strong></li>
-            <li>Hospedagem com <strong>tarifa corporativa negociada</strong></li>
-            <li>Imprevisto entra no <strong>nosso plantão, em qualquer horário</strong></li>
-            <li>Fechamento com <strong>relatório único por centro de custo</strong></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= Escopo ================= -->
-  <section class="section" aria-labelledby="t-escopo">
-    <div class="container">
-      <div class="section__head reveal">
-        <span class="eyebrow">Escopo do serviço</span>
-        <h2 class="h2" id="t-escopo">O que está incluído</h2>
-        <p class="lead">
-          Um interlocutor único para tudo o que envolve a viagem. Os itens abaixo
-          fazem parte do serviço — não são módulos cobrados à parte.
-        </p>
+      <div class="panel measure-center reveal">
+        <ul class="ticks ticks--arrow" role="list">
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg><span>Alguém da sua equipe está <strong>pesquisando passagens</strong> ao invés de trabalhar</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg><span>Uma reserva está sendo feita <strong>sem o melhor preço</strong> disponível</span></li>
+          <li><svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg><span>Um imprevisto pode acontecer e <strong>não ter quem resolva</strong></span></li>
+        </ul>
       </div>
 
-      <ul class="scope reveal-stagger" role="list">
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Emissão de passagens nacionais e internacionais</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Hospedagem com tarifas corporativas negociadas</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Transfer, traslados e locação de veículos</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Seguro viagem para toda a equipe</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Remarcações, cancelamentos e acompanhamento de reembolso</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Reservas conferidas contra a política de viagens da empresa</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Atendimento a imprevistos fora do horário comercial</span></li>
-        <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Relatório mensal consolidado por centro de custo</span></li>
-      </ul>
+      <p class="quote center" style="margin-block:var(--stack-lg)">
+        Você pode continuar assim. Ou pode mudar agora!
+        <span style="display:block;color:var(--teal-700)">Zero tempo perdido. Menos custos. Mais resultados.</span>
+      </p>
+
+      <div class="center">
+        <a class="btn btn--primary btn--lg"
+           href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20parar%20de%20perder%20tempo%20com%20viagens%20corporativas.%20(decisao)"
+           target="_blank" rel="noopener external">
+          <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
+          Quero parar de perder tempo
+          <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
+        </a>
+        <p class="caption" style="margin-top:var(--s-4)">Resposta em até 2 horas úteis</p>
+      </div>
     </div>
   </section>
 
@@ -1525,12 +1602,13 @@ strong{font-weight:600;color:var(--ink-900)}
        e o Código do CONAR; o caminho seguro é substituí-los por depoimentos
        reais ou removê-los.
        TODO(estrelas): confirmar que os clientes reais deram nota 5. -->
-  <!-- Fundo de papel, e não tingido: a seção de escopo logo acima já usa o
-       tom; duas faixas tingidas coladas apagariam a divisão entre elas. -->
+  <!-- Fundo tingido: a seção anterior ("A decisão é sua") é gradiente, não
+       faixa tingida, então não há duas faixas iguais coladas — o gradiente
+       fecha em ink-50 justamente para entrar neste tom sem degrau. -->
   <section class="section tinted" aria-labelledby="t-prova">
     <div class="container">
       <div class="section__head reveal">
-        <span class="eyebrow">Quem viaja com a gente</span>
+        <span class="eyebrow">Quem já transformou suas viagens</span>
         <h2 class="h2" id="t-prova">O que dizem nossos clientes</h2>
       </div>
 
@@ -1612,7 +1690,7 @@ strong{font-weight:600;color:var(--ink-900)}
             <span class="avatar avatar--mono" aria-hidden="true">MS</span>
             <span>
               <span class="author__name">Maria Silva</span>
-              <span class="author__role">Head de Operações</span>
+              <span class="author__role"></span>
             </span>
           </div>
         </article>
@@ -1630,7 +1708,7 @@ strong{font-weight:600;color:var(--ink-900)}
             <span class="avatar avatar--mono" aria-hidden="true">JS</span>
             <span>
               <span class="author__name">João Santos</span>
-              <span class="author__role">CEO</span>
+              <span class="author__role"></span>
             </span>
           </div>
         </article>
@@ -1648,7 +1726,7 @@ strong{font-weight:600;color:var(--ink-900)}
             <span class="avatar avatar--mono" aria-hidden="true">AC</span>
             <span>
               <span class="author__name">Ana Costa</span>
-              <span class="author__role">CFO</span>
+              <span class="author__role"></span>
             </span>
           </div>
         </article>
@@ -1656,101 +1734,6 @@ strong{font-weight:600;color:var(--ink-900)}
     </div>
   </section>
 
-<!-- TODO(comercial): as respostas abaixo descrevem o modelo de trabalho e
-       não prometem preço, prazo contratual nem condição de faturamento. Antes
-       de divulgar a página, confirmar com o comercial as duas marcadas com
-       (confirmar) — uma resposta errada aqui vira expectativa de contrato. -->
-  <section class="section" aria-labelledby="t-faq">
-    <div class="container">
-      <div class="section__head reveal">
-        <span class="eyebrow">Perguntas frequentes</span>
-        <h2 class="h2" id="t-faq">O que costumam nos perguntar</h2>
-      </div>
-
-      <div class="faq reveal">
-        <details>
-          <summary>Precisamos instalar alguma plataforma ou treinar a equipe?</summary>
-          <div class="faq__answer">
-            <p>Não. O canal é o WhatsApp que sua equipe já usa. Não há software para
-            instalar, login para distribuir nem treinamento para agendar — quem sabe
-            escrever uma mensagem sabe solicitar uma viagem.</p>
-          </div>
-        </details>
-
-        <details>
-          <summary>Como vocês garantem que a reserva respeita a política da empresa?</summary>
-          <div class="faq__answer">
-            <p>Registramos as regras da sua empresa antes do primeiro atendimento:
-            classe permitida por cargo, teto de diária, antecedência mínima, fornecedores
-            preferenciais. As opções que enviamos já saem filtradas por esse conjunto —
-            e o que estiver fora vem sinalizado, com a exceção explícita.</p>
-          </div>
-        </details>
-
-        <details>
-          <summary>E se acontecer um imprevisto de madrugada ou no fim de semana?</summary>
-          <div class="faq__answer">
-            <p>Voo cancelado, conexão perdida, overbooking e extravio de bagagem entram
-            no nosso plantão, em qualquer horário e em qualquer dia. Quem aciona é o
-            colaborador que está viajando, pelo mesmo canal de sempre — não há número
-            diferente para decorar nem fila de atendimento para enfrentar.</p>
-          </div>
-        </details>
-
-        <details>
-          <summary>Quem decide o fornecedor: vocês ou a empresa?</summary>
-          <div class="faq__answer">
-            <p>A empresa. Nós apresentamos as opções com o que muda entre elas —
-            preço, horário, remarcação, bagagem, distância do compromisso — e a decisão
-            de aprovação continua com quem já aprova hoje. Nosso papel é fazer a
-            comparação e assumir a execução, não escolher pela sua diretoria.</p>
-          </div>
-        </details>
-
-        <details>
-          <summary>Que informação vem no relatório mensal?</summary>
-          <div class="faq__answer">
-            <p>Tudo o que foi emitido no período, consolidado por centro de custo,
-            por pessoa e por viagem, com os comprovantes anexados. É o documento que
-            o financeiro usa para fechar o mês sem perseguir recibo por e-mail.</p>
-          </div>
-        </details>
-
-        <details>
-          <summary>Existe taxa de adesão ou volume mínimo? <span class="sr-only">(confirmar com o comercial)</span></summary>
-          <div class="faq__answer">
-            <p>Não há taxa de adesão nem software a contratar. As condições variam com
-            o perfil de viagem de cada empresa — volume, destinos e frequência —, e é
-            justamente isso que a conversa inicial de quinze minutos serve para levantar.</p>
-          </div>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= CTA final ================= -->
-  <section class="section on-dark has-dots" aria-labelledby="t-cta">
-    <span class="dots dots--bl" aria-hidden="true"></span>
-    <div class="container center">
-      <span class="eyebrow eyebrow--on-dark">Próximo passo</span>
-      <h2 class="h2" id="t-cta">Comece por uma conversa</h2>
-      <p class="lead measure-center" style="margin-top:var(--s-6)">
-        Quinze minutos para entender como sua empresa viaja hoje e onde está a
-        perda de tempo. Sem compromisso, sem apresentação de slides.
-      </p>
-
-      <div class="cta__actions">
-        <a class="btn btn--light btn--lg"
-           href="https://wa.me/5544999273477?text=Ol%C3%A1!%20Quero%20falar%20sobre%20gest%C3%A3o%20de%20viagens%20corporativas.%20(cta-final)"
-           target="_blank" rel="noopener external">
-          <svg class="btn__icon" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>
-          Falar com um consultor
-          <span class="sr-only"> — abre o WhatsApp em uma nova aba</span>
-        </a>
-      </div>
-      <p class="caption" style="margin-top:var(--s-5)">Resposta em até 2 horas úteis</p>
-    </div>
-  </section>
 
 </main>
 
@@ -1769,10 +1752,41 @@ strong{font-weight:600;color:var(--ink-900)}
         <svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
       </a>
     </div>
+  </div>
 
+  <!-- ================= Credenciais institucionais =================
+       Só afirmações verificáveis: registro da empresa, natureza do
+       atendimento, alcance e formato de contratação. Nenhum número de
+       desempenho sem fonte.
+       Container próprio, irmão dos outros: aninhar dentro do container do
+       rodapé somaria gutter e recuo duas vezes, e o filete deixaria de
+       nascer e morrer na mesma grade do resto da página. -->
+  <section class="creds" aria-label="Informações institucionais">
+    <div class="container">
+      <ul class="creds__list" role="list">
+        <li>
+          <span class="creds__label">Registro</span>
+          <span class="creds__value">CNPJ 54.179.099/0001-60</span>
+        </li>
+        <li>
+          <span class="creds__label">Atendimento</span>
+          <span class="creds__value">Humano, 24/7/365</span>
+        </li>
+        <li>
+          <span class="creds__label">Cobertura</span>
+          <span class="creds__value">Nacional e internacional</span>
+        </li>
+        <li>
+          <span class="creds__label">Contratação</span>
+          <span class="creds__value">Sem taxa de adesão</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="container">
     <div class="footer__legal">
       <p>© 2026 Bendita Tour Assessoria &amp; Viagens. Todos os direitos reservados.</p>
-      <p><abbr title="Cadastro Nacional da Pessoa Jurídica">CNPJ</abbr>: 54.179.099/0001-60</p>
     </div>
   </div>
 </footer>

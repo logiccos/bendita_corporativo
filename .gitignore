@@ -23,7 +23,7 @@ npm-debug.log*
 .env
 .env.local
 .env.*.local
-
+image/
 # Build
 dist/
 build/
