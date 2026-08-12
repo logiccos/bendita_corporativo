@@ -1168,13 +1168,36 @@ strong{font-weight:600;color:var(--ink-900)}
 :root{--fs-h3:clamp(1.1875rem, 1.1rem + 0.33vw, 1.375rem)}
 .faq summary{font-size:var(--fs-h3)}
 
-/* 7 · Depoimentos em duas colunas.
-   Em três colunas sobravam 279px de texto = 32 caracteres por linha, e o
-   `margin-block-start:auto` do autor abria até 164px de vazio dentro do
-   cartão. `align-items:start` devolve a cada cartão a altura do próprio
-   conteúdo. */
+/* 7 · Depoimentos em duas colunas, empilhados como revista.
+   Duas colunas e não três: em três sobravam 279px de texto = 32 caracteres
+   por linha.
+   O empilhamento (multi-coluna, e não grade) resolve o que sobrou depois
+   disso. Depoimento real tem comprimento imprevisível — os oito daqui vão
+   de 215px a 580px de altura. Numa grade, a linha inteira reserva a altura
+   do cartão mais alto, então um cartão de 215px ao lado de um de 580px
+   deixa 365px de vazio antes da linha seguinte: buraco no meio da seção.
+   Em multi-coluna cada cartão sobe até encostar no de cima: some o vazio.
+   O equilíbrio das colunas NÃO é automático como parece. O navegador só
+   corta a sequência em dois pedaços — os N primeiros na coluna 1, o resto
+   na 2 —, então quem decide o desnível é a ORDEM dos cartões. Medido em
+   1280px: na ordem cronológica o desnível era 338px (um vazio visível no
+   pé da coluna direita); na ordem atual é 60px, e a seção ficou 129px mais
+   curta. Por isso a ordem alterna longos e curtos em vez de seguir a data
+   de chegada. Mexeu no texto de um depoimento ou entrou um novo? Vale
+   remedir — o desnível é o número a olhar.
+   Custo do multi-coluna: a leitura passa a ser coluna por coluna, e não
+   linha por linha. Em depoimento isso é indiferente (não há sequência a
+   seguir), e o primeiro do DOM continua no topo à esquerda. */
 @media (min-width:60em){
-  .grid--3:has(> .card){grid-template-columns:1fr 1fr;align-items:start}
+  .grid--3:has(> .card){
+    display:block;
+    columns:2;
+    column-gap:var(--grid-gap);
+  }
+  .grid--3:has(> .card) > .card{
+    break-inside:avoid;          /* nenhum cartão parte ao meio entre colunas */
+    margin-block-end:var(--grid-gap);
+  }
 }
 
 /* 8 · A citação em destaque encostava na grade de cartões com gap 0px. */
@@ -1632,7 +1655,6 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
       <div class="grid grid--3 reveal-stagger">
 
         <!-- ---- Depoimentos reais ---- -->
-
         <!-- Depoimento real, enviado pelo cliente em 12/08/2026, verbatim.
              Abre a lista a pedido do cliente (12/08/2026), e o lugar cai bem:
              é o único que descreve o problema nos termos desta página —
@@ -1653,17 +1675,8 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
           </div>
         </article>
 
-        <article class="card card--hover">
-          <blockquote class="testimonial__text">“Uma amiga me indicou a Josi da Bendita Tour e desde então, todas as nossas viagens passam por ela. Super atenciosa e dedicada. <strong>Virou nossa parceira de viagens de confiança.</strong>”</blockquote>
-          <div class="author">
-            <img class="avatar" src="assets/ana-cecilia-duarte.webp" alt="Retrato de Ana Cecília Duarte" width="44" height="44" loading="lazy" decoding="async">
-            <span>
-              <span class="author__name">Ana Cecília Duarte</span>
-            </span>
-          </div>
-        </article>
-
-        <!-- Depoimento real, recebido do cliente em 11/08/2026, com retrato. -->
+        
+<!-- Depoimento real, recebido do cliente em 11/08/2026, com retrato. -->
         <article class="card card--hover">
           <blockquote class="testimonial__text">
             <p>“Eu já viajei muito por conta própria e com alguém me assessorando. Mas confesso que a Bendita e a Josi, foram um verdadeiro achado.</p>
@@ -1678,27 +1691,8 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
           </div>
         </article>
 
-        <article class="card card--hover">
-          <blockquote class="testimonial__text">“Mais um excelente voo organizado pela Bendita Tour, dessa vez na classe executiva da Qatar Airways. Quero agradecer pelo suporte durante toda a viagem e por todo o cuidado na organização. É muito bom poder viajar com a tranquilidade de saber que <strong>temos alguém cuidando de tudo nos bastidores.</strong>”</blockquote>
-          <div class="author">
-            <img class="avatar" src="assets/nichollas-marshell.webp" alt="Retrato de Nichollas Marshell" width="44" height="44" loading="lazy" decoding="async">
-            <span>
-              <span class="author__name">Nichollas Marshell</span>
-            </span>
-          </div>
-        </article>
-
-        <article class="card card--hover">
-          <blockquote class="testimonial__text">“Viajamos com frequência a negócios e sinceramente, nunca tinha dado muita atenção. Até que alguns amigos me recomendaram a Bendita Tour. No início, entrei em contato apenas por curiosidade, mas depois da primeira experiência, nunca mais viajamos sem eles. <strong>Hoje, confiamos a Bendita todas as nossas viagens.</strong>”</blockquote>
-          <div class="author">
-            <img class="avatar" src="assets/paulo-menezes.webp" alt="Retrato de Paulo Menezes" width="44" height="44" loading="lazy" decoding="async">
-            <span>
-              <span class="author__name">Paulo Menezes</span>
-            </span>
-          </div>
-        </article>
-
-        <article class="card card--hover">
+        
+<article class="card card--hover">
           <blockquote class="testimonial__text">“Antes perdíamos 2 dias organizando viagens da diretoria. Com a Bendita, são 2 mensagens no WhatsApp. <strong>Não trocamos mais.</strong>”</blockquote>
           <div class="author">
             <img class="avatar" src="assets/maria-silva.webp" alt="Retrato de Maria Silva" width="44" height="44" loading="lazy" decoding="async">
@@ -1709,7 +1703,8 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
           </div>
         </article>
 
-        <article class="card card--hover">
+        
+<article class="card card--hover">
           <blockquote class="testimonial__text">“O maior ganho foi o tempo que a equipe recuperou para fazer <strong>o que realmente importa.</strong>”</blockquote>
           <div class="author">
             <img class="avatar" src="assets/laura-costa.webp" alt="Retrato de Laura Costa" width="44" height="44" loading="lazy" decoding="async">
@@ -1720,7 +1715,41 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
           </div>
         </article>
 
-        <!-- Depoimento real, enviado pelo cliente em 11/08/2026, verbatim.
+        
+<article class="card card--hover">
+          <blockquote class="testimonial__text">“Uma amiga me indicou a Josi da Bendita Tour e desde então, todas as nossas viagens passam por ela. Super atenciosa e dedicada. <strong>Virou nossa parceira de viagens de confiança.</strong>”</blockquote>
+          <div class="author">
+            <img class="avatar" src="assets/ana-cecilia-duarte.webp" alt="Retrato de Ana Cecília Duarte" width="44" height="44" loading="lazy" decoding="async">
+            <span>
+              <span class="author__name">Ana Cecília Duarte</span>
+            </span>
+          </div>
+        </article>
+
+        
+<article class="card card--hover">
+          <blockquote class="testimonial__text">“Mais um excelente voo organizado pela Bendita Tour, dessa vez na classe executiva da Qatar Airways. Quero agradecer pelo suporte durante toda a viagem e por todo o cuidado na organização. É muito bom poder viajar com a tranquilidade de saber que <strong>temos alguém cuidando de tudo nos bastidores.</strong>”</blockquote>
+          <div class="author">
+            <img class="avatar" src="assets/nichollas-marshell.webp" alt="Retrato de Nichollas Marshell" width="44" height="44" loading="lazy" decoding="async">
+            <span>
+              <span class="author__name">Nichollas Marshell</span>
+            </span>
+          </div>
+        </article>
+
+        
+<article class="card card--hover">
+          <blockquote class="testimonial__text">“Viajamos com frequência a negócios e sinceramente, nunca tinha dado muita atenção. Até que alguns amigos me recomendaram a Bendita Tour. No início, entrei em contato apenas por curiosidade, mas depois da primeira experiência, nunca mais viajamos sem eles. <strong>Hoje, confiamos a Bendita todas as nossas viagens.</strong>”</blockquote>
+          <div class="author">
+            <img class="avatar" src="assets/paulo-menezes.webp" alt="Retrato de Paulo Menezes" width="44" height="44" loading="lazy" decoding="async">
+            <span>
+              <span class="author__name">Paulo Menezes</span>
+            </span>
+          </div>
+        </article>
+
+        
+<!-- Depoimento real, enviado pelo cliente em 11/08/2026, verbatim.
              Cheguei a cortar a abertura por ser redundante com o nome logo
              abaixo; o cliente preferiu o texto inteiro. Não encurtar de novo. -->
         <article class="card card--hover">
