@@ -949,7 +949,11 @@ strong{font-weight:600;color:var(--ink-900)}
   border-radius:50%;object-fit:cover;background:var(--ink-100);
 }
 /* Monograma para quem ainda não tem retrato — mesma métrica do retrato,
-   então trocar um pelo outro não mexe uma linha do layout. */
+   então trocar um pelo outro não mexe uma linha do layout.
+   Fica no arquivo mesmo quando ninguém o usa: em 11/08/2026 entraram três
+   depoimentos e dois chegaram sem foto, com o retrato vindo depois. São
+   ~180 B no CSS crítico contra um ciclo de remover-e-repor a cada
+   depoimento novo — e o custo de esquecer de repor é um layout quebrado. */
 .avatar--mono{
   display:grid;place-items:center;
   background:var(--teal-100);color:var(--teal-800);   /* 9,8:1 */
@@ -1740,8 +1744,7 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
           </div>
         </article>
 
-        <!-- Depoimento real, enviado pelo cliente em 11/08/2026, verbatim.
-             TODO(retrato): segue com monograma até a foto dela chegar. -->
+        <!-- Depoimento real, enviado pelo cliente em 11/08/2026, verbatim. -->
         <article class="card card--hover">
           <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
             <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
@@ -1756,7 +1759,7 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
             <p>Na volta a mesma coisa, fez todos os meus check-in. <strong>Não precisei me preocupar com nada.</strong>”</p>
           </blockquote>
           <div class="author">
-            <span class="avatar avatar--mono" aria-hidden="true">ES</span>
+            <img class="avatar" src="assets/eliane-sartor.webp" alt="Retrato de Eliane Sartor" width="44" height="44" loading="lazy" decoding="async">
             <span>
               <span class="author__name">Eliane Sartor</span>
             </span>
