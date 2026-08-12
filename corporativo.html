@@ -878,6 +878,11 @@ strong{font-weight:600;color:var(--ink-900)}
   .grid--3:has(> :nth-child(4)):not(:has(> :nth-child(5))){grid-template-columns:1fr 1fr}
   /* Exatamente 2 itens: 2 colunas iguais, não 2 estreitas + vazio. */
   .grid--3:has(> :nth-child(2)):not(:has(> :nth-child(3))){grid-template-columns:1fr 1fr}
+  /* Sobrou UM na última linha (7, 10, 13 itens): joga para a coluna do meio.
+     Encostado à esquerda com dois vazios ao lado, ele lê como cartão que
+     faltou carregar; centralizado, lê como fecho da lista. Vale para
+     qualquer contagem 3n+1, então não depende de ninguém recontar. */
+  .grid--3 > :last-child:nth-child(3n+1){grid-column:2}
 }
 
 /* --- Blocos numerados (custo invisível / como funciona) --- */
@@ -943,11 +948,13 @@ strong{font-weight:600;color:var(--ink-900)}
   inline-size:2.75rem;block-size:2.75rem;flex:none;
   border-radius:50%;object-fit:cover;background:var(--ink-100);
 }
-/* O monograma (.avatar--mono) saiu em 11/08/2026, junto com o último
-   depoimento sem retrato. Este CSS é inline e crítico: regra sem uso aqui
-   é peso no primeiro paint. Se voltar a faltar retrato, ele está no
-   histórico do git — era a mesma métrica do <img>, então trocar um pelo
-   outro não mexia uma linha do layout. */
+/* Monograma para quem ainda não tem retrato — mesma métrica do retrato,
+   então trocar um pelo outro não mexe uma linha do layout. */
+.avatar--mono{
+  display:grid;place-items:center;
+  background:var(--teal-100);color:var(--teal-800);   /* 9,8:1 */
+  font-weight:600;font-size:var(--fs-small);letter-spacing:.04em;
+}
 .author__name{display:block;font-weight:600;color:var(--ink-900);font-size:var(--fs-small)}
 .author__role{display:block;font-size:var(--fs-caption);color:var(--ink-500)}
 
@@ -1729,6 +1736,29 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
             <span>
               <span class="author__name">Laura Costa</span>
               <span class="author__role"></span>
+            </span>
+          </div>
+        </article>
+
+        <!-- Depoimento real, enviado pelo cliente em 11/08/2026, verbatim.
+             TODO(retrato): segue com monograma até a foto dela chegar. -->
+        <article class="card card--hover">
+          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+          </p>
+          <blockquote class="testimonial__text">
+            <p>“Me chamo Eliane e vou contar um pouquinho da minha experiência de viajar com a Bendita Tour.</p>
+            <p>A Joselaine sempre muito atenciosa mandando mensagens pra saber se eu já estava nos aeroportos, se eu não estava esquecendo de nada. Meu voo GRU/Madrid atrasou e ela ficou comigo no celular me orientando e me direcionando pro portão de embarque do próximo destino, deu tudo certo.</p>
+            <p>Na volta a mesma coisa, fez todos os meus check-in. <strong>Não precisei me preocupar com nada.</strong>”</p>
+          </blockquote>
+          <div class="author">
+            <span class="avatar avatar--mono" aria-hidden="true">ES</span>
+            <span>
+              <span class="author__name">Eliane Sartor</span>
             </span>
           </div>
         </article>
