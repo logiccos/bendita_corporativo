@@ -1200,6 +1200,34 @@ strong{font-weight:600;color:var(--ink-900)}
   }
 }
 
+/* 7b · Ordem própria no celular.
+   No celular a coluna é única, então a ordem do HTML É a ordem que se lê.
+   Mas essa mesma ordem é a que divide as colunas no desktop — reescrever o
+   HTML na sequência pedida para o celular jogava o desnível do desktop de
+   5px para ~500px.
+   Saída: o HTML fica na ordem do desktop e o celular reordena por CSS. Só
+   funciona porque abaixo de 60em o container ainda é grid (onde `order`
+   vale); acima dele vira multi-coluna, que ignora `order` e usa o HTML.
+   FRÁGIL DE PROPÓSITO — leia antes de mexer: os números abaixo apontam para
+   POSIÇÕES no HTML, não para pessoas. Mover, acrescentar ou remover um
+   cartão embaralha esta lista em silêncio, sem quebrar nada visível no
+   desktop. Quem mexer na seção precisa refazer o mapa.
+   Mapa atual (posição no HTML -> posição no celular):
+   1 Leonardo->1, 2 Paulo->3, 3 Nichollas->7, 4 Karolline->5,
+   5 Ana Cecília->2, 6 Ana Paula->4, 7 Laura->6, 8 Fernanda->8,
+   9 Eliane->9. */
+@media (max-width:59.999em){
+  .grid--3:has(> .card) > :nth-child(1){order:1}
+  .grid--3:has(> .card) > :nth-child(2){order:3}
+  .grid--3:has(> .card) > :nth-child(3){order:7}
+  .grid--3:has(> .card) > :nth-child(4){order:5}
+  .grid--3:has(> .card) > :nth-child(5){order:2}
+  .grid--3:has(> .card) > :nth-child(6){order:4}
+  .grid--3:has(> .card) > :nth-child(7){order:6}
+  .grid--3:has(> .card) > :nth-child(8){order:8}
+  .grid--3:has(> .card) > :nth-child(9){order:9}
+}
+
 /* 8 · A citação em destaque encostava na grade de cartões com gap 0px. */
 .feature-quote{
   margin-block-end:var(--stack-lg);
