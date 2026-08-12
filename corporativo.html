@@ -943,13 +943,11 @@ strong{font-weight:600;color:var(--ink-900)}
   inline-size:2.75rem;block-size:2.75rem;flex:none;
   border-radius:50%;object-fit:cover;background:var(--ink-100);
 }
-/* Monograma para quem ainda não tem retrato — mesma métrica do retrato,
-   então trocar um pelo outro não mexe uma linha do layout. */
-.avatar--mono{
-  display:grid;place-items:center;
-  background:var(--teal-100);color:var(--teal-800);   /* 9,8:1 */
-  font-weight:600;font-size:var(--fs-small);letter-spacing:.04em;
-}
+/* O monograma (.avatar--mono) saiu em 11/08/2026, junto com o último
+   depoimento sem retrato. Este CSS é inline e crítico: regra sem uso aqui
+   é peso no primeiro paint. Se voltar a faltar retrato, ele está no
+   histórico do git — era a mesma métrica do <img>, então trocar um pelo
+   outro não mexia uma linha do layout. */
 .author__name{display:block;font-weight:600;color:var(--ink-900);font-size:var(--fs-small)}
 .author__role{display:block;font-size:var(--fs-caption);color:var(--ink-500)}
 
@@ -1596,17 +1594,13 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
   </section>
 
   <!-- ================= Prova social ================= -->
-  <!-- Depoimentos REAIS, todos com retrato: Ana Cecília, Karolline, Nichollas,
-       Paulo (fornecidos em 10-11/08/2026) e Maria Silva, que o cliente
-       confirmou como cliente real em 11/08/2026 ao enviar o retrato dela.
-       Idem Laura Costa: nome corrigido e retrato enviado pelo cliente em
-       11/08/2026, que confirmou a frase como dela.
-       TODO(crítico): João Santos é o ÚLTIMO modelo — texto de exemplo, não é
-       cliente real. Depoimento fabricado publicado como verdadeiro viola o CDC
-       art. 37 e o Código do CONAR; o caminho seguro é substituí-lo por um
-       depoimento real ou removê-lo. Segue sem retrato de propósito: enquanto
-       não há rosto, não há uma pessoa inventada sustentando a frase.
-       TODO(estrelas): confirmar que os clientes reais deram nota 5. -->
+  <!-- Todos os depoimentos aqui são reais e com retrato, confirmados pelo
+       cliente em 10-11/08/2026. Os textos de exemplo que existiam foram
+       removidos em 11/08/2026 — regra da seção: só entra depoimento cujo
+       autor exista e tenha dito aquilo. Depoimento fabricado publicado como
+       verdadeiro viola o CDC art. 37 e o Código do CONAR, e a agência é quem
+       responde. Na dúvida sobre um texto, o certo é não publicá-lo.
+       TODO(estrelas): confirmar que os clientes deram nota 5. -->
   <!-- Fundo tingido: a seção anterior ("A decisão é sua") é gradiente, não
        faixa tingida, então não há duas faixas iguais coladas — o gradiente
        fecha em ink-50 justamente para entrar neste tom sem degrau. -->
@@ -1734,25 +1728,6 @@ Horas e mais horas de profissionais qualificados são desperdiçadas em uma ativ
             <img class="avatar" src="assets/laura-costa.webp" alt="Retrato de Laura Costa" width="44" height="44" loading="lazy" decoding="async">
             <span>
               <span class="author__name">Laura Costa</span>
-              <span class="author__role"></span>
-            </span>
-          </div>
-        </article>
-
-        <!-- ---- Único depoimento modelo restante (substituir ou remover) ---- -->
-        <article class="card card--hover">
-          <p class="stars" role="img" aria-label="Avaliação: 5 de 5 estrelas">
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-            <svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
-          </p>
-          <blockquote class="testimonial__text">“Na primeira viagem internacional, tivemos um cancelamento às 4h da manhã. A Bendita resolveu tudo. <strong>Isso não tem preço.</strong>”</blockquote>
-          <div class="author">
-            <span class="avatar avatar--mono" aria-hidden="true">JS</span>
-            <span>
-              <span class="author__name">João Santos</span>
               <span class="author__role"></span>
             </span>
           </div>
