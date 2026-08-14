@@ -412,6 +412,50 @@ strong{font-weight:600;color:var(--ink-900)}
    hero vem do tamanho do título contra o vazio ao redor. */
 .hero{padding-block:clamp(3rem,2rem + 4.3vw,6rem) var(--sec-y)}
 .hero__inner{max-inline-size:52rem}
+
+/* Antetítulo do hero. Reusa o `.eyebrow` das outras seções — filete de
+   1,5rem, caixa alta espacejada, verde da marca — para que a página tenha UM
+   jeito de abrir um bloco, e não dois. Três coisas mudam, e todas as três
+   existem porque este é o único eyebrow da página que tem uma linha ACIMA
+   dele (o selo de 24h) e que é comprido o bastante para quebrar em duas —
+   a 360px o texto pede 336px numa coluna útil de 282px (o container de 318px
+   menos o filete de 24px e o gap de 12px), e só volta a caber numa linha a
+   partir de ~480px:
+
+   1. `line-height:1.35` no lugar do 1.7 herdado do body. O 1.7 é entrelinha
+      de parágrafo; entre duas linhas de rótulo em caixa alta ele abre um vão
+      maior que a altura das próprias letras. Medido a 360px: caixa de 30px
+      em vez de 38px, e as duas linhas passam a ler como um bloco só.
+
+   2. `align-items:flex-start` com o filete deslocado meia linha. Com o
+      `center` herdado, na quebra em duas linhas a régua migra para o meio do
+      bloco e passa a ler como travessão ENTRE as duas, não como abertura do
+      rótulo. Os .675em são a metade exata do 1.35 acima, ou seja, o meio da
+      PRIMEIRA linha — em uma linha só o desenho continua idêntico ao das
+      outras seções.
+
+   3. 16px até o h1, e não os 12px do ajuste 11 (daí o seletor composto: o
+      `.eyebrow{margin-bottom:var(--s-3)}` de lá vem depois no arquivo e
+      ganharia no empate de especificidade). Os 12px foram calibrados para
+      um eyebrow com nada acima; aqui, imprensado entre o selo e o h1, a
+      caixa alta espacejada precisa de mais ar embaixo para não encostar no
+      título. O que não pode é chegar aos 20px: com 24px acima e 20 abaixo o
+      antetítulo fica equidistante e perde o dono — ele pertence ao título.
+      O degrau fica em 24/16, ou 1,5:1.
+
+   Custo vertical do conjunto (a linha nova mais o reajuste de respiro do
+   ajuste 2, lá embaixo), medido no Chrome com a fonte já carregada, do topo
+   da página ao pé do botão principal: 621→651px a 360, 595→625 a 390,
+   555→582 a 768 e 627→645 a 1440. Ou seja +30px no celular e +18px no
+   desktop para um título inteiro a mais, sem token, fonte, imagem ou script
+   novo — só o parágrafo. */
+.eyebrow.hero__eyebrow{
+  align-items:flex-start;
+  margin-bottom:var(--s-4);
+  line-height:1.35;
+  text-wrap:balance;
+}
+.hero__eyebrow::before{margin-block-start:.675em}
 /* A medida era 20ch. `ch` acompanha a fonte do próprio h1, então ao
    reduzir o --fs-display em 22% a coluna encolheu junto — e a terceira
    linha, que é caixa alta e tem tamanho próprio, deixou de caber numa
@@ -648,9 +692,16 @@ strong{font-weight:600;color:var(--ink-900)}
   to{translate:0 calc(-50% - 4.5rem)}
 }
 
-/* Selo de disponibilidade — o único uso do verde na página. */
+/* Selo de disponibilidade — o único uso do verde na página.
+   `flex` + `fit-content`, e não `inline-flex`: os dois desenham a mesma
+   caixa encolhida ao conteúdo, mas o inline-flex é uma caixa inline dentro
+   de uma linha anônima, e essa linha carrega o strut do pai — entrelinha
+   1,7 sobre o corpo de 16,5px do hero, ou seja ~5px de meia-entrelinha
+   grudados ACIMA do selo, invisíveis no CSS e impossíveis de zerar por
+   margem. Sendo bloco, a distância até o filete do header passa a ser
+   exatamente o padding do hero, nem um pixel a mais. */
 .status{
-  display:inline-flex;align-items:center;gap:var(--s-2);
+  display:flex;inline-size:fit-content;align-items:center;gap:var(--s-2);
   margin-bottom:var(--s-6);
   font-size:var(--fs-caption);font-weight:600;color:var(--ink-600);
   letter-spacing:.02em;
@@ -1134,11 +1185,37 @@ strong{font-weight:600;color:var(--ink-900)}
    entre blocos, o dobro do que Stripe/Linear/Mercury usam no total. Some
    isso ao hero de 1.224px e o botão principal caía 219px abaixo da dobra. */
 :root{--sec-y:clamp(3.5rem, 2.4rem + 4.4vw, 6rem)}
-.hero{padding-block:clamp(2.5rem, 1.9rem + 2.6vw, 4rem) var(--sec-y)}
+/* O respiro do topo saiu de clamp(2.5rem,1.9rem+2.6vw,4rem) para o valor
+   abaixo. Medido do filete do header ao selo de 24h — que agora é bloco, e
+   por isso não carrega mais os ~5px de strut descritos lá em cima —, o vão
+   cai de 43px para 28 a 360, 44→28 a 390, 54→29 a 768 e 69→36 a 1440. Era o
+   maior espaço vazio da página, e estava justamente onde rende menos: acima
+   da primeira linha, sem nada do outro lado para separar. O piso de 28px é
+   deliberado: no celular ele não pode encostar nos 24px que separam o selo
+   do antetítulo, senão o selo passa a ler como rodapé do header em vez de
+   primeira linha do hero. Os 33px recuperados no desktop não somem — vão
+   para o meio do bloco, na escada de margens logo abaixo. */
+.hero{padding-block:clamp(1.75rem, 1.35rem + 1vw, 2.25rem) var(--sec-y)}
 .hero .h1{margin-bottom:var(--s-5)}
 .hero__lead{margin-bottom:var(--s-5);max-inline-size:44ch}
 .hero__ask{margin-bottom:var(--s-8)}
 .hero__actions{margin-top:var(--s-8)}
+/* Escada de distâncias, a partir de 768px — onde sobra altura e o vazio do
+   topo acabou de ser cortado. Cada degrau de hierarquia recebe mais espaço
+   que o anterior: 16px do antetítulo ao h1 (grupo), 20px do h1 ao lead,
+   32px do lead à pergunta, 40px da pergunta ao botão. Antes eram 12/20/20/32
+   — com lead→pergunta igual a h1→lead, a pergunta lia como mais um parágrafo
+   do corpo em vez do gancho que fecha o argumento.
+   No celular a escada continua em 20/32: lá não há altura sobrando para
+   distribuir, e o hero já pede 874px de rolagem.
+   Saldo a 1440: mesmo com a linha do antetítulo, o hero fecha em 664px
+   contra os 646px que media sem ela — o espaço mudou de lugar, não de
+   tamanho. */
+@media (min-width:48em){
+  .hero__lead{margin-bottom:var(--s-8)}
+  .hero__ask{margin-bottom:var(--s-10)}
+  .hero__actions{margin-top:var(--s-10)}
+}
 
 /* 3 · Toda régua de 1px nasce e morre na grade do container.
    O mesmo filete estava sendo desenhado em dez larguras diferentes — a
@@ -1410,6 +1487,8 @@ strong{font-weight:600;color:var(--ink-900)}
           <span class="dot" aria-hidden="true"></span>
           Atendimento humano, 24 horas por dia
         </p>
+
+        <p class="eyebrow hero__eyebrow">Gestão Inteligente de Viagens Corporativas</p>
 
         <h1 class="h1">
           Sua equipe precisa
