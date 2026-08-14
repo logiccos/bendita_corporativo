@@ -1297,33 +1297,26 @@ strong{font-weight:600;color:var(--ink-900)}
   }
 }
 
-/* 7b · Ordem própria no celular.
-   No celular a coluna é única, então a ordem do HTML É a ordem que se lê.
-   Mas essa mesma ordem é a que divide as colunas no desktop — reescrever o
-   HTML na sequência pedida para o celular jogava o desnível do desktop de
-   5px para ~500px.
-   Saída: o HTML fica na ordem do desktop e o celular reordena por CSS. Só
-   funciona porque abaixo de 60em o container ainda é grid (onde `order`
-   vale); acima dele vira multi-coluna, que ignora `order` e usa o HTML.
-   FRÁGIL DE PROPÓSITO — leia antes de mexer: os números abaixo apontam para
-   POSIÇÕES no HTML, não para pessoas. Mover, acrescentar ou remover um
-   cartão embaralha esta lista em silêncio, sem quebrar nada visível no
-   desktop. Quem mexer na seção precisa refazer o mapa.
-   Mapa atual (posição no HTML -> posição no celular):
-   1 Leonardo->1, 2 Paulo->3, 3 Nichollas->7, 4 Karolline->5,
-   5 Ana Cecília->2, 6 Ana Paula->4, 7 Laura->6, 8 Fernanda->8,
-   9 Eliane->9. */
-@media (max-width:59.999em){
-  .grid--3:has(> .card) > :nth-child(1){order:1}
-  .grid--3:has(> .card) > :nth-child(2){order:3}
-  .grid--3:has(> .card) > :nth-child(3){order:7}
-  .grid--3:has(> .card) > :nth-child(4){order:5}
-  .grid--3:has(> .card) > :nth-child(5){order:2}
-  .grid--3:has(> .card) > :nth-child(6){order:4}
-  .grid--3:has(> .card) > :nth-child(7){order:6}
-  .grid--3:has(> .card) > :nth-child(8){order:8}
-  .grid--3:has(> .card) > :nth-child(9){order:9}
-}
+/* 7b · REMOVIDO em 14/08/2026 — a ordem do HTML vale em todas as larguras.
+   Aqui existia um mapa de `order` que dava ao celular uma sequência
+   diferente da do HTML, porque a ordem do HTML era escolhida para equilibrar
+   as colunas do desktop e não para ser lida. O próprio comentário avisava
+   que era frágil: os `nth-child` apontavam para POSIÇÕES, não para pessoas.
+
+   Foi exatamente o que aconteceu. Entrou um décimo depoimento (Moderno
+   Costa) e o mapa, que só ia até a nona posição, deixou o card novo sem
+   regra — e `order` ausente vale 0, que vem ANTES de todo mundo. No celular
+   a seção passou a abrir pelo último cartão do HTML, embaralhada, enquanto
+   no desktop nada mudava. A falha foi ao ar e ficou algumas horas.
+
+   A ordem dos dez cards agora é definida pelo cliente (14/08/2026), o que
+   remove a razão de existir do mapa: a sequência pedida É a sequência a ler,
+   nos dois lados. E ela não custa nada ao desktop — medido a 1280px, o
+   desnível entre as colunas ficou em 56px, dentro dos 60px que a ordem
+   anterior já tinha (ver ajuste 7).
+   Se um dia a ordem voltar a divergir entre celular e desktop, prefira
+   reordenar o HTML e remedir o desnível a reintroduzir um mapa por posição:
+   ele quebra em silêncio no dia em que alguém acrescentar um depoimento. */
 
 /* 8 · A citação em destaque encostava na grade de cartões com gap 0px. */
 .feature-quote{
@@ -1808,28 +1801,17 @@ Contratempos em viagens não se limitam ao horário comercial. Por isso, oferece
           </div>
         </article>
 
-        <!-- Depoimento real, enviado pelo cliente em 12/08/2026, verbatim.
-             Abriu a lista de 12/08 a 14/08/2026; continua em segundo porque
-             é o único que descreve o problema nos termos desta página —
-             diretoria, financeiro, equipe puxada para fora do próprio
-             trabalho. Quem chega aqui reconhece o próprio caso já na
-             abertura, antes dos depoimentos de viagem individual. -->
         <article class="card card--hover">
-          <blockquote class="testimonial__text">
-            <p>“Conheci a Bendita Tour por indicação de um amigo e foi um achado.</p>
-            <p>Antes as viagens da diretoria, colaboradores, ficava por conta do financeiro, tirando a equipe de outras demandas importantes.</p>
-            <p>Hoje, passamos as informações para a Bendita e eles cuidam de tudo. Mais praticidade, tranquilidade e tempo para <strong>cada um focar no que realmente importa.</strong>”</p>
-          </blockquote>
+          <blockquote class="testimonial__text">“Uma amiga me indicou a Josi da Bendita Tour e desde então, todas as nossas viagens passam por ela. Super atenciosa e dedicada. <strong>Virou nossa parceira de viagens de confiança.</strong>”</blockquote>
           <div class="author">
-            <img class="avatar" src="assets/leonardo-valenca.webp" alt="Retrato de Leonardo Valença" width="44" height="44" loading="lazy" decoding="async">
+            <img class="avatar" src="assets/ana-cecilia-duarte.webp" alt="Retrato de Ana Cecília Duarte" width="44" height="44" loading="lazy" decoding="async">
             <span>
-              <span class="author__name">Leonardo Valença</span>
+              <span class="author__name">Ana Cecília Duarte</span>
             </span>
           </div>
         </article>
 
-        
-<!-- Texto substituído em 14/08/2026 pela versão que o cliente enviou; o
+        <!-- Texto substituído em 14/08/2026 pela versão que o cliente enviou; o
              depoimento anterior do Paulo Menezes ("Viajamos com frequência a
              negócios...") saiu inteiro, a pedido dele. O retrato é o mesmo. -->
         <article class="card card--hover">
@@ -1846,59 +1828,28 @@ Contratempos em viagens não se limitam ao horário comercial. Por isso, oferece
           </div>
         </article>
 
-        
-<article class="card card--hover">
-          <blockquote class="testimonial__text">“Mais um excelente voo organizado pela Bendita Tour, dessa vez na classe executiva da Qatar Airways. Quero agradecer pelo suporte durante toda a viagem e por todo o cuidado na organização. É muito bom poder viajar com a tranquilidade de saber que <strong>temos alguém cuidando de tudo nos bastidores.</strong>”</blockquote>
-          <div class="author">
-            <img class="avatar" src="assets/nichollas-marshell.webp" alt="Retrato de Nichollas Marshell" width="44" height="44" loading="lazy" decoding="async">
-            <span>
-              <span class="author__name">Nichollas Marshell</span>
-            </span>
-          </div>
-        </article>
-
-
-        
-<!-- Depoimento real, recebido do cliente em 11/08/2026, com retrato. -->
+        <!-- Depoimento real, enviado pelo cliente em 12/08/2026, verbatim.
+             Abriu a lista de 12/08 a 14/08/2026. É o único que descreve o
+             problema nos termos desta página — diretoria, financeiro, equipe
+             puxada para fora do próprio trabalho —, e por isso vale mantê-lo
+             no primeiro terço da grade em qualquer reordenação futura.
+             A ordem atual dos dez cards foi definida pelo André em
+             14/08/2026, um a um. -->
         <article class="card card--hover">
           <blockquote class="testimonial__text">
-            <p>“Eu já viajei muito por conta própria e com alguém me assessorando. Mas confesso que a Bendita e a Josi, foram um verdadeiro achado.</p>
-            <p>Toda viagem a gente corre o risco de ter um perrengue, principalmente quando são vários destinos. Por isso sempre indico a Bendita para todos, pois é uma agência séria e de confiança.</p>
-            <p>Primeiro, que você tem menos trabalho, menos preocupação. Segundo, você vai aproveitar o seu destino muito melhor, ou os seus destinos muito melhor. E se acontecer de ter um perrengue, como eu tive com a LATAM, ela me assessorou em tudo e me ajudou em todos os passos que eu tinha que tomar, inclusive com a minha advogada. <strong>Recomendo e muito!!</strong>”</p>
+            <p>“Conheci a Bendita Tour por indicação de um amigo e foi um achado.</p>
+            <p>Antes as viagens da diretoria, colaboradores, ficava por conta do financeiro, tirando a equipe de outras demandas importantes.</p>
+            <p>Hoje, passamos as informações para a Bendita e eles cuidam de tudo. Mais praticidade, tranquilidade e tempo para <strong>cada um focar no que realmente importa.</strong>”</p>
           </blockquote>
           <div class="author">
-            <img class="avatar" src="assets/karolline-domingues.webp" alt="Retrato de Karolline Domingues" width="44" height="44" loading="lazy" decoding="async">
+            <img class="avatar" src="assets/leonardo-valenca.webp" alt="Retrato de Leonardo Valença" width="44" height="44" loading="lazy" decoding="async">
             <span>
-              <span class="author__name">Karolline Domingues</span>
+              <span class="author__name">Leonardo Valença</span>
             </span>
           </div>
         </article>
 
-
-        
-<article class="card card--hover">
-          <blockquote class="testimonial__text">“Uma amiga me indicou a Josi da Bendita Tour e desde então, todas as nossas viagens passam por ela. Super atenciosa e dedicada. <strong>Virou nossa parceira de viagens de confiança.</strong>”</blockquote>
-          <div class="author">
-            <img class="avatar" src="assets/ana-cecilia-duarte.webp" alt="Retrato de Ana Cecília Duarte" width="44" height="44" loading="lazy" decoding="async">
-            <span>
-              <span class="author__name">Ana Cecília Duarte</span>
-            </span>
-          </div>
-        </article>
-
-
-        
-<!-- Depoimento real, enviado pelo cliente em 12/08/2026, verbatim. -->
         <article class="card card--hover">
-          <blockquote class="testimonial__text">“Quero expressar minha eterna gratidão a minha amiga Josi e sua agência Bendita Tour. Atendimento excelente. Sempre me dando todo o suporte que precisei, em todos os momentos. Para quem precisa viajar e quer praticidade, <strong>super indico essa agência.</strong>”</blockquote>
-          <div class="author">
-            <img class="avatar" src="assets/ana-paula-garaluz.webp" alt="Retrato de Ana Paula Garaluz" width="44" height="44" loading="lazy" decoding="async">
-            <span>
-              <span class="author__name">Ana Paula Garaluz</span>
-            </span>
-          </div>
-        </article>
-<article class="card card--hover">
           <blockquote class="testimonial__text">“O maior ganho foi o tempo que a equipe recuperou para fazer <strong>o que realmente importa.</strong> A Bendita Tour faz parte da nossa rotina, confiamos a eles, todas as nossas viagens.”</blockquote>
           <div class="author">
             <img class="avatar" src="assets/laura-costa.webp" alt="Retrato de Laura Costa" width="44" height="44" loading="lazy" decoding="async">
@@ -1909,26 +1860,18 @@ Contratempos em viagens não se limitam ao horário comercial. Por isso, oferece
           </div>
         </article>
 
-
-        
-<!-- Depoimento real, enviado pelo cliente em 12/08/2026, verbatim. -->
+        <!-- Depoimento real, enviado pelo cliente em 12/08/2026, verbatim. -->
         <article class="card card--hover">
-          <blockquote class="testimonial__text">
-            <p>“Dica boa a gente compartilha!</p>
-            <p>Nos últimos dias, precisei de ajuda com algumas questões de embarque em voos nacionais e internacionais, e a Josi, da Bendita Tour, foi incrível: <strong>ágil, precisa e super atenciosa!</strong></p>
-            <p>Gratidão, querida! Muito sucesso para você!”</p>
-          </blockquote>
+          <blockquote class="testimonial__text">“Quero expressar minha eterna gratidão a minha amiga Josi e sua agência Bendita Tour. Atendimento excelente. Sempre me dando todo o suporte que precisei, em todos os momentos. Para quem precisa viajar e quer praticidade, <strong>super indico essa agência.</strong>”</blockquote>
           <div class="author">
-            <img class="avatar" src="assets/fernanda-afonso.webp" alt="Retrato de Fernanda Afonso" width="44" height="44" loading="lazy" decoding="async">
+            <img class="avatar" src="assets/ana-paula-garaluz.webp" alt="Retrato de Ana Paula Garaluz" width="44" height="44" loading="lazy" decoding="async">
             <span>
-              <span class="author__name">Fernanda Afonso</span>
+              <span class="author__name">Ana Paula Garaluz</span>
             </span>
           </div>
         </article>
 
-
-        
-<!-- Depoimento real, enviado pelo cliente em 11/08/2026, verbatim.
+        <!-- Depoimento real, enviado pelo cliente em 11/08/2026, verbatim.
              Cheguei a cortar a abertura por ser redundante com o nome logo
              abaixo; o cliente preferiu o texto inteiro. Não encurtar de novo. -->
         <article class="card card--hover">
@@ -1944,7 +1887,46 @@ Contratempos em viagens não se limitam ao horário comercial. Por isso, oferece
             </span>
           </div>
         </article>
-        
+
+        <!-- Depoimento real, enviado pelo cliente em 12/08/2026, verbatim. -->
+        <article class="card card--hover">
+          <blockquote class="testimonial__text">
+            <p>“Dica boa a gente compartilha!</p>
+            <p>Nos últimos dias, precisei de ajuda com algumas questões de embarque em voos nacionais e internacionais, e a Josi, da Bendita Tour, foi incrível: <strong>ágil, precisa e super atenciosa!</strong></p>
+            <p>Gratidão, querida! Muito sucesso para você!”</p>
+          </blockquote>
+          <div class="author">
+            <img class="avatar" src="assets/fernanda-afonso.webp" alt="Retrato de Fernanda Afonso" width="44" height="44" loading="lazy" decoding="async">
+            <span>
+              <span class="author__name">Fernanda Afonso</span>
+            </span>
+          </div>
+        </article>
+
+        <!-- Depoimento real, recebido do cliente em 11/08/2026, com retrato. -->
+        <article class="card card--hover">
+          <blockquote class="testimonial__text">
+            <p>“Eu já viajei muito por conta própria e com alguém me assessorando. Mas confesso que a Bendita e a Josi, foram um verdadeiro achado.</p>
+            <p>Toda viagem a gente corre o risco de ter um perrengue, principalmente quando são vários destinos. Por isso sempre indico a Bendita para todos, pois é uma agência séria e de confiança.</p>
+            <p>Primeiro, que você tem menos trabalho, menos preocupação. Segundo, você vai aproveitar o seu destino muito melhor, ou os seus destinos muito melhor. E se acontecer de ter um perrengue, como eu tive com a LATAM, ela me assessorou em tudo e me ajudou em todos os passos que eu tinha que tomar, inclusive com a minha advogada. <strong>Recomendo e muito!!</strong>”</p>
+          </blockquote>
+          <div class="author">
+            <img class="avatar" src="assets/karolline-domingues.webp" alt="Retrato de Karolline Domingues" width="44" height="44" loading="lazy" decoding="async">
+            <span>
+              <span class="author__name">Karolline Domingues</span>
+            </span>
+          </div>
+        </article>
+
+        <article class="card card--hover">
+          <blockquote class="testimonial__text">“Mais um excelente voo organizado pela Bendita Tour, dessa vez na classe executiva da Qatar Airways. Quero agradecer pelo suporte durante toda a viagem e por todo o cuidado na organização. É muito bom poder viajar com a tranquilidade de saber que <strong>temos alguém cuidando de tudo nos bastidores.</strong>”</blockquote>
+          <div class="author">
+            <img class="avatar" src="assets/nichollas-marshell.webp" alt="Retrato de Nichollas Marshell" width="44" height="44" loading="lazy" decoding="async">
+            <span>
+              <span class="author__name">Nichollas Marshell</span>
+            </span>
+          </div>
+        </article>
       </div>
     </div>
   </section>
