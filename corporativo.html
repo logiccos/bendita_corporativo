@@ -434,28 +434,42 @@ strong{font-weight:600;color:var(--ink-900)}
       PRIMEIRA linha — em uma linha só o desenho continua idêntico ao das
       outras seções.
 
-   3. 16px até o h1, e não os 12px do ajuste 11 (daí o seletor composto: o
-      `.eyebrow{margin-bottom:var(--s-3)}` de lá vem depois no arquivo e
-      ganharia no empate de especificidade). Os 12px foram calibrados para
-      um eyebrow com nada acima; aqui, imprensado entre o selo e o h1, a
-      caixa alta espacejada precisa de mais ar embaixo para não encostar no
-      título. O que não pode é chegar aos 20px: com 24px acima e 20 abaixo o
-      antetítulo fica equidistante e perde o dono — ele pertence ao título.
-      O degrau fica em 24/16, ou 1,5:1.
+   3. O vão até o h1 sobe dos 12px do ajuste 11 para 28px no celular e 40px
+      no desktop (daí o seletor composto: o `.eyebrow{margin-bottom:...}` de
+      lá vem depois no arquivo e ganharia no empate de especificidade), e o
+      selo acima cede a margem dele, de 24px para 12px.
+
+      Essa troca inverte o agrupamento, de propósito. O ajuste 11 calibrou
+      12px para um eyebrow que abre a seção com NADA acima; aqui há duas
+      linhas pequenas empilhadas antes do título, e com 24/16 as três
+      ficavam à mesma distância umas das outras — três linhas de corpo miúdo
+      encostadas no h1, que é exatamente a sensação de amontoado. Agora o
+      selo e o antetítulo formam um par colado (12px, menos que a própria
+      entrelinha deles) e o vão grande vem depois, abrindo o título.
+
+      A soma não muda no celular: 24+16 dava 40px do selo ao h1, 12+28 dá os
+      mesmos 40. Ou seja, no aparelho onde não sobra altura o título ganha
+      ar sem custar um pixel de rolagem — o espaço só mudou de lugar. No
+      desktop os 40px de vão custam 12px a mais, que é onde há de sobra.
 
    Custo vertical do conjunto (a linha nova mais o reajuste de respiro do
    ajuste 2, lá embaixo), medido no Chrome com a fonte já carregada, do topo
    da página ao pé do botão principal: 621→651px a 360, 595→625 a 390,
-   555→582 a 768 e 627→645 a 1440. Ou seja +30px no celular e +18px no
+   555→591 a 768 e 627→661 a 1440. Ou seja +30px no celular e +34px no
    desktop para um título inteiro a mais, sem token, fonte, imagem ou script
    novo — só o parágrafo. */
 .eyebrow.hero__eyebrow{
   align-items:flex-start;
-  margin-bottom:var(--s-4);
+  /* Fluido, e não um token fixo: este vão abre um título que vai de 25px a
+     360 até 41px a 1440. Preso em 40px ele seria 1,6× a altura da linha do
+     h1 no celular — um buraco — e justo no desktop. 28px → 40px acompanha. */
+  margin-bottom:clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
   line-height:1.35;
   text-wrap:balance;
 }
 .hero__eyebrow::before{margin-block-start:.675em}
+/* O selo cede a margem para o par colar (ver item 3 acima). */
+.hero .status{margin-bottom:var(--s-3)}
 /* A medida era 20ch. `ch` acompanha a fonte do próprio h1, então ao
    reduzir o --fs-display em 22% a coluna encolheu junto — e a terceira
    linha, que é caixa alta e tem tamanho próprio, deixou de caber numa
@@ -1201,17 +1215,19 @@ strong{font-weight:600;color:var(--ink-900)}
 .hero__ask{margin-bottom:var(--s-8)}
 .hero__actions{margin-top:var(--s-8)}
 /* Escada de distâncias, a partir de 768px — onde sobra altura e o vazio do
-   topo acabou de ser cortado. Cada degrau de hierarquia recebe mais espaço
-   que o anterior: 16px do antetítulo ao h1 (grupo), 20px do h1 ao lead,
-   32px do lead à pergunta, 40px da pergunta ao botão. Antes eram 12/20/20/32
-   — com lead→pergunta igual a h1→lead, a pergunta lia como mais um parágrafo
-   do corpo em vez do gancho que fecha o argumento.
-   No celular a escada continua em 20/32: lá não há altura sobrando para
-   distribuir, e o hero já pede 874px de rolagem.
-   Saldo a 1440: mesmo com a linha do antetítulo, o hero fecha em 664px
-   contra os 646px que media sem ela — o espaço mudou de lugar, não de
-   tamanho. */
+   topo acabou de ser cortado. Depois do par selo+antetítulo (12px, colado) o
+   espaço só cresce: 40px até o h1, 24px do h1 ao lead, 32px do lead à
+   pergunta, 40px da pergunta ao botão. Antes eram 12/20/20/32 — com
+   lead→pergunta igual a h1→lead, a pergunta lia como mais um parágrafo do
+   corpo em vez do gancho que fecha o argumento; e com o h1 a 20px do lead o
+   título ficava apertado por baixo justo depois de ganhar 40px por cima.
+   No celular a escada segue mais curta (28/20/20/32): lá não há altura
+   sobrando para distribuir, e o hero já pede 874px de rolagem.
+   Saldo a 1440: o hero fecha em 680px contra os 646px que media sem o
+   antetítulo — 34px para uma linha de título a mais e um bloco que respira
+   nos dois lados dela. */
 @media (min-width:48em){
+  .hero .h1{margin-bottom:var(--s-6)}
   .hero__lead{margin-bottom:var(--s-8)}
   .hero__ask{margin-bottom:var(--s-10)}
   .hero__actions{margin-top:var(--s-10)}
@@ -1762,12 +1778,42 @@ Contratempos em viagens não se limitam ao horário comercial. Por isso, oferece
 
         <!-- ---- Depoimentos reais ---- -->
 
+        <!-- Depoimento real, enviado pelo cliente em 14/08/2026, verbatim.
+             Abre a lista a pedido do cliente (14/08/2026). É o único que
+             nomeia o que a operação faz na prática — acompanhar o voo do
+             check-in à chegada —, e vindo de quem viaja a trabalho com
+             frequência, que é exatamente o leitor desta página.
+
+             Única exceção à regra de destacar a frase FINAL do depoimento
+             (ver o card da Ana Paula). O motivo original foi de repetição: o
+             fecho daqui era idêntico ao do card do Paulo Menezes — "Hoje,
+             confiamos a Bendita todas as nossas viagens." —, os dois na
+             mesma coluna e a um card de distância, e dois negritos iguais
+             empilhados leem como texto padronizado. O depoimento do Paulo
+             foi trocado horas depois e a repetição sumiu, mas o destaque
+             fica onde está: a promessa operacional é o que só este card
+             traz, e é ela que responde à dúvida de quem lê a página.
+             Decisão do André em 14/08/2026. -->
+        <article class="card card--hover">
+          <blockquote class="testimonial__text">
+            <p>“Costumamos viajar a trabalho com frequência e, para ser sincero, nunca demos muita importância à escolha da agência. Depois que conhecemos o atendimento da Joselaine, da Bendita Tour, decidimos contratar somente eles.</p>
+            <p>Muito atenciosa e prestativa, ela faz algo que ninguém havia feito por mim e pela minha equipe: <strong>acompanhar o voo desde o check-in até a chegada.</strong> É esplêndido! Parabéns!</p>
+            <p>A primeira experiência foi tão positiva que, desde então, não viajamos mais sem o apoio deles. Hoje, confiamos a Bendita todas as nossas viagens.”</p>
+          </blockquote>
+          <div class="author">
+            <img class="avatar" src="assets/moderno-costa.webp" alt="Retrato de Moderno Costa" width="44" height="44" loading="lazy" decoding="async">
+            <span>
+              <span class="author__name">Moderno Costa</span>
+            </span>
+          </div>
+        </article>
+
         <!-- Depoimento real, enviado pelo cliente em 12/08/2026, verbatim.
-             Abre a lista a pedido do cliente (12/08/2026), e o lugar cai bem:
+             Abriu a lista de 12/08 a 14/08/2026; continua em segundo porque
              é o único que descreve o problema nos termos desta página —
              diretoria, financeiro, equipe puxada para fora do próprio
-             trabalho. Quem chega aqui reconhece o próprio caso na primeira
-             leitura, antes dos depoimentos de viagem individual. -->
+             trabalho. Quem chega aqui reconhece o próprio caso já na
+             abertura, antes dos depoimentos de viagem individual. -->
         <article class="card card--hover">
           <blockquote class="testimonial__text">
             <p>“Conheci a Bendita Tour por indicação de um amigo e foi um achado.</p>
@@ -1783,8 +1829,15 @@ Contratempos em viagens não se limitam ao horário comercial. Por isso, oferece
         </article>
 
         
-<article class="card card--hover">
-          <blockquote class="testimonial__text">“Viajamos com frequência a negócios e sinceramente, nunca tinha dado muita atenção. Até que alguns amigos me recomendaram a Bendita Tour. No início, entrei em contato apenas por curiosidade, mas depois da primeira experiência, nunca mais viajamos sem eles. <strong>Hoje, confiamos a Bendita todas as nossas viagens.</strong>”</blockquote>
+<!-- Texto substituído em 14/08/2026 pela versão que o cliente enviou; o
+             depoimento anterior do Paulo Menezes ("Viajamos com frequência a
+             negócios...") saiu inteiro, a pedido dele. O retrato é o mesmo. -->
+        <article class="card card--hover">
+          <blockquote class="testimonial__text">
+            <p>“Para nós, viajar a trabalho precisa ser sinônimo de tranquilidade e organização. Foi isso que encontramos na Bendita Tour. Desde o primeiro contato, percebemos o cuidado e o profissionalismo em cada detalhe.</p>
+            <p>Sempre que precisamos de suporte, tivemos um atendimento rápido e atencioso. A Josi está presente de verdade, acompanhando tudo de perto e ajudando sempre que necessário, o que faz toda a diferença para quem tem uma rotina de viagens tão intensa.</p>
+            <p>Hoje, sabemos que podemos contar com a Bendita para cuidar das nossas viagens com <strong>a mesma dedicação e atenção que esperamos de um parceiro de confiança.</strong>”</p>
+          </blockquote>
           <div class="author">
             <img class="avatar" src="assets/paulo-menezes.webp" alt="Retrato de Paulo Menezes" width="44" height="44" loading="lazy" decoding="async">
             <span>
